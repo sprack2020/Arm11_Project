@@ -19,7 +19,7 @@ dataProcess: //skeleton still in the works
     -
 dataTransfer:
 
-iMultiply:
+iMultiply: //Sarthak's on it!
 
 util:
     - binaryShift:  Andy/finished but maybe broken
