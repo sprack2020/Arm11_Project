@@ -15,10 +15,11 @@ decodeAndExecute:
 branch:
 
 dataProcess: //skeleton still in the works
-    - binaryShift:
+    -
     -
 dataTransfer:
 
 iMultiply:
 
-
+util:
+    - binaryShift:
