@@ -18,3 +18,4 @@ typedef struct {
 
 ShiftResult binaryShift(uint32_t shiftee, enum shiftType st, uint32_t amount);
 uint32_t rightShiftCarry(uint32_t shiftee, uint32_t amount);
+uint32_t extractBits(uint32_t binaryNumber, int i, int j);
