@@ -18,7 +18,7 @@ ShiftResult binaryShift(uint32_t shiftee, enum shiftType st, uint32_t amount) {
         sr->result = shiftee;
     }
 
-    //don't shift by more than bits than are in the shiftee 
+    //don't shift by more than bits than are in the shiftee
     if (amount > INTWIDTH) {
         return binaryShift(shiftee, st, amount % INTWIDTH);
     }
@@ -55,4 +55,32 @@ ShiftResult binaryShift(uint32_t shiftee, enum shiftType st, uint32_t amount) {
 //first bit the carry we require.
 uint32_t rightShiftCarry(uint32_t shiftee, uint32_t amount) {
     return (shiftee >> (amount - 1)) & 1;
+}
+
+// creates a bit mask to extract the bits j to i by &&-ing with this mask
+uint32_t createMask(unsigned int i, unsigned int j) {
+    uint32_t mask = 0;
+
+    for (unsigned int m = i; m <= j; m++) {
+        mask |= 1 << m;
+    }
+
+    return mask;
+}
+
+// Returns the bits at poisitions j to i from the given number
+uint32_t extractBits(uint32_t binaryNumber, int j, int i) {
+    // ensure j >= i and both i and j are positive
+    if (j < i || i < 0 || j > BITS_PER_INSTR - 1) {
+        fprintf(stderr, "Error in util: extractBits(): invalid indexes from "
+                "which to extract bits. You attempted extractBits(%d, %d, %d)\n"
+                , binaryNumber, j, i);
+        exit(2);
+    }
+
+    uint32_t mask = createMask(i, j);
+    binaryNumber &= mask;
+    binaryNumber >>= i;
+
+    return binaryNumber;
 }

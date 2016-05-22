@@ -13,7 +13,7 @@ Emulate.c:
 decodeAndExecute: Tom/started coding
 
 branch:
-    - Shiraz/coding
+    - Shiraz/testing
 
 dataProcess: //skeleton still in the works
     -
@@ -24,3 +24,4 @@ iMultiply: Sarthak/Finished basic logic/pseudocode to be replaced tomorrow
 
 util:
     - binaryShift:  Andy/finished but maybe broken
+    - extractBits: Shiraz/testing
