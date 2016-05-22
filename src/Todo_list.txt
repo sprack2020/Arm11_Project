@@ -8,9 +8,9 @@ Emulate.c:
     - load file into memory:
     - fetching the instruction and passing it to decodeAndExecute:
     - printState:
-    - checkCond:
+    - checkCond: Tom/started coding
 
-decodeAndExecute:
+decodeAndExecute: Tom/started coding
 
 branch:
 
