@@ -33,3 +33,5 @@ assemble
 *.nav
 *.toc
 
+#CLion project folder
+.idea/
