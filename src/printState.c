@@ -14,10 +14,11 @@ void printState(void) {
         printf("Register[%d] = %d\n", i, REGFILE[i]);
     }
 
-    printf("-------------\n");
+    printf("\n-------------\n");
 
     // print memory
     printf("Memory:\n");
+
     for (int i = 0; i < MEM_SIZE; i++) {
         printf("Memory[%d] = %d\n", i, MEM[i]);
     }
