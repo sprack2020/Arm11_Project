@@ -35,3 +35,6 @@ assemble
 
 #CLion project folder
 .idea/
+
+#file for my use - Shiraz
+testResult.txt

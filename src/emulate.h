@@ -17,6 +17,7 @@
 #define MEM state.memory
 #define REGFILE state.registers
 #define PC state.registers[15]
+#define CPSR state.registers[16]
 
 
 typedef struct ARMstate {
