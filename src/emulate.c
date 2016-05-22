@@ -10,12 +10,18 @@ int main(int argc, char **argv) {
 
     // ensure correct number of args
     if (argc != 2) {
-        fprintf(stderr, "Usage: ./emulate <binary file>");
+        fprintf(stderr, "Usage: ./emulate <binary file>\n");
         return 2;
     }
 
-    // open binary file and load instructions into memory
+    // open binary file
     FILE *instrFile = fopen(argv[1], "r");
+    if (instrFile == NULL) {
+        fprintf(stderr, "Failed to open given binary file.\n");
+        return 2;
+    }
+
+    // load instructions into memory
     fread(MEM, MEM_SIZE, INSTR_LENGTH, instrFile);
 
     // load first intruction
