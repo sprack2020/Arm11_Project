@@ -10,13 +10,11 @@ int main(int argc, char **argv) {
 
     while(PC) {
         // fetch current instruction and increment PC to point to the next instruction
-        uint8_t currInstr = MEM[PC];
+        uint8_t currInstr = MEM[PC];  //This is incorrect, instructions are 4 bytes
         PC += INSTR_LENGTH;
 
-        // just to suppress unused variable warnings for now
-        currInstr += 0;
 
-        // if (cond of currInstr is false) {
+        // if (cond of currInstr is false) {  //use checkCond(instr) here
         //     continue;
         // }
 

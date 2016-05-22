@@ -1,0 +1,24 @@
+Todo list:
+
+// when you complete something on the list don't remove it.
+// instead write your name next to it when you start working on it (so we don't accidentally do it twice)
+// and write the status of its production e.g. just started/testing/finished etc
+
+Emulate.c:
+    - load file into memory:
+    - fetching the instruction and passing it to decodeAndExecute:
+    - printState:
+    - checkCond:
+
+decodeAndExecute:
+
+branch:
+
+dataProcess: //skeleton still in the works
+    -
+    -
+dataTransfer:
+
+iMultiply:
+
+

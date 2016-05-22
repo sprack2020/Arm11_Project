@@ -3,6 +3,7 @@
 //
 
 #include "dataTransfer.h"
+#include "emulate.h"
 
 
 // PRE: instr is a data transfer instruction
@@ -10,5 +11,5 @@
 
 void dataTransfer(uint32_t instr) {
 
-
+    printf("%s", "TODO: dataTransfer");
 }
