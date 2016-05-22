@@ -5,9 +5,9 @@ Todo list:
 // and write the status of its production e.g. just started/testing/finished etc
 
 Emulate.c:
-    - load file into memory:
-    - fetching the instruction and passing it to decodeAndExecute:
-    - printState:
+    - load file into memory: shiraz/debugging/testing
+    - fetching the instruction and passing it to decodeAndExecute: shiraz/debugging/testing
+    - printState: shiraz/debugging/testing
     - checkCond: Tom/started coding
 
 decodeAndExecute: Tom/started coding

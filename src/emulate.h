@@ -5,6 +5,8 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include "decodeAndExecute.h"
+#include "checkCond.h"
+#include "printState.h"
 
 
 #define MEM_SIZE 65536
@@ -24,3 +26,4 @@ typedef struct ARMstate {
 
 extern ARMstate state;
 
+uint32_t getNextInstr(void);

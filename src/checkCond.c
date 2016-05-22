@@ -11,4 +11,5 @@
 bool checkCond(uint32_t instr) {
 
     //TODO
+    return 0;
 }
