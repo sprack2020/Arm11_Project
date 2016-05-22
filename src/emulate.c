@@ -24,12 +24,14 @@ int main(int argc, char **argv) {
     // load instructions into memory
     fread(MEM, MEM_SIZE, INSTR_LENGTH, instrFile);
 
-    // load first intruction
     uint32_t currInstr;
 
+    // loop until next instruction is 0 (halt instruction)
     do {
+        // gets next instruction and increments PC
         currInstr = getNextInstr();
 
+        // skip this instruction if condition says to
         if (checkCond(currInstr)) {
             continue;
         }
@@ -37,6 +39,7 @@ int main(int argc, char **argv) {
         decodeAndExecute(currInstr);
     } while (currInstr);
 
+    // print the final system state
     printState();
 
     // free memory used
@@ -46,7 +49,7 @@ int main(int argc, char **argv) {
     return EXIT_SUCCESS;
 }
 
-// Once PC = all zeroes, we halt
+// Gets the next instruction from memory and increments PC
 uint32_t getNextInstr(void) {
     uint32_t nextInstr = 0;
 
