@@ -7,17 +7,23 @@
 // gets the correct spacing to put before the ':'
 // this is so all colons line up, thus they must appear as the fifth character
 // of the line as CPSR is the longest register name and four letters long
-void setCorrectSpacing(int reg, char *spacing) {
-    if (reg <= LAST_SINGLE_DIGIT) {
-        spacing = "  ";
-    } else if (reg <= LAST_GENERAL_REGISTER) {
-        spacing = " ";
-    } else {
+int getCorrectSpacing(int32_t reg) {
+    if (reg < 0 || reg > LAST_GENERAL_REGISTER) {
         fprintf(stderr, "Exception in printState: correctSpacing(): "
                 "Attempting to print register that should not be printed: $%d",
                 reg);
         exit(2);
     }
+
+    // string representation of register number, allocate max possible space
+    // it could need
+    int maxSize = strlen(LONGEST_REGISTER_NAME);
+    char regString[maxSize + 1];
+
+    // convert reg into string stored in regString
+    sprintf(regString, "%d", reg);
+
+    return maxSize - strlen(regString) - 1;
 }
 
 // PRE: last instruction was halt
@@ -26,25 +32,24 @@ void printState(void) {
     // print registers
     printf("Registers:\n");
 
-    char *correctSpacing = "";
-
     uint32_t reg;
     for (int i = 0; i <= LAST_GENERAL_REGISTER; i++) {
         reg = REGFILE[i];
-        setCorrectSpacing(reg, correctSpacing);
 
-        printf("$%d%s:          %d (0x%08x)\n", i, correctSpacing, reg, reg);
+        printf("$%d%*s:          %d (0x%0*x)\n", i, getCorrectSpacing(i), "",
+                reg, HEX_PADDING, reg);
     }
 
     // print PC and CPSR
-    printf("PC  :          %d (0x%08x)\n", PC, PC);
-    printf("CPSR:          %d (0x%08x)\n", CPSR, CPSR);
+    printf("PC  :          %d (0x%0*x)\n", PC, HEX_PADDING, PC);
+    printf("CPSR:          %d (0x%0*x)\n", CPSR, HEX_PADDING, CPSR);
 
     // print memory
     printf("Non-zero memory:\n");
     for (int i = 0; i < MEM_SIZE; i++) {
         if (MEM[i] != 0) {
-            printf("0x%08x: 0x%08x\n", i, MEM[i]);
+            printf("0x%0*x: 0x%0*x\n", HEX_PADDING, i, HEX_PADDING, MEM[i]);
         }
     }
+
 }

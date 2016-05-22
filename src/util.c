@@ -1,16 +1,14 @@
 //
 // Created by drspaceship on 22/05/16.
 //
-
 #include "util.h"
-#include <stdlib.h>
 
 #define INTWIDTH 32
 
 // POST: returns a 32bit int shifted based on shiftType
 ShiftResult binaryShift(uint32_t shiftee, enum shiftType st, uint32_t amount) {
     ShiftResult* sr;
-    sr = (ShiftResult*) malloc(sizeof(ShiftResult));
+    sr = malloc(sizeof(ShiftResult));
 
     //save some work and make edge cases easier.
     if (amount == 0) {
@@ -48,6 +46,7 @@ ShiftResult binaryShift(uint32_t shiftee, enum shiftType st, uint32_t amount) {
                         (shiftee >> amount);
     }
 
+    free(sr);
     return *sr;
 }
 
@@ -57,7 +56,7 @@ uint32_t rightShiftCarry(uint32_t shiftee, uint32_t amount) {
     return (shiftee >> (amount - 1)) & 1;
 }
 
-// creates a bit mask to extract the bits j to i by &&-ing with this mask
+// creates a bit mask to extract the bits i to j by &&-ing with this mask
 uint32_t createMask(unsigned int i, unsigned int j) {
     uint32_t mask = 0;
 
@@ -70,11 +69,13 @@ uint32_t createMask(unsigned int i, unsigned int j) {
 
 // Returns the bits at poisitions j to i from the given number
 uint32_t extractBits(uint32_t binaryNumber, int j, int i) {
-    // ensure j >= i and both i and j are positive
-    if (j < i || i < 0 || j > BITS_PER_INSTR - 1) {
-        fprintf(stderr, "Error in util: extractBits(): invalid indexes from "
-                "which to extract bits. You attempted extractBits(%d, %d, %d)\n"
-                , binaryNumber, j, i);
+    // ensure j >= i and both i and j are positive and both less than the number
+    // of bits in the binaryNumber
+    const int numBits = sizeof(binaryNumber) * CHAR_BIT - 1;
+    if (j < i || i < 0 || j > numBits) {
+        fprintf(stderr, "Error in util: extractBits(): "
+                "invalid indexes from which to extract bits. You attempted "
+                "extractBits(0x%08x, %d, %d)\n", binaryNumber, j, i);
         exit(2);
     }
 

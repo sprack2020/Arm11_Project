@@ -7,7 +7,7 @@ Todo list:
 Emulate.c:
     - load file into memory: shiraz/debugging/testing
     - fetching the instruction and passing it to decodeAndExecute: shiraz/debugging/testing
-    - printState: shiraz/debugging/testing
+    - printState: shiraz/done
     - checkCond: Tom/started coding
 
 decodeAndExecute: Tom/started coding

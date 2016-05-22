@@ -1,10 +1,11 @@
 //
 // Created by drspaceship on 22/05/16.
 //
-#include <stdint.h>
+#include <limits.h>
 #include <stdbool.h>
-
-#define BITS_PER_INSTR (INSTR_LENGTH * 8)
+#include <stdio.h>
+#include <stdint.h>
+#include <stdlib.h>
 
 #ifndef ARM11_39_BINARYSHIFT_H
 #define ARM11_39_BINARYSHIFT_H

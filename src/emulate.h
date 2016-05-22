@@ -4,10 +4,10 @@
 
 #include <stdint.h>
 #include <stdlib.h>
-#include "decodeAndExecute.h"
-#include "checkCond.h"
-#include "printState.h"
 
+#include "checkCond.h"
+#include "decodeAndExecute.h"
+#include "printState.h"
 
 #define MEM_SIZE 65536
 #define NUM_REGISTERS 17
@@ -18,7 +18,6 @@
 #define REGFILE state.registers
 #define PC state.registers[15]
 #define CPSR state.registers[16]
-
 
 typedef struct ARMstate {
     uint8_t *memory;
