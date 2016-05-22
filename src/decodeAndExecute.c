@@ -13,6 +13,6 @@
 void decodeAndExecute(uint32_t instr) {
 
 
-    printf("%s", "TODO: decodeAndExecute");
+    printf("%s", "TODO: decodeAndExecute\n");
 
 }
