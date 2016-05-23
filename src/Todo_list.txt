@@ -15,9 +15,10 @@ decodeAndExecute: Tom/done
 branch:
     - Shiraz/testing
 
-dataProcess: //skeleton still in the works
-    -
-    -
+dataProcess: Tom/started
+    - setCPSR: Tom/started
+    - getOperand2: Tom/started
+
 dataTransfer:
 
 iMultiply: Sarthak/Finished basic logic/pseudocode to be replaced tomorrow
