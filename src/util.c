@@ -3,10 +3,10 @@
 //
 #include "util.h"
 
-#define INTWIDTH 32
+
 
 // POST: returns a 32bit int shifted based on shiftType
-ShiftResult binaryShift(uint32_t shiftee, enum shiftType st, uint32_t amount) {
+ShiftResult binaryShift(uint32_t shiftee, shiftType st, uint32_t amount) {
     ShiftResult* sr;
     sr = malloc(sizeof(ShiftResult));
 

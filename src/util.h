@@ -7,19 +7,21 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+#define INTWIDTH 32
+
 #ifndef ARM11_39_BINARYSHIFT_H
 #define ARM11_39_BINARYSHIFT_H
 
 #endif //ARM11_39_BINARYSHIFT_H
 
-enum shiftType {LSL, LSR, ASR, ROR};
+typedef enum {LSL, LSR, ASR, ROR} shiftType;
 
 typedef struct {
   uint32_t result;
   bool carry;
 } ShiftResult;
 
-ShiftResult binaryShift(uint32_t shiftee, enum shiftType st, uint32_t amount);
+ShiftResult binaryShift(uint32_t shiftee, shiftType st, uint32_t amount);
 uint32_t rightShiftCarry(uint32_t shiftee, uint32_t amount);
 
 // unsigned -> signed cast of integers of same width is guarenteed not to
