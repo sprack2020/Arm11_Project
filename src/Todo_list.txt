@@ -16,7 +16,7 @@ branch:
     - Shiraz/testing
 
 dataProcess: Tom/started
-    - setCPSR: Tom/started
+    - updateCPSR: Tom/started
     - getOperand2: Tom/started
 
 dataTransfer:
