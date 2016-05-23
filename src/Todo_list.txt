@@ -25,4 +25,4 @@ iMultiply: Sarthak/Finished basic logic/pseudocode to be replaced tomorrow
 
 util:
     - binaryShift:  Andy/finished but maybe broken
-    - extractBits: Shiraz/testing
+    - extractBits: Shiraz/done
