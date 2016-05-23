@@ -14,7 +14,7 @@
 
 #endif //ARM11_39_BINARYSHIFT_H
 
-typedef enum {LSL, LSR, ASR, ROR} shiftType;
+typedef enum {LSL = 00, LSR = 01, ASR = 10, ROR = 11} shiftType;
 
 typedef struct {
   uint32_t result;

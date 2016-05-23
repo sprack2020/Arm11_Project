@@ -10,4 +10,4 @@
 
 #endif //ARM11_39_GETOPERAND2_H
 
-uint32_t getOperand2(uint32_t instr, bool immediate);
+uint32_t getOperand2(uint32_t instr, bool immediate, bool setCPSR);

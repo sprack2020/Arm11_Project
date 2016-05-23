@@ -18,6 +18,10 @@
 #define REGFILE state.registers
 #define PC state.registers[15]
 #define CPSR state.registers[16]
+#define Nbit 31
+#define Zbit 30
+#define Cbit 29
+#define Vbit 28
 
 typedef struct ARMstate {
     uint8_t *memory;

@@ -25,6 +25,6 @@ set(SOURCE_FILES
         src/iMultiply.c
         src/dataProcess.h
         src/dataProcess.c
-        src/getOperand2.h src/getOperand2.c)
+        src/getOperand2.h src/getOperand2.c src/updateCPSR.h src/updateCPSR.c)
 
 add_executable(arm11_39 ${SOURCE_FILES})
