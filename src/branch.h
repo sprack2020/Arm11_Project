@@ -3,7 +3,6 @@
 //
 #include <stdint.h>
 #include <stdio.h>
-#include "emulate.h"
 #include "util.h"
 
 #ifndef ARM11_39_BRANCH_H

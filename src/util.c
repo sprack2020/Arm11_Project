@@ -1,7 +1,6 @@
 //
 // Created by drspaceship on 22/05/16.
 //
-
 #include "util.h"
 
 #define INTWIDTH 32
