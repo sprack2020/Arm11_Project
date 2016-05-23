@@ -36,5 +36,6 @@ assemble
 #CLion project folder
 .idea/
 
-#file for my use - Shiraz
+#files for my use - Shiraz
 testResult.txt
+backups_from_conflicts
