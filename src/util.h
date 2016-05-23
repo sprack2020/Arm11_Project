@@ -27,3 +27,4 @@ uint32_t rightShiftCarry(uint32_t shiftee, uint32_t amount);
 // unsigned -> signed cast of integers of same width is guarenteed not to
 // change bit pattern but signed -> unsigned may
 uint32_t extractBits(uint32_t binaryNumber, int j, int i);
+uint32_t extractBit (uint32_t binaryNumber, int i);

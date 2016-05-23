@@ -85,3 +85,7 @@ uint32_t extractBits(uint32_t binaryNumber, int j, int i) {
 
     return binaryNumber;
 }
+
+uint32_t extractBit(uint32_t binaryNumber, int i) {
+    return extractBits(binaryNumber, i, i);
+}
