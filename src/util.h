@@ -23,6 +23,7 @@ typedef struct {
 
 ShiftResult binaryShift(uint32_t shiftee, shiftType st, uint32_t amount);
 uint32_t rightShiftCarry(uint32_t shiftee, uint32_t amount);
+uint32_t createMask(unsigned int i, unsigned int j);
 
 // unsigned -> signed cast of integers of same width is guarenteed not to
 // change bit pattern but signed -> unsigned may

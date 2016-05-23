@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "util.h"
+#include "updateCPSR.h"
 
 #ifndef ARM11_39_GETOPERAND2_H
 #define ARM11_39_GETOPERAND2_H
