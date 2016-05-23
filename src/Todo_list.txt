@@ -10,7 +10,7 @@ Emulate.c:
     - printState: shiraz/done
     - checkCond: Tom/done?
 
-decodeAndExecute: Tom/started coding
+decodeAndExecute: Tom/done
 
 branch:
     - Shiraz/testing
