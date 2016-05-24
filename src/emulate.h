@@ -1,6 +1,9 @@
 //
 // Created by drspaceship on 20/05/16.
 //
+#ifndef ARM11_39_EMULATE_H
+#define ARM11_39_EMULATE_H
+
 
 #include <stdint.h>
 #include <stdlib.h>
@@ -31,3 +34,6 @@ typedef struct ARMstate {
 extern ARMstate state;
 
 uint32_t getNextInstr(void);
+
+
+#endif
