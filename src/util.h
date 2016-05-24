@@ -1,6 +1,10 @@
 //
 // Created by drspaceship on 22/05/16.
 //
+#ifndef ARM11_39_BINARYSHIFT_H
+#define ARM11_39_BINARYSHIFT_H
+
+
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -8,11 +12,6 @@
 #include <stdlib.h>
 
 #define INTWIDTH 32
-
-#ifndef ARM11_39_BINARYSHIFT_H
-#define ARM11_39_BINARYSHIFT_H
-
-#endif //ARM11_39_BINARYSHIFT_H
 
 typedef enum {LSL = 00, LSR = 01, ASR = 10, ROR = 11} shiftType;
 
@@ -29,3 +28,6 @@ uint32_t createMask(unsigned int i, unsigned int j);
 // change bit pattern but signed -> unsigned may
 uint32_t extractBits(uint32_t binaryNumber, int j, int i);
 uint32_t extractBit (uint32_t binaryNumber, int i);
+
+
+#endif //ARM11_39_BINARYSHIFT_H
