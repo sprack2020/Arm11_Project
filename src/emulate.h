@@ -34,6 +34,7 @@ typedef struct ARMstate {
 extern ARMstate state;
 
 uint32_t getNextInstr(void);
+void deallocARMState(void);
 
 
 #endif
