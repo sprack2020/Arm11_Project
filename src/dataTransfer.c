@@ -1,7 +1,6 @@
 //
 // Created by drspaceship on 20/05/16.
 //
-
 #include "dataTransfer.h"
 #include "emulate.h"
 

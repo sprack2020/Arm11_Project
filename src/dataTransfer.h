@@ -7,6 +7,7 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include "util.h"
 
 void dataTransfer(uint32_t instr);
 
