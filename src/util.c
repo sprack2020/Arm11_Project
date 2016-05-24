@@ -42,6 +42,8 @@ ShiftResult binaryShift(uint32_t shiftee, shiftType st, uint32_t amount) {
             sr->result = (shiftee << (INTWIDTH - amount)) |
             //everything else
                         (shiftee >> amount);
+        default:
+            fprintf(stderr, "unrecognised shift type: %i", st);
     }
 
     free(sr);
@@ -65,7 +67,7 @@ uint32_t createMask(unsigned int i, unsigned int j) {
     return mask;
 }
 
-// Returns the bits at poisitions j to i from the given number
+// Returns the bits at positions j to i from the given number
 uint32_t extractBits(uint32_t binaryNumber, int j, int i) {
     // ensure j >= i and both i and j are positive and both less than the number
     // of bits in the binaryNumber
