@@ -10,14 +10,14 @@
 // setCPSR should be the S bit for dataProcess or false for dataTransfer
 // POST: returns a 32 bit int for operand2 as described in spec
 
-uint32_t getOperand2(uint32_t instr, bool immediate, bool setCPSR) {
+ShiftResult getOperand2(uint32_t instr, bool immediate) {
 
-    uint32_t operand2;
+    ShiftResult operand2;
 
     if (immediate) {
         uint32_t rotAmount = extractBits(instr, 11, 8) * 2;
         uint32_t imVal = extractBits(instr, 7, 0);
-        operand2 = binaryShift(imVal, ROR, rotAmount).result;
+        operand2 = binaryShift(imVal, ROR, rotAmount);
     }
     else {
         bool isRegShift = (bool) extractBit(instr, 4);
@@ -32,11 +32,8 @@ uint32_t getOperand2(uint32_t instr, bool immediate, bool setCPSR) {
         else {
             shiftAmount = extractBits(instr, 11, 7);
         }
-        ShiftResult sr = binaryShift(RmVal, st, shiftAmount);
-        operand2 = sr.result;
-        if (setCPSR) {
-            updateCPSR(sr.carry, Cbit);
-        }
+        operand2 = binaryShift(RmVal, st, shiftAmount);
+
     }
 
     return operand2;
