@@ -19,6 +19,7 @@ void iMultiply(uint32_t instr) {
             *rdp = *rmp * *rsp;
         }
         if (extractBit(instr, 12) != 0) {
+            //NEED TO DISCUSS how updateCSPR works, other than that this is ready
             //r16[31] = rd[31]
             //if (rd == 0) then r16[30] = 1 else r16[30] = 0;
         }
