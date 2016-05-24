@@ -13,7 +13,7 @@ void branch(uint32_t instr) {
     offset <<= SHIFT_TO_OFFSET;
 
     // add the offset
-    int newPC = ((int32_t) PC) + offset;
+    int32_t newPC = ((int32_t) PC) + offset;
 
     // check new value of PC is valid
     if (newPC < 0) {
