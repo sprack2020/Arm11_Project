@@ -6,6 +6,8 @@
 
 
 #include <stdint.h>
+#include "checkCond.h"
+#include "updateCPSR.h"
 
 void iMultiply(uint32_t instr);
 
