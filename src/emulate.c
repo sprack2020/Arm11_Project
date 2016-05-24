@@ -29,7 +29,7 @@ int main(int argc, char **argv) {
         exit(2);
     }
 
-    if (!fclose(fp)) {
+    if (!fclose(instrFile)) {
         printf("Warning: failed to close binary file.");
     }
 
