@@ -4,9 +4,8 @@
 ARMstate state;
 
 int main(int argc, char **argv) {
-    // zero out memory and registers
-    MEM = calloc(MEM_SIZE, sizeof(uint8_t));
-    REGFILE = calloc(NUM_REGISTERS, sizeof(uint32_t));
+    // allocate and zero out memory and registers
+    initialiseARMstate();
 
     // ensure correct number of args
     if (argc != 2) {
@@ -25,12 +24,12 @@ int main(int argc, char **argv) {
     fread(MEM, MEM_SIZE, MEM_WORD_SIZE, instrFile);
 
     if (!feof(instrFile)) {
-        fprintf(stderr, "Error: Ran out of memory to hold instructions.");
+        fprintf(stderr, "Error: Ran out of memory to hold instructions.\n");
         exit(2);
     }
 
     if (!fclose(instrFile)) {
-        printf("Warning: failed to close binary file.");
+        printf("Warning: failed to close binary file.\n");
     }
 
     uint32_t currInstr;
@@ -64,15 +63,7 @@ int main(int argc, char **argv) {
 uint32_t getNextInstr(void) {
     uint32_t nextInstr = 0;
 
-    // read the appropriate number of bytes from MEM[PC] onwards
-    // to get the next instruction and do shifts to convert endianness
-    uint32_t instrBytes[INSTR_LENGTH];
-    for (int i = 0; i < INSTR_LENGTH; i++) {
-        instrBytes[i] = (uint32_t) MEM[PC + i];
-        instrBytes[i] <<= i;
-
-        nextInstr |= instrBytes[i];
-    }
+    read32Bits(&nextInstr, &MEM[PC]);
 
     PC += INSTR_LENGTH;
 
@@ -83,4 +74,10 @@ uint32_t getNextInstr(void) {
 void deallocARMState(void) {
     free(MEM);
     free(REGFILE);
+}
+
+// allocates and zeroes out the ARMstate
+void initialiseARMstate(void) {
+    MEM = calloc(MEM_SIZE, sizeof(uint8_t));
+    REGFILE = calloc(NUM_REGISTERS, sizeof(uint32_t));
 }

@@ -49,19 +49,18 @@ uint32_t calculateOffset(uint32_t instr, bool isImmediateOffset) {
 }
 
 // Loads the data from MEM[Rn] into Rd
-// TODO: fix / finish
 void load(uint32_t Rn, uint32_t Rd) {
-    // will store consecutive bytes from memory into this array
-    const int n = REG_LENGTH / MEM_LENGTH;
-    uint32_t toLoad[n];
+    read32Bits(REGFILE + Rd, MEM + Rn);
+}
 
-    // clear Rd
-    REGFILE[Rd] = 0;
+// stores the data from Rn into memory starting at address Rd
+void store(uint32_t Rn, uint32_t Rd) {
+    // MEM[Rd] = REGFILE[Rn]
+    const int n = REG_LENGTH / MEM_LENGTH;
+    // uint8_t bytesToStore[n];
 
     for (int i = 0; i < n; i++) {
-        toLoad[i] = MEM[Rn + i];
-        toLoad[i] <<= (n - i - 1);
+        MEM[Rd + i] = extractBits(REGFILE[Rn], (i + 1) * MEM_LENGTH - 1,
+                i * MEM_LENGTH);
     }
-
-    REGFILE[Rd] = MEM[Rn];
 }

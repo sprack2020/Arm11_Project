@@ -11,6 +11,7 @@
 #include "checkCond.h"
 #include "decodeAndExecute.h"
 #include "printState.h"
+#include "util.h"
 
 #define MEM_SIZE 65536
 #define NUM_REGISTERS 17
@@ -37,6 +38,7 @@ extern ARMstate state;
 
 // prototypes
 uint32_t getNextInstr(void);
+void initialiseARMstate(void);
 void deallocARMState(void);
 
 

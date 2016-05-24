@@ -87,3 +87,25 @@ uint32_t extractBits(uint32_t binaryNumber, int j, int i) {
 uint32_t extractBit(uint32_t binaryNumber, int i) {
     return extractBits(binaryNumber, i, i);
 }
+
+// dest: pointer to a 32bit to put the result into
+// src:  pointer to a memory address (element of 8 bit array)
+// post: Will read four consecutive 8 bit elements from memory starting from
+//       address src. Reads the bytes accounting for that fact that they are
+//       ordered according to the wrong endianness
+void read32Bits(uint32_t *dest, uint8_t *src) {
+    // get number of memory adddresses we will have to read to accumulate
+    // 32 bits
+    const int n = sizeof(uint32_t) / WORD_SIZE;
+
+    // declare array of the bytes we will read and zero out the destination
+    uint32_t bytesToRead[n];
+    *dest = 0;
+
+    for (int i = n - 1; i >= 0; i--) {
+        bytesToRead[i] = (uint32_t) *(src + i);
+        bytesToRead[i] <<= i;
+
+        *dest |= bytesToRead[i];
+    }
+}

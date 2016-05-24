@@ -29,7 +29,7 @@ int getCorrectSpacing(int32_t reg) {
 // PRE: last instruction was halt
 // behavior: outputs the state of the registers
 void printState(void) {
-    // print registers
+    // print general purpose registers
     printf("Registers:\n");
 
     uint32_t reg;

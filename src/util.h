@@ -12,6 +12,7 @@
 #include <stdlib.h>
 
 #define INTWIDTH 32
+#define WORD_SIZE 1
 
 typedef enum {LSL = 00, LSR = 01, ASR = 10, ROR = 11} shiftType;
 
@@ -28,6 +29,6 @@ uint32_t createMask(unsigned int i, unsigned int j);
 // change bit pattern but signed -> unsigned may
 uint32_t extractBits(uint32_t binaryNumber, int j, int i);
 uint32_t extractBit (uint32_t binaryNumber, int i);
-
+void read32Bits(uint32_t *dest, uint8_t *src);
 
 #endif //ARM11_39_BINARYSHIFT_H
