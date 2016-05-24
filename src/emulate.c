@@ -43,8 +43,7 @@ int main(int argc, char **argv) {
     printState();
 
     // free memory used
-    free(MEM);
-    free(REGFILE);
+    deallocARMState();
 
     return EXIT_SUCCESS;
 }
@@ -66,4 +65,10 @@ uint32_t getNextInstr(void) {
     PC += INSTR_LENGTH;
 
     return nextInstr;
+}
+
+// frees all the memory we used to store the system state
+void deallocARMState(void) {
+    free(MEM);
+    free(REGFILE);
 }
