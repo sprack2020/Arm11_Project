@@ -20,6 +20,7 @@ dataProcess: Tom/I lied, not done
     - getOperand2: Tom/coding done
 
 dataTransfer:
+    - shiraz/started
 
 iMultiply: Sarthak/Finished basic logic/pseudocode to be replaced tomorrow
 
