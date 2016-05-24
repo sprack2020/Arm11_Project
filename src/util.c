@@ -42,7 +42,7 @@ ShiftResult binaryShift(uint32_t shiftee, shiftType st, uint32_t amount) {
             //everything else
                         (shiftee >> amount);
         default:
-            fprintf(stderr, "unrecognised shift type: %i", st);
+            fprintf(stderr, "unrecognised shift type: %i\n", st);
     }
 
     return sr;
