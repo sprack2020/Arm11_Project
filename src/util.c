@@ -5,13 +5,12 @@
 
 // POST: returns a 32bit int shifted based on shiftType
 ShiftResult binaryShift(uint32_t shiftee, shiftType st, uint32_t amount) {
-    ShiftResult *sr;
-    sr = malloc(sizeof(ShiftResult));
+    ShiftResult sr;
 
     //save some work and make edge cases easier.
     if (amount == 0) {
-        sr->carry = 0;
-        sr->result = shiftee;
+        sr.carry = 0;
+        sr.result = shiftee;
     }
 
     //don't shift by more than bits than are in the shiftee
@@ -22,32 +21,31 @@ ShiftResult binaryShift(uint32_t shiftee, shiftType st, uint32_t amount) {
     switch(st) {
         case LSL:
             //gets the first bit of everything shifted off the left side
-            sr->carry = (shiftee >> (INTWIDTH - amount)) & 1;
-            sr->result = shiftee << amount;
+            sr.carry = (shiftee >> (INTWIDTH - amount)) & 1;
+            sr.result = shiftee << amount;
         case LSR:
-            sr->carry = rightShiftCarry(shiftee, amount);
-            sr->result = shiftee >> amount;
+            sr.carry = rightShiftCarry(shiftee, amount);
+            sr.result = shiftee >> amount;
         case ASR:
-            sr->carry = rightShiftCarry(shiftee, amount);
+            sr.carry = rightShiftCarry(shiftee, amount);
 
             //start with only most significant bit, and repeat it to the left
             uint32_t signBit = shiftee & (1 << (amount - 1));
             for (int i = 0; i < amount; ++i) {
                 signBit = signBit | signBit >> 1;
             }
-            sr->result = (shiftee >> amount) | signBit;
+            sr.result = (shiftee >> amount) | signBit;
         case ROR:
-            sr->carry = rightShiftCarry(shiftee, amount);
+            sr.carry = rightShiftCarry(shiftee, amount);
             //least significant bits that rotate around
-            sr->result = (shiftee << (INTWIDTH - amount)) |
+            sr.result = (shiftee << (INTWIDTH - amount)) |
             //everything else
                         (shiftee >> amount);
         default:
             fprintf(stderr, "unrecognised shift type: %i", st);
     }
 
-    free(sr);
-    return *sr;
+    return sr;
 }
 
 //gets the carry for any right shift by shifting it by one less, making the
