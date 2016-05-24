@@ -22,7 +22,7 @@ int main(int argc, char **argv) {
     }
 
     // load instructions into memory
-    fread(MEM, MEM_SIZE, INSTR_LENGTH, instrFile);
+    fread(MEM, MEM_SIZE, MEM_WORD_SIZE, instrFile);
 
     if (!feof(instrFile)) {
         fprintf(stderr, "Error: Ran out of memory to hold instructions.");

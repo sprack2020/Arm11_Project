@@ -16,6 +16,7 @@
 #define NUM_REGISTERS 17
 
 #define INSTR_LENGTH 4
+#define MEM_WORD_SIZE 1
 
 #define MEM state.memory
 #define REGFILE state.registers
