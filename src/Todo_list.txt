@@ -15,7 +15,7 @@ decodeAndExecute: Tom/done
 branch:
     - Shiraz/testing
 
-dataProcess: Tom/I lied, not done
+dataProcess: Tom/coding done
     - updateCPSR: Tom/coding done
     - getOperand2: Tom/coding done
 
