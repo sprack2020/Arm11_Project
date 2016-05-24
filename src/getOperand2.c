@@ -7,8 +7,7 @@
 
 // PRE: instr is a dataProcess or dataTransfer instruction
 // immediate should be derived from the I bit
-// setCPSR should be the S bit for dataProcess or false for dataTransfer
-// POST: returns a 32 bit int for operand2 as described in spec
+// POST: returns a 32 bit int for operand2 and a carry value
 
 ShiftResult getOperand2(uint32_t instr, bool immediate) {
 
