@@ -46,3 +46,21 @@ uint32_t calculateOffset(uint32_t instr) {
     // data process, but with the immediate offset flag negated
     return getOperand2(instr, ! (bool) isImmediateOffset);
 }
+
+// Loads the data from MEM[Rn] into Rd
+// TODO: fix / finish
+void load(uint32_t Rn, uint32_t Rd) {
+    // will store consecutive bytes from memory into this array
+    const int n = REG_LENGTH / MEM_LENGTH;
+    uint32_t toLoad[n];
+
+    // clear Rd
+    REGFILE[Rd] = 0;
+
+    for (int i = 0; i < n; i++) {
+        toLoad[i] = MEM[Rn + i];
+        toLoad[i] <<= (n - i - 1)
+    }
+
+    REGFILE[Rd] = MEM[Rn];
+}

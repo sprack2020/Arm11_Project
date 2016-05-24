@@ -8,6 +8,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
+#include "emulate.h"
 #include "getOperand2.h"
 #include "util.h"
 
@@ -21,6 +22,9 @@
 #define Rd_LOWER 12
 #define OFFSET_UPPER 11
 #define OFFSET_LOWER 0
+
+#define REG_LENGTH 32
+#define MEM_LENGTH 4
 
 void dataTransfer(uint32_t instr);
 

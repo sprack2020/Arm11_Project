@@ -21,6 +21,7 @@
 #define REGFILE state.registers
 #define PC state.registers[15]
 #define CPSR state.registers[16]
+
 #define Nbit 31
 #define Zbit 30
 #define Cbit 29
@@ -33,6 +34,7 @@ typedef struct ARMstate {
 
 extern ARMstate state;
 
+// prototypes
 uint32_t getNextInstr(void);
 void deallocARMState(void);
 

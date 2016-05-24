@@ -24,6 +24,15 @@ int main(int argc, char **argv) {
     // load instructions into memory
     fread(MEM, MEM_SIZE, INSTR_LENGTH, instrFile);
 
+    if (!feof(instrFile)) {
+        fprintf(stderr, "Error: Ran out of memory to hold instructions.");
+        exit(2);
+    }
+
+    if (!fclose(fp)) {
+        printf("Warning: failed to close binary file.");
+    }
+
     uint32_t currInstr;
 
     // loop until next instruction is 0 (halt instruction)
@@ -49,6 +58,9 @@ int main(int argc, char **argv) {
 }
 
 // Gets the next instruction from memory and increments PC
+// possible errors:
+//     - for loop logic
+//     - PC += INSTR_LENGTH: should be INSTR_LENGTH * 8bits?
 uint32_t getNextInstr(void) {
     uint32_t nextInstr = 0;
 
@@ -56,7 +68,7 @@ uint32_t getNextInstr(void) {
     // to get the next instruction and do shifts to convert endianness
     uint32_t instrBytes[INSTR_LENGTH];
     for (int i = 0; i < INSTR_LENGTH; i++) {
-        instrBytes[i] = MEM[PC + i];
+        instrBytes[i] = (uint32_t) MEM[PC + i];
         instrBytes[i] <<= i;
 
         nextInstr |= instrBytes[i];

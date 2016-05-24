@@ -1,15 +1,13 @@
 //
 // Created by drspaceship on 22/05/16.
 //
-#include <stdint.h>
-#include <stdbool.h>
-#include "util.h"
-
-
 #ifndef ARM11_39_CHECKCOND_H
 #define ARM11_39_CHECKCOND_H
 
-#endif //ARM11_39_CHECKCOND_H
+
+#include <stdint.h>
+#include <stdbool.h>
+#include "util.h"
 
 // Cond represented by 4 bits: c3210
 typedef struct Cond {
@@ -18,3 +16,6 @@ typedef struct Cond {
 } Cond;
 
 bool checkCond(uint32_t instr);
+
+
+#endif //ARM11_39_CHECKCOND_H
