@@ -9,6 +9,15 @@
 #include <stdbool.h>
 #include "util.h"
 
+#define cond0 28
+#define cond3 31
+#define cond1 29
+#define eqORne 000
+#define geORlt 101
+#define gtORle 110
+#define always 111
+
+
 // Cond represented by 4 bits: c3210
 typedef struct Cond {
     bool c0;

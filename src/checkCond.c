@@ -12,19 +12,19 @@
 bool checkCond(uint32_t instr) {
 
     bool N, Z, V;
-    N = (bool) extractBit(CPSR, 31);
-    Z = (bool) extractBit(CPSR, 30);
-    V = (bool) extractBit(CPSR, 28);
+    N = (bool) extractBit(CPSR, Nbit);
+    Z = (bool) extractBit(CPSR, Zbit);
+    V = (bool) extractBit(CPSR, Vbit);
 
     Cond cond;
-    cond.c0 = (bool) extractBit(instr, 28);
-    cond.c321 = (uint8_t) extractBits(instr, 31, 29);
+    cond.c0 = (bool) extractBit(instr, cond0);
+    cond.c321 = (uint8_t) extractBits(instr, cond3, cond1);
 
     switch (cond.c321) {
-        case 0: return cond.c0 ^ Z;
-        case 101: return cond.c0 ^ (N == V);
-        case 110: return (cond.c0 == Z || N != V);
-        case 111: return true;
+        case eqORne: return cond.c0 ^ Z;
+        case geORlt: return cond.c0 ^ (N == V);
+        case gtORle: return (cond.c0 == Z || N != V);
+        case always: return true;
         default: return false;
     }
 
