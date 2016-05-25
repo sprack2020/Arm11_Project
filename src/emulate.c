@@ -40,7 +40,7 @@ int main(int argc, char **argv) {
         currInstr = getNextInstr();
 
         // skip this instruction if condition says to
-        if (checkCond(currInstr)) {
+        if (!checkCond(currInstr)) {
             continue;
         }
 
@@ -57,6 +57,7 @@ int main(int argc, char **argv) {
 }
 
 // Gets the next instruction from memory and increments PC
+// Creates the instruction in big endian format (for easier bit manipulation)
 // possible errors:
 //     - for loop logic
 //     - PC += INSTR_LENGTH: should be INSTR_LENGTH * 8bits?
