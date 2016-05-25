@@ -5,15 +5,18 @@ SOURCES = emulate.c branch.c checkCond.c dataProcess.c dataTransfer.c decodeAndE
 OBJECTS = $(SOURCES:.c=.o)
 EXECUTABLE = emulate
 
-all: emulator
+all: emulate
 
-emulator: $(SOURCES) $(EXECUTABLE)
+# emulator: $(SOURCES) $(EXECUTABLE)
+#
+# $(EXECUTABLE): $(OBJECTS)
+# 	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
 
-$(EXECUTABLE): $(OBJECTS)
-	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
+# %.o: %.c
+# 	$(CC) $(CFLAGS) $< -o $@
 
-%.o: %.c
-	$(CC) $(CFLAGS) $< -o $@
+emulate:
+	$(CC) $(SOURCES) $(CFLAGS) -o emulate
 
 # Given makefile, don't know how these work?
 # .SUFFIXES: .c .o

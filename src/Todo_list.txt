@@ -20,7 +20,7 @@ dataProcess: Tom/coding done
     - getOperand2: Tom/coding done
 
 dataTransfer:
-    - shiraz/started
+    - shiraz/testing
 
 iMultiply: Sarthak/Finished basic logic/pseudocode to be replaced tomorrow
 
