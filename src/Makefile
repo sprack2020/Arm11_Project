@@ -1,16 +1,18 @@
 CC      = gcc
 CFLAGS  = -Wall -g -D_POSIX_SOURCE -D_BSD_SOURCE -std=c99 -Werror -pedantic
 LDFLAGS =
-SOURCES = decodeAndExecute.c printState.c util.c checkCond.c emulate.c dataProcess.c dataTransfer.c branch.c
+SOURCES = branch.c checkCond.c dataProcess.c dataTransfer.c decodeAndExecute.c emulate.c getOperand2.c iMultiply.c printState.c updateCPSR.c util.c
 OBJECTS = $(SOURCES:.c=.o)
 EXECUTABLE = emulate
+
+all: emulator
 
 emulator: $(SOURCES) $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJECTS)
 	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
 
-.c.o:
+%.o: %.c
 	$(CC) $(CFLAGS) $< -o $@
 
 # Given makefile, don't know how these work?

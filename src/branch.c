@@ -2,6 +2,7 @@
 // Created by drspaceship on 20/05/16.
 //
 #include "branch.h"
+#include "emulate.h"
 
 // PRE: instr is a branch instruction
 // behavior: adds the offset to PC
