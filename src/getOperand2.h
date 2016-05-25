@@ -10,6 +10,9 @@
 #include "updateCPSR.h"
 #include "emulate.h"
 
-#endif //ARM11_39_GETOPERAND2_H
 
 ShiftResult getOperand2(uint32_t instr, bool immediate);
+
+
+
+#endif //ARM11_39_GETOPERAND2_H

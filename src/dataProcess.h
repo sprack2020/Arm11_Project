@@ -14,6 +14,18 @@
 #define Opcode_Start 24
 #define Opcode_End 21
 #define S_BIT 20
+#define
+#define and 0000
+#define eor 0001
+#define sub 0010
+#define rsb 0011
+#define add 0100
+#define tst 1000
+#define teq 1001
+#define cmp 1010
+#define orr 1100
+#define mov 1101
+#define MSB 31
 
 
 

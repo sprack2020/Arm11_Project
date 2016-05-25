@@ -4,7 +4,7 @@
 
 #include "checkCond.h"
 
-// PRE: instr is not the halt instruction
+// PRE: instr is not the halt instruction and in big endian
 // behavior: infers the COND part of the instruction
 // based on the value of COND it checks the NZCV flags from register 16 and returns a bool
 

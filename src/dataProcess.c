@@ -21,34 +21,34 @@ void dataProcess(uint32_t instr) {
     uint32_t result = 0;
 
     switch (opcode) {
-        case 1000:
+        case tst:
             writeResult = false;
-        case 0000:
+        case and:
             result = RnVal & operand2;
             break;
-        case 1001:
+        case teq:
             writeResult = false;
-        case 0001:
+        case eor:
             result = RnVal ^ operand2;
             break;
-        case 1010:
+        case cmp:
             writeResult = false;
-        case 0010:
+        case sub:
             result = RnVal - operand2;
             C = RnVal >= operand2;
             break;
-        case 0011:
+        case rsb:
             result = operand2 - RnVal;
             C = operand2 >= RnVal;
             break;
-        case 0100:
+        case add:
             result = RnVal + operand2;
-            C = extractBit(RnVal, 31) && extractBit(operand2, 31);
+            C = extractBit(RnVal, MSB) && extractBit(operand2, MSB);
             break;
-        case 1100:
+        case orr:
             result = RnVal | operand2;
             break;
-        case 1101:
+        case mov:
             result = operand2;
     }
 
@@ -56,7 +56,7 @@ void dataProcess(uint32_t instr) {
     if (S) {
         updateCPSR(C, Cbit);
         updateCPSR(!result, Zbit);
-        updateCPSR((bool) extractBit(result, 31), Nbit);
+        updateCPSR((bool) extractBit(result, MSB), Nbit);
     }
 
     if (writeResult) {

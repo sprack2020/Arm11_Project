@@ -10,9 +10,9 @@
 #include "util.h"
 #include "emulate.h"
 
-#define cond0 28
 #define cond3 31
 #define cond1 29
+#define cond0 28
 #define eqORne 000
 #define geORlt 101
 #define gtORle 110
