@@ -16,8 +16,7 @@
 #include "emulate.h"
 
 
-#define bit27 27
-#define bit26 26
+
 
 void decodeAndExecute(uint32_t instr);
 
