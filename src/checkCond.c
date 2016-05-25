@@ -3,7 +3,6 @@
 //
 
 #include "checkCond.h"
-#include "emulate.h"
 
 // PRE: instr is not the halt instruction
 // behavior: infers the COND part of the instruction

@@ -3,6 +3,7 @@
 
 
 #include <string.h>
+#include "emulate.h"
 
 #define LAST_GENERAL_REGISTER 12
 #define LAST_SINGLE_DIGIT 9

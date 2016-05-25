@@ -2,8 +2,6 @@
 // Created by drspaceship on 20/05/16.
 //
 #include "dataTransfer.h"
-#include "emulate.h"
-#include "util.h"
 
 // prototypes
 uint32_t calculateOffset(uint32_t offsetBits, bool isImmediateOffset);

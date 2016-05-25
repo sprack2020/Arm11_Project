@@ -2,7 +2,6 @@
 // Created by drspaceship on 22/05/16.
 //
 #include "printState.h"
-#include "emulate.h"
 
 // gets the correct spacing to put before the ':'
 // this is so all colons line up, thus they must appear as the fifth character

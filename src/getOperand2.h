@@ -8,6 +8,7 @@
 #include <stdbool.h>
 #include "util.h"
 #include "updateCPSR.h"
+#include "emulate.h"
 
 #endif //ARM11_39_GETOPERAND2_H
 

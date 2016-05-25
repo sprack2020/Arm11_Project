@@ -9,6 +9,11 @@
 #include <stdbool.h>
 #include "util.h"
 #include "getOperand2.h"
+#include "emulate.h"
+
+#define Opcode_Start 24
+#define Opcode_End 21
+#define S_BIT 20
 
 
 

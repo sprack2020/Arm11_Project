@@ -7,6 +7,7 @@
 
 #include <stdbool.h>
 #include "util.h"
+#include "emulate.h"
 
 void updateCPSR(bool bit, unsigned int bitnum);
 

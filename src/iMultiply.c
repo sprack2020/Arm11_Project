@@ -2,7 +2,6 @@
 // Created by drspaceship on 22/05/16.
 //
 #include "iMultiply.h"
-#include "emulate.h"
 
 // PRE: instr is a multiply instruction
 // behavior: multiplication instruction as in spec

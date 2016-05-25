@@ -8,6 +8,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "util.h"
+#include "emulate.h"
 
 #define cond0 28
 #define cond3 31

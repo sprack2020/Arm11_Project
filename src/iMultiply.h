@@ -8,6 +8,7 @@
 #include <stdint.h>
 #include "checkCond.h"
 #include "updateCPSR.h"
+#include "emulate.h"
 
 void iMultiply(uint32_t instr);
 

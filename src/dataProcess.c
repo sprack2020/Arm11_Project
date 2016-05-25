@@ -3,18 +3,17 @@
 //
 
 #include "dataProcess.h"
-#include "emulate.h"
 
 // PRE: instr is a data process instruction
 // assume: PC does not feature in the instruction
-// behavior: dude i dunno. I'll try and split this up later into opcode, 'I' and shifter stuff
+// behavior: checks opcode and performs instruction, possibly writes result to register and updates flags
 
 void dataProcess(uint32_t instr) {
-    bool I = (bool) extractBit(instr, 25);
-    uint32_t opcode = extractBits(instr, 24, 21);
-    bool S = (bool) extractBit(instr, 20);
-    uint32_t RnVal = REGFILE[extractBits(instr, 19, 16)];
-    uint32_t Rd = extractBits(instr, 15, 12);
+    bool I = (bool) extractBit(instr, IMM_BIT);
+    uint32_t opcode = extractBits(instr, Opcode_Start, Opcode_End);
+    bool S = (bool) extractBit(instr, S_BIT);
+    uint32_t RnVal = REGFILE[extractBits(instr, Rn_UPPER, Rn_LOWER)];
+    uint32_t Rd = extractBits(instr, Rd_UPPER, Rd_LOWER);
     ShiftResult operand2WC = getOperand2(instr, I);
     uint32_t operand2 = operand2WC.result;
     bool C = operand2WC.carry;

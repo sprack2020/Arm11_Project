@@ -3,7 +3,6 @@
 //
 
 #include "updateCPSR.h"
-#include "emulate.h"
 
 void updateCPSR(bool bit, unsigned int bitnum) {
     uint32_t flagMask = binaryShift((uint32_t) bit, LSL, bitnum).result;

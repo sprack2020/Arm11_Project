@@ -2,7 +2,6 @@
 // Created by drspaceship on 23/05/16.
 //
 #include "getOperand2.h"
-#include "emulate.h"
 
 
 // PRE: instr is a dataProcess or dataTransfer instruction

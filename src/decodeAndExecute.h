@@ -13,6 +13,7 @@
 #include "dataProcess.h"
 #include "iMultiply.h"
 #include "dataTransfer.h"
+#include "emulate.h"
 
 void decodeAndExecute(uint32_t instr);
 
