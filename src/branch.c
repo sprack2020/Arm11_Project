@@ -9,15 +9,13 @@
 void branch(uint32_t instr) {
     // Here, offset is a signed integer, as we may increase or decrease PC with
     // the branch, but extractBits returns an unsigned int
-    uint32_t offsetBits = extractBits(instr, OFFSET_SIZE - 1, 0);
-    int32_t offset = offsetBits;
+    int32_t offset = extractBits(instr, OFFSET_SIZE - 1, 0);
 
     // sign extend and shift left 2
     // uses division instead of right shift because c standard does not force
     // right shift to be arithmetical instead of logical
-    offset <<= (32 - 24);
-    offset /= 2 ^ ((32 - 24) - SHIFT_TO_OFFSET);
-
+    offset <<= (INTWIDTH - OFFSET_SIZE);
+    offset /= 2 ^ ((INTWIDTH - OFFSET_SIZE) - SHIFT_TO_OFFSET);
 
     // add the offset
     int32_t newPC = ((int32_t) PC) + offset;
