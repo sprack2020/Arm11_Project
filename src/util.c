@@ -42,7 +42,8 @@ ShiftResult binaryShift(uint32_t shiftee, shiftType st, uint32_t amount) {
             //everything else
                         (shiftee >> amount);
         default:
-            fprintf(stderr, "unrecognised shift type: %i\n", st);
+            fprintf(stderr, "Error in binaryShift(): "
+                            "unrecognised shift type: %i\n", st);
     }
 
     return sr;
@@ -104,8 +105,48 @@ void read32Bits(uint32_t *dest, uint8_t *src) {
 
     for (int i = n - 1; i >= 0; i--) {
         bytesToRead[i] = (uint32_t) *(src + i);
-        bytesToRead[i] <<= i;
+        bytesToRead[i] <<= i * CHAR_BIT;
 
         *dest |= bytesToRead[i];
     }
+}
+
+// swaps the endianness of an instr
+uint32_t swapEndianness(uint32_t instr) {
+    const int n = INTWIDTH / CHAR_BIT;
+    uint32_t instrBytes[n];
+
+    uint32_t swappedEndianInstr = 0;
+
+    // swap the endianness
+    for (int i = 0; i < n; i++ ) {
+        instrBytes[i] = extractBits(instr, (i + 1) * CHAR_BIT - 1,
+                i * CHAR_BIT);
+        instrBytes[i] <<= (n - i - 1) * CHAR_BIT;
+
+        swappedEndianInstr |= instrBytes[i];
+    }
+
+    return swappedEndianInstr;
+}
+
+// Swaps the endianness of instr, converts the indexes and then extracts
+// the bits inbetween those indexes
+// PRE: upperBit should be less than lowerBit because the endianness of instrBytes
+//      will be swapped.
+uint32_t extractFragmentedBits(uint32_t instr, int upperBit, int lowerBit) {
+    if (lowerBit < 0 || upperBit > INTWIDTH - 1 || lowerBit < upperBit) {
+        fprintf(stderr, "Error in extractFragmentedBits: "
+                        "Invalid indexes from which to extract bits. You"
+                        " attempted extractFragmentedBits(%d, %d, %d)",
+                        instr, upperBit, lowerBit);
+        exit(2);
+    }
+
+    uint32_t swappedEndianInstr = swapEndianness(instr);
+
+    upperBit = SWAP_INDEX_ENDIANNESS(upperBit);
+    lowerBit = SWAP_INDEX_ENDIANNESS(lowerBit);
+
+    return extractBits(swappedEndianInstr, upperBit, lowerBit);
 }

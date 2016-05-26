@@ -10,7 +10,7 @@
 
 void dataProcess(uint32_t instr) {
     bool I = (bool) extractBit(instr, IMM_BIT);
-    uint32_t opcode = extractBits(instr, OPCODE_UPPER, OPCODE_LOWER);
+    uint32_t opcode = extractFragmentedBits(instr, OPCODE_UPPER, OPCODE_LOWER);
     bool S = (bool) extractBit(instr, S_BIT);
     uint32_t RnVal = REGFILE[extractBits(instr, Rn_UPPER, Rn_LOWER)];
     uint32_t Rd = extractBits(instr, Rd_UPPER, Rd_LOWER);
