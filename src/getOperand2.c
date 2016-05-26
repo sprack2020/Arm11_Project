@@ -14,7 +14,7 @@ ShiftResult getOperand2(uint32_t instr, bool immediate) {
 
     if (immediate) {
         uint32_t rotAmount = extractBits(instr, ROT_UPPER, ROT_LOWER) * 2;
-        uint32_t imVal = extractBits(instr, IMM_VAL_UPPER, LSB);
+        uint32_t imVal = extractBits(instr, IMM_VAL_UPPER, IMM_VAL_LOWER);
         operand2 = binaryShift(imVal, ROR, rotAmount);
     }
     else {
@@ -24,11 +24,11 @@ ShiftResult getOperand2(uint32_t instr, bool immediate) {
         uint32_t shiftAmount;
         if (isRegShift) {
             uint32_t Rs = extractBits(instr, Rs_UPPER, Rs_LOWER);
-            shiftAmount = extractBits(REGFILE[Rs], BYTE_1_UPPER, LSB);
+            shiftAmount = extractBits(REGFILE[Rs], LSB_UPPER, LSB_LOWER);
             //gets the bottom byte of the address specified by Rs
         }
         else {
-            shiftAmount = extractBits(instr, CONST_UPPER, CONST_LOWER);
+            shiftAmount = extractFragmentedBits(instr, CONST_UPPER, CONST_LOWER);
         }
         operand2 = binaryShift(RmVal, st, shiftAmount);
 
