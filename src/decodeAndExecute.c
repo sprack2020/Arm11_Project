@@ -30,5 +30,4 @@ void decodeAndExecute(uint32_t instr) {
         dataProcess(instr);
     }
 
-
 }

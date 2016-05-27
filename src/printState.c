@@ -45,9 +45,15 @@ void printState(void) {
 
     // print memory
     printf("Non-zero memory:\n");
-    for (int i = 0; i < MEM_SIZE; i++) {
-        if (MEM[i] != 0) {
-            printf("0x%0*x: 0x%0*x\n", HEX_PADDING, i, HEX_PADDING, MEM[i]);
+
+    //TODO: GET BETTER NAMES FOR THIS AND MEM_PRINTING_INTERVAL
+    uint32_t memLocationsToPrint;
+    for (int i = 0; i < MEM_SIZE; i += MEM_PRINTING_INTERVAL) {
+        read32Bits(&memLocationsToPrint, MEM + i);
+
+        if (memLocationsToPrint != 0) {
+            printf("0x%0*x: 0x%0*x\n", HEX_PADDING, i, HEX_PADDING
+                    , memLocationsToPrint);
         }
     }
 

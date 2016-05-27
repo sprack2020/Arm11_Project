@@ -35,8 +35,6 @@ void dataTransfer(uint32_t instr) {
             Rn -= offset;
         }
     }
-
-    // free?
 }
 
 // calculates and returns the offset to add to the base register
@@ -55,9 +53,8 @@ void load(uint32_t Rn, uint32_t Rd) {
 void store(uint32_t Rn, uint32_t Rd) {
     // MEM[Rd] = REGFILE[Rn]
     const int n = REG_LENGTH / MEM_LENGTH;
-    // uint8_t bytesToStore[n];
 
-    for (int i = 0; i < n; i++) {
+    for (int i = n - 1; i >= 0; i--) {
         MEM[Rd + i] = extractBits(REGFILE[Rn], (i + 1) * MEM_LENGTH - 1,
                 i * MEM_LENGTH);
     }

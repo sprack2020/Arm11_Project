@@ -66,7 +66,9 @@ uint32_t createMask(unsigned int i, unsigned int j) {
     return mask;
 }
 
-// Returns the bits at positions j to i from the given number
+// Returns the bits at positions j to i from the given number.
+// unsigned -> signed cast of same width integers is guarenteed not to
+// change bit pattern but signed -> unsigned may
 uint32_t extractBits(uint32_t binaryNumber, int j, int i) {
     // ensure j >= i and both i and j are positive and both less than the number
     // of bits in the binaryNumber
@@ -92,8 +94,8 @@ uint32_t extractBit(uint32_t binaryNumber, int i) {
 // dest: pointer to a 32bit to put the result into
 // src:  pointer to a memory address (element of 8 bit array)
 // post: Will read four consecutive 8 bit elements from memory starting from
-//       address src. Reads the bytes accounting for that fact that they are
-//       ordered according to the wrong endianness
+//       address src. --Reads the bytes accounting for that fact that they are
+//       ordered according to the wrong endianness-- wrong, no byte order change
 void read32Bits(uint32_t *dest, uint8_t *src) {
     // get number of memory adddresses we will have to read to accumulate
     // 32 bits
@@ -105,7 +107,7 @@ void read32Bits(uint32_t *dest, uint8_t *src) {
 
     for (int i = n - 1; i >= 0; i--) {
         bytesToRead[i] = (uint32_t) *(src + i);
-        bytesToRead[i] <<= i * CHAR_BIT;
+        // bytesToRead[i] <<= i * CHAR_BIT; dont want to swap endianness now
 
         *dest |= bytesToRead[i];
     }
@@ -149,4 +151,17 @@ uint32_t extractFragmentedBits(uint32_t instr, int upperBit, int lowerBit) {
     lowerBit = SWAP_INDEX_ENDIANNESS(lowerBit);
 
     return extractBits(swappedEndianInstr, upperBit, lowerBit);
+}
+
+// sign extend an n-bit number.
+// uses division instead of right shift because c standard does not force
+// right shift to be arithmetical instead of logical
+void signExtend(int32_t *i, int n) {
+    if (n > INTWIDTH) {
+        fprintf(stderr, "Error in util: Attempting to sign extend a %d bit"
+                "number to %d bits", n, INTWIDTH);
+    }
+
+    *i <<= (INTWIDTH - n);
+    *i /= 2 ^ (INTWIDTH - n);
 }

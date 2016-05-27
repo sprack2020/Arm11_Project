@@ -9,6 +9,7 @@
 #define LAST_SINGLE_DIGIT 9
 #define HEX_PADDING 8
 #define LONGEST_REGISTER_NAME "CPSR"
+#define MEM_PRINTING_INTERVAL 4
 
 void printState(void);
 

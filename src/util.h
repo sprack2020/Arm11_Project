@@ -11,9 +11,10 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-// keeping the instruciton in litte endian
 #define INTWIDTH 32
 #define WORD_SIZE 1
+
+// keeping the instructions in little endian
 #define MSB 7
 #define A_BIT 13
 #define S_BIT 12
@@ -40,8 +41,8 @@
 #define SHIFT_TYPE_UPPER 30
 #define SHIFT_TYPE_LOWER 29
 #define REG_SHIFT_BIT 28
-// #define OFFSET_UPPER 19
-// #define OFFSET_LOWER 24
+#define OFFSET_UPPER 8    // for branch instr, don't know if these are right?
+#define OFFSET_LOWER 31
 #define OPCODE_UPPER 0
 #define OPCODE_LOWER 13
 #define bit27 3
@@ -60,12 +61,10 @@ typedef struct {
 ShiftResult binaryShift(uint32_t shiftee, shiftType st, uint32_t amount);
 uint32_t rightShiftCarry(uint32_t shiftee, uint32_t amount);
 uint32_t createMask(unsigned int i, unsigned int j);
-
-// unsigned -> signed cast of integers of same width is guarenteed not to
-// change bit pattern but signed -> unsigned may
 uint32_t extractBits(uint32_t binaryNumber, int j, int i);
 uint32_t extractBit (uint32_t binaryNumber, int i);
 void read32Bits(uint32_t *dest, uint8_t *src);
 uint32_t extractFragmentedBits(uint32_t instr, int upperBit, int lowerBit);
+void signExtend(int32_t *i, int n);
 
 #endif //ARM11_39_BINARYSHIFT_H
