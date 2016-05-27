@@ -41,3 +41,16 @@ char** readLines(FILE* file) {
 
     return lines;
 }
+
+/*  writes length (big endian) instructions to file (as little endian)
+ *  returns 1 if any errors occured, 0 otherwise.
+ *  NOTE: modifies instrs by swapping endianness */
+int writeInstrs(FILE* file, uint32_t* instrs, int length) {
+    //swap endianness of all instructions
+    for (int i = 0; i < length; ++i) {
+        instrs[i] = swapEndianness(instrs[i]);
+    }
+
+    //write instructions to file and return 1 if any objects failed to write
+    return fwrite(instrs, sizeof(uint32_t), length, file) < length ? 1 : 0;
+}
