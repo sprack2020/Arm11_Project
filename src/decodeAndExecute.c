@@ -11,8 +11,8 @@ void decodeAndExecute(uint32_t instr) {
 
     bool isBranch = (bool) extractBit(instr, bit27);
     bool isDataTransfer = (bool) extractBit(instr, bit26);
-    bool b25 = (bool) extractBit(instr, 25);
-    uint32_t bs7to4 = extractBits(instr, 7, 4);
+    bool mulCheck = (bool) extractBit(instr, bit25);
+    uint32_t pattern = extractBits(instr, PATTERN_UPPER, PATTERN_LOWER);
 
     if (isBranch) {
         branch(instr);
@@ -20,7 +20,7 @@ void decodeAndExecute(uint32_t instr) {
     else if (isDataTransfer) {
         dataTransfer(instr);
     }
-    else if (b25 && bs7to4 == 1001) {
+    else if (mulCheck && pattern == MUL_PATTERN) {
         iMultiply(instr);
     }
     else {
