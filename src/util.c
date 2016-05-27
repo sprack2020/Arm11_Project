@@ -105,9 +105,9 @@ void read32Bits(uint32_t *dest, uint8_t *src) {
     uint32_t bytesToRead[n];
     *dest = 0;
 
-    for (int i = n - 1; i >= 0; i--) {
+    for (int i = 0 i < n; i++) {
         bytesToRead[i] = (uint32_t) *(src + i);
-        // bytesToRead[i] <<= i * CHAR_BIT; dont want to swap endianness now
+        bytesToRead[i] = binaryShift(bytesToRead[i], LSR, i).result;
 
         *dest |= bytesToRead[i];
     }
@@ -154,14 +154,15 @@ uint32_t extractFragmentedBits(uint32_t instr, int upperBit, int lowerBit) {
 }
 
 // sign extend an n-bit number.
-// uses division instead of right shift because c standard does not force
-// right shift to be arithmetical instead of logical
+
 void signExtend(int32_t *i, int n) {
     if (n > INTWIDTH) {
         fprintf(stderr, "Error in util: Attempting to sign extend a %d bit"
                 "number to %d bits", n, INTWIDTH);
     }
 
-    *i <<= (INTWIDTH - n);
-    *i /= 2 ^ (INTWIDTH - n);
+    const int numPaddingBits = INTWIDTH - n;
+
+    *i <<= numPaddingBits;
+    *i = binaryShift(*i, ASR, numPaddingBits);
 }

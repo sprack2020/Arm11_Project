@@ -56,5 +56,4 @@ void printState(void) {
                     , memLocationsToPrint);
         }
     }
-
 }
