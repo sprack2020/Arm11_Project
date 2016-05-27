@@ -50,6 +50,9 @@ void dataProcess(uint32_t instr) {
             break;
         case mov:
             result = operand2;
+            break;
+        default:
+            fprintf(stderr, "invalid opcode in dataProcess: opcode was %i", opcode);
     }
 
 

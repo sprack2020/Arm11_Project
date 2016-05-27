@@ -21,17 +21,17 @@ ShiftResult binaryShift(uint32_t shiftee, shiftType st, uint32_t amount) {
     switch(st) {
         case LSL:
             //gets the first bit of everything shifted off the left side
-            sr.carry = (shiftee >> (INTWIDTH - amount)) & 1;
+            sr.carry = (bool) (shiftee >> (INTWIDTH - amount));
             sr.result = shiftee << amount;
             break;
 
         case LSR:
-            sr.carry = rightShiftCarry(shiftee, amount);
+            sr.carry = (bool) rightShiftCarry(shiftee, amount);
             sr.result = shiftee >> amount;
             break;
 
         case ASR:
-            sr.carry = rightShiftCarry(shiftee, amount);
+            sr.carry = (bool) rightShiftCarry(shiftee, amount);
 
             //start with only most significant bit, and repeat it to the left
             uint32_t signBit = shiftee & (1 << (amount - 1));
@@ -42,16 +42,17 @@ ShiftResult binaryShift(uint32_t shiftee, shiftType st, uint32_t amount) {
             break;
 
         case ROR:
-            sr.carry = rightShiftCarry(shiftee, amount);
+            sr.carry = (bool) rightShiftCarry(shiftee, amount);
             //least significant bits that rotate around
             sr.result = (shiftee << (INTWIDTH - amount)) |
             //everything else
                         (shiftee >> amount);
             break;
-            
+
         default:
             fprintf(stderr, "Error in binaryShift(): "
                             "unrecognised shift type: %i\n", st);
+            exit(2);
     }
 
     return sr;
@@ -74,27 +75,28 @@ uint32_t createMask(unsigned int i, unsigned int j) {
     return mask;
 }
 
-// Returns the bits at positions j to i from the given number.
+// Returns the bits at positions UB to LB from the given number.
 // unsigned -> signed cast of same width integers is guarenteed not to
 // change bit pattern but signed -> unsigned may
-uint32_t extractBits(uint32_t binaryNumber, int j, int i) {
-    // ensure j >= i and both i and j are positive and both less than the number
+uint32_t extractBits(uint32_t binaryNumber, unsigned int UB, unsigned int LB) {
+    // ensure UB >= LB and both LB and UB are positive and both less than the number
     // of bits in the binaryNumber
-    if (j < i || i < 0 || j >= INTWIDTH) {
+    const int numBits = sizeof(binaryNumber) * CHAR_BIT - 1;
+    if (UB < LB || LB < 0 || UB > numBits) {
         fprintf(stderr, "Error in util: extractBits(): "
                 "invalid indexes from which to extract bits. You attempted "
-                "extractBits(0x%08x, %d, %d)\n", binaryNumber, j, i);
+                "extractBits(0x%08x, %d, %d)\n", binaryNumber, UB, LB);
         exit(2);
     }
 
-    uint32_t mask = createMask(i, j);
+    uint32_t mask = createMask(LB, UB);
     binaryNumber &= mask;
-    binaryNumber = binaryShift(binaryNumber, LSR, i).result;
+    binaryNumber >>= LB;
 
     return binaryNumber;
 }
 
-uint32_t extractBit(uint32_t binaryNumber, int i) {
+uint32_t extractBit(uint32_t binaryNumber, unsigned int i) {
     return extractBits(binaryNumber, i, i);
 }
 
@@ -112,7 +114,7 @@ void read32Bits(uint32_t *dest, uint8_t *src) {
     uint32_t bytesToRead[n];
     *dest = 0;
 
-    for (int i = 0; i < n; i++) {
+    for (int i = 0 i < n; i++) {
         bytesToRead[i] = (uint32_t) *(src + i);
         bytesToRead[i] = binaryShift(bytesToRead[i], LSR, i).result;
 

@@ -8,8 +8,8 @@
 
 void iMultiply(uint32_t instr) {
 
-    uint32_t Rd = extractBits(instr, Rd_UPPER, Rd_LOWER);
-    uint32_t RnVal = REGFILE[extractBits(instr, Rn_UPPER, Rn_LOWER)];
+    uint32_t Rd = extractBits(instr, Rd_MUL_UPPER, Rd_MUL_LOWER);
+    uint32_t RnVal = REGFILE[extractBits(instr, Rn_MUL_UPPER, Rn_MUL_LOWER)];
     uint32_t RsVal = REGFILE[extractBits(instr, Rs_UPPER, Rs_LOWER)];
     uint32_t Rm = extractBits(instr, Rm_UPPER, Rm_LOWER);
     bool Abit = (bool) extractBit(instr, A_BIT);
