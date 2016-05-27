@@ -20,6 +20,14 @@ void dataTransfer(uint32_t instr) {
     uint32_t Rd = extractBits(instr, Rd_UPPER, Rd_LOWER);
     uint32_t offset = calculateOffset(instr, isImmediateOffset);
 
+    // check valid registers used
+    if (Rd == PC_INDEX) {
+        fprintf(stderr, "Error in dataTransfer: Attempting to use PC as source"
+            " / destination register\n");
+    }
+
+    
+
     // perform data transfer
     if (isLoad) {
         load(Rn, Rd);

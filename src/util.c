@@ -23,9 +23,13 @@ ShiftResult binaryShift(uint32_t shiftee, shiftType st, uint32_t amount) {
             //gets the first bit of everything shifted off the left side
             sr.carry = (shiftee >> (INTWIDTH - amount)) & 1;
             sr.result = shiftee << amount;
+            break;
+
         case LSR:
             sr.carry = rightShiftCarry(shiftee, amount);
             sr.result = shiftee >> amount;
+            break;
+
         case ASR:
             sr.carry = rightShiftCarry(shiftee, amount);
 
@@ -35,12 +39,16 @@ ShiftResult binaryShift(uint32_t shiftee, shiftType st, uint32_t amount) {
                 signBit = signBit | signBit >> 1;
             }
             sr.result = (shiftee >> amount) | signBit;
+            break;
+
         case ROR:
             sr.carry = rightShiftCarry(shiftee, amount);
             //least significant bits that rotate around
             sr.result = (shiftee << (INTWIDTH - amount)) |
             //everything else
                         (shiftee >> amount);
+            break;
+            
         default:
             fprintf(stderr, "Error in binaryShift(): "
                             "unrecognised shift type: %i\n", st);
@@ -72,8 +80,7 @@ uint32_t createMask(unsigned int i, unsigned int j) {
 uint32_t extractBits(uint32_t binaryNumber, int j, int i) {
     // ensure j >= i and both i and j are positive and both less than the number
     // of bits in the binaryNumber
-    const int numBits = sizeof(binaryNumber) * CHAR_BIT - 1;
-    if (j < i || i < 0 || j > numBits) {
+    if (j < i || i < 0 || j >= INTWIDTH) {
         fprintf(stderr, "Error in util: extractBits(): "
                 "invalid indexes from which to extract bits. You attempted "
                 "extractBits(0x%08x, %d, %d)\n", binaryNumber, j, i);
@@ -82,7 +89,7 @@ uint32_t extractBits(uint32_t binaryNumber, int j, int i) {
 
     uint32_t mask = createMask(i, j);
     binaryNumber &= mask;
-    binaryNumber >>= i;
+    binaryNumber = binaryShift(binaryNumber, LSR, i).result;
 
     return binaryNumber;
 }
@@ -99,13 +106,13 @@ uint32_t extractBit(uint32_t binaryNumber, int i) {
 void read32Bits(uint32_t *dest, uint8_t *src) {
     // get number of memory adddresses we will have to read to accumulate
     // 32 bits
-    const int n = sizeof(uint32_t) / WORD_SIZE;
+    const int n = INTWIDTH / WORD_SIZE;
 
     // declare array of the bytes we will read and zero out the destination
     uint32_t bytesToRead[n];
     *dest = 0;
 
-    for (int i = 0 i < n; i++) {
+    for (int i = 0; i < n; i++) {
         bytesToRead[i] = (uint32_t) *(src + i);
         bytesToRead[i] = binaryShift(bytesToRead[i], LSR, i).result;
 
@@ -164,5 +171,5 @@ void signExtend(int32_t *i, int n) {
     const int numPaddingBits = INTWIDTH - n;
 
     *i <<= numPaddingBits;
-    *i = binaryShift(*i, ASR, numPaddingBits);
+    *i = binaryShift(*i, ASR, numPaddingBits).result;
 }

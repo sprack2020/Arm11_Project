@@ -21,8 +21,10 @@
 
 #define MEM state.memory
 #define REGFILE state.registers
-#define PC state.registers[15]
-#define CPSR state.registers[16]
+#define PC_INDEX 15
+#define CPSR_INDEX 16
+#define PC state.registers[PC_INDEX]
+#define CPSR state.registers[CPSR_INDEX]
 
 #define Nbit 7
 #define Zbit 6
