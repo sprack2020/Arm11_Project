@@ -21,7 +21,7 @@ ShiftResult binaryShift(uint32_t shiftee, shiftType st, uint32_t amount) {
     switch(st) {
         case LSL:
             //gets the first bit of everything shifted off the left side
-            sr.carry = (shiftee >> (INTWIDTH - amount)) & 1;
+            sr.carry = (bool) (shiftee >> (INTWIDTH - amount));
             sr.result = shiftee << amount;
             break;
         case LSR:
@@ -109,7 +109,7 @@ void read32Bits(uint32_t *dest, uint8_t *src) {
     uint32_t bytesToRead[n];
     *dest = 0;
 
-    for (int i = 0; i < n; i++) {
+    for (unsigned int i = 0; i < n; i++) {
         bytesToRead[i] = (uint32_t) *(src + i);
         bytesToRead[i] = binaryShift(bytesToRead[i], LSR, i).result;
 
@@ -125,7 +125,7 @@ uint32_t swapEndianness(uint32_t instr) {
     uint32_t swappedEndianInstr = 0;
 
     // swap the endianness
-    for (int i = 0; i < n; i++ ) {
+    for (unsigned int i = 0; i < n; i++ ) {
         instrBytes[i] = extractBits(instr, (i + 1) * CHAR_BIT - 1,
                 i * CHAR_BIT);
         instrBytes[i] <<= (n - i - 1) * CHAR_BIT;
@@ -140,7 +140,7 @@ uint32_t swapEndianness(uint32_t instr) {
 // the bits inbetween those indexes
 // PRE: upperBit should be less than lowerBit because the endianness of instrBytes
 //      will be swapped.
-uint32_t extractFragmentedBits(uint32_t instr, int upperBit, int lowerBit) {
+uint32_t extractFragmentedBits(uint32_t instr, unsigned int upperBit, unsigned int lowerBit) {
     if (lowerBit < 0 || upperBit > INTWIDTH - 1 || lowerBit < upperBit) {
         fprintf(stderr, "Error in extractFragmentedBits: "
                         "Invalid indexes from which to extract bits. You"

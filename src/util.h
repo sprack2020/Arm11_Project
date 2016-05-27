@@ -64,7 +64,7 @@ uint32_t createMask(unsigned int i, unsigned int j);
 uint32_t extractBits(uint32_t binaryNumber, unsigned int j, unsigned int LB);
 uint32_t extractBit (uint32_t binaryNumber, unsigned int i);
 void read32Bits(uint32_t *dest, uint8_t *src);
-uint32_t extractFragmentedBits(uint32_t instr, int upperBit, int lowerBit);
+uint32_t extractFragmentedBits(uint32_t instr, unsigned int upperBit, unsigned int lowerBit);
 void signExtend(int32_t *i, int n);
 
 #endif //ARM11_39_BINARYSHIFT_H
