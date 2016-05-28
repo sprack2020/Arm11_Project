@@ -20,6 +20,8 @@ void dataProcess(uint32_t instr) {
     bool writeResult = true;
     uint32_t result = 0;
 
+    // printf("\topcode = %d, operand2 = %d\n", opcode, operand2);
+
     switch (opcode) {
         case tst:
             writeResult = false;
@@ -52,7 +54,8 @@ void dataProcess(uint32_t instr) {
             result = operand2;
             break;
         default:
-            fprintf(stderr, "invalid opcode in dataProcess: opcode was %i", opcode);
+            fprintf(stderr, "invalid opcode in dataProcess: opcode was %d (0x%01x)\n", opcode, opcode);
+            exit(2);
     }
 
 

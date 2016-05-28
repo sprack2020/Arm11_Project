@@ -2,7 +2,6 @@
 // Created by drspaceship on 20/05/16.
 //
 #include "branch.h"
-#include "emulate.h"
 
 // PRE: instr is a branch instruction
 // behavior: adds the offset to PC
@@ -13,7 +12,7 @@ void branch(uint32_t instr) {
 
     // sign extend and shift offset
     signExtend(&offset, OFFSET_SIZE);
-    offset <<= 2 ^ SHIFT_TO_OFFSET;
+    offset <<= SHIFT_TO_OFFSET;
 
     // add the offset to PC
     int32_t newPC = ((int32_t) PC) + offset;

@@ -15,13 +15,12 @@
 #include "dataTransfer.h"
 #include "emulate.h"
 
-
 #define PATTERN_UPPER 31
 #define PATTERN_LOWER 28
-#define MUL_PATTERN 1001
+#define MUL_PATTERN 0x9
 #define bit25 1
 
-void decodeAndExecute(uint32_t instr);
+bool decodeAndExecute(uint32_t instr);
 
 
 #endif //ARM11_39_DECODEANDEXECUTE_H

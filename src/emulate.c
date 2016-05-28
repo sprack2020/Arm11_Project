@@ -33,20 +33,27 @@ int main(int argc, char **argv) {
         printf("Warning: failed to close binary file.\n");
     }
 
-    uint32_t currInstr;
+    uint32_t fetchedInstr = getNextInstr();
+    uint32_t currInstr = fetchedInstr;
 
     // loop until next instruction is 0 (halt instruction)
-    do {
+    while (currInstr) {
         // gets next instruction and increments PC
-        currInstr = getNextInstr();
+        currInstr = fetchedInstr;
+        fetchedInstr = getNextInstr();
 
         // skip this instruction if condition says to
         if (!checkCond(currInstr)) {
             continue;
         }
 
-        decodeAndExecute(currInstr);
-    } while (currInstr);
+        // decode and execute the instruction
+        bool wasBranch = decodeAndExecute(currInstr);
+
+        if (wasBranch) {
+            fetchedInstr = getNextInstr();
+        }
+    }
 
     // print the final system state
     printState();
@@ -62,8 +69,6 @@ int main(int argc, char **argv) {
 // possible errors:
 //     - for loop logic
 //     - PC += INSTR_LENGTH: should be INSTR_LENGTH * 8bits?
-
-// TODO: read32bits should NOT convert to big endian
 uint32_t getNextInstr(void) {
     uint32_t nextInstr = 0;
 

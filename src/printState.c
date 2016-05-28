@@ -35,13 +35,13 @@ void printState(void) {
     for (int i = 0; i <= LAST_GENERAL_REGISTER; i++) {
         reg = REGFILE[i];
 
-        printf("$%d%*s:          %d (0x%0*x)\n", i, getCorrectSpacing(i), "",
-                reg, HEX_PADDING, reg);
+        printf("$%d%*s: %*d (0x%0*x)\n", i, getCorrectSpacing(i), "",
+                MAX_INT_PRINTING_SPACE, reg, HEX_PADDING, reg);
     }
 
     // print PC and CPSR
-    printf("PC  :          %d (0x%0*x)\n", PC, HEX_PADDING, PC);
-    printf("CPSR:          %d (0x%0*x)\n", CPSR, HEX_PADDING, CPSR);
+    printf("PC  : %*d (0x%0*x)\n", MAX_INT_PRINTING_SPACE, PC, HEX_PADDING, PC);
+    printf("CPSR: %*d (0x%0*x)\n", MAX_INT_PRINTING_SPACE, CPSR, HEX_PADDING, CPSR);
 
     // print memory
     printf("Non-zero memory:\n");
@@ -51,7 +51,8 @@ void printState(void) {
     for (int i = 0; i < MEM_SIZE; i += MEM_PRINTING_INTERVAL) {
         read32Bits(&memLocationsToPrint, MEM + i);
 
-        if (memLocationsToPrint != 0) {
+        // only print non-zero memory
+        if (memLocationsToPrint) {
             printf("0x%0*x: 0x%0*x\n", HEX_PADDING, i, HEX_PADDING
                     , memLocationsToPrint);
         }

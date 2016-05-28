@@ -10,13 +10,13 @@
 #include "util.h"
 #include "emulate.h"
 
-#define cond3 31
-#define cond1 29
-#define cond0 28
-#define eqORne 000
-#define geORlt 101
-#define gtORle 110
-#define always 111
+#define cond3 7
+#define cond1 5
+#define cond0 4
+#define eqORne 0
+#define geORlt 5
+#define gtORle 6
+#define always 7
 
 
 // Cond represented by 4 bits: c3210

@@ -26,10 +26,10 @@
 #define PC state.registers[PC_INDEX]
 #define CPSR state.registers[CPSR_INDEX]
 
-#define Nbit 7
-#define Zbit 6
-#define Cbit 5
-#define Vbit 4
+#define Nbit 31
+#define Zbit 30
+#define Cbit 29
+#define Vbit 28
 
 typedef struct ARMstate {
     uint8_t *memory;

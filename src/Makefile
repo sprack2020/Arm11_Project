@@ -1,5 +1,5 @@
 CC      = gcc
-CFLAGS  = -Wall -g -D_POSIX_SOURCE -D_BSD_SOURCE -std=c99 -Werror -pedantic
+CFLAGS  = -Wall -g -D_POSIX_SOURCE -D_BSD_SOURCE -std=c99 -Werror -pedantic -I src
 LDFLAGS =
 SOURCES = emulate.c branch.c checkCond.c dataProcess.c dataTransfer.c decodeAndExecute.c getOperand2.c iMultiply.c printState.c updateCPSR.c util.c
 OBJECTS = $(SOURCES:.c=.o)

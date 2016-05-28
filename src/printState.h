@@ -6,8 +6,8 @@
 #include "emulate.h"
 
 #define LAST_GENERAL_REGISTER 12
-#define LAST_SINGLE_DIGIT 9
 #define HEX_PADDING 8
+#define MAX_INT_PRINTING_SPACE 10
 #define LONGEST_REGISTER_NAME "CPSR"
 #define MEM_PRINTING_INTERVAL 4
 

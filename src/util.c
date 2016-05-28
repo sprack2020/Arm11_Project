@@ -31,14 +31,13 @@ ShiftResult binaryShift(uint32_t shiftee, shiftType st, uint32_t amount) {
             break;
 
         case ASR:
-            sr.carry = (bool) rightShiftCarry(shiftee, amount);
-
-            //start with only most significant bit, and repeat it to the left
-            uint32_t signBit = shiftee & (1 << (amount - 1));
-            for (int i = 0; i < amount; ++i) {
-                signBit = signBit | signBit >> 1;
+            sr.carry = (bool) extractBit(shiftee, amount - 1);
+            bool msb = (bool) extractBit(shiftee, INTWIDTH - 1);
+            uint32_t resultTop = 0;
+            if (msb) {
+                resultTop = createMask(INTWIDTH - amount, INTWIDTH - 1);
             }
-            sr.result = (shiftee >> amount) | signBit;
+            sr.result = resultTop | shiftee >> amount;
             break;
 
         case ROR:
@@ -65,10 +64,10 @@ uint32_t rightShiftCarry(uint32_t shiftee, uint32_t amount) {
 }
 
 // creates a bit mask to extract the bits i to j by &&-ing with this mask
-uint32_t createMask(unsigned int i, unsigned int j) {
+uint32_t createMask(unsigned int lower, unsigned int upper) {
     uint32_t mask = 0;
 
-    for (unsigned int m = i; m <= j; m++) {
+    for (unsigned int m = lower; m <= upper; m++) {
         mask |= 1 << m;
     }
 
@@ -78,7 +77,7 @@ uint32_t createMask(unsigned int i, unsigned int j) {
 // Returns the bits at positions UB to LB from the given number.
 // unsigned -> signed cast of same width integers is guarenteed not to
 // change bit pattern but signed -> unsigned may
-uint32_t extractBits(uint32_t binaryNumber, unsigned int UB, unsigned int LB) {
+uint32_t extractBits(uint32_t binaryNumber, int UB, int LB) {
     // ensure UB >= LB and both LB and UB are positive and both less than the number
     // of bits in the binaryNumber
     const int numBits = sizeof(binaryNumber) * CHAR_BIT - 1;
@@ -96,7 +95,7 @@ uint32_t extractBits(uint32_t binaryNumber, unsigned int UB, unsigned int LB) {
     return binaryNumber;
 }
 
-uint32_t extractBit(uint32_t binaryNumber, unsigned int i) {
+uint32_t extractBit(uint32_t binaryNumber, int i) {
     return extractBits(binaryNumber, i, i);
 }
 
@@ -106,43 +105,43 @@ uint32_t extractBit(uint32_t binaryNumber, unsigned int i) {
 //       address src. --Reads the bytes accounting for that fact that they are
 //       ordered according to the wrong endianness-- wrong, no byte order change
 void read32Bits(uint32_t *dest, uint8_t *src) {
-    // get number of memory adddresses we will have to read to accumulate
+    // get number of memory addresses we will have to read to accumulate
     // 32 bits
-    const int n = INTWIDTH / WORD_SIZE;
+    const int n = INTWIDTH / CHAR_BIT;
 
     // declare array of the bytes we will read and zero out the destination
     uint32_t bytesToRead[n];
     *dest = 0;
 
-    for (int i = 0 i < n; i++) {
+    for (int i = 0; i < n; i++) {
         bytesToRead[i] = (uint32_t) *(src + i);
-        bytesToRead[i] = binaryShift(bytesToRead[i], LSR, i).result;
+        bytesToRead[i] = binaryShift(bytesToRead[i], LSL, (n - i - 1) * CHAR_BIT).result;
 
         *dest |= bytesToRead[i];
     }
 }
 
 // swaps the endianness of an instr
-uint32_t swapEndianness(uint32_t instr) {
+void swapEndianness(uint32_t *number) {
     const int n = INTWIDTH / CHAR_BIT;
     uint32_t instrBytes[n];
 
-    uint32_t swappedEndianInstr = 0;
+    uint32_t swappedEndianNum = 0;
 
     // swap the endianness
     for (int i = 0; i < n; i++ ) {
-        instrBytes[i] = extractBits(instr, (i + 1) * CHAR_BIT - 1,
+        instrBytes[i] = extractBits(*number, (i + 1) * CHAR_BIT - 1,
                 i * CHAR_BIT);
         instrBytes[i] <<= (n - i - 1) * CHAR_BIT;
 
-        swappedEndianInstr |= instrBytes[i];
+        swappedEndianNum |= instrBytes[i];
     }
 
-    return swappedEndianInstr;
+    *number = swappedEndianNum;
 }
 
 // Swaps the endianness of instr, converts the indexes and then extracts
-// the bits inbetween those indexes
+// the bits in between those indexes
 // PRE: upperBit should be less than lowerBit because the endianness of instrBytes
 //      will be swapped.
 uint32_t extractFragmentedBits(uint32_t instr, int upperBit, int lowerBit) {
@@ -154,12 +153,12 @@ uint32_t extractFragmentedBits(uint32_t instr, int upperBit, int lowerBit) {
         exit(2);
     }
 
-    uint32_t swappedEndianInstr = swapEndianness(instr);
+    swapEndianness(&instr);
 
     upperBit = SWAP_INDEX_ENDIANNESS(upperBit);
     lowerBit = SWAP_INDEX_ENDIANNESS(lowerBit);
 
-    return extractBits(swappedEndianInstr, upperBit, lowerBit);
+    return extractBits(instr, upperBit, lowerBit);
 }
 
 // sign extend an n-bit number.

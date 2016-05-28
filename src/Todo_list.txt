@@ -25,5 +25,5 @@ dataTransfer:
 iMultiply: Sarthak/Finished basic logic/pseudocode to be replaced tomorrow
 
 util:
-    - binaryShift:  Andy/finished but maybe broken
+    - binaryShift:  Andy/finished but maybe broken, ASR wrong,
     - extractBits: Shiraz/done
