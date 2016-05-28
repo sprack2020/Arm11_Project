@@ -9,17 +9,18 @@ int main(int argc, char **argv) {
         exit(EXIT_FAILURE);
     }
 
-    //open source file in text mode
+    //open source file in text mode and read the lines into an array
     FILE* src = openFile(argv[1], "rt");
-
     char** lines = readLines(src);
     fclose(src);
 
     //TODO: turn lines into instructions, somehow
 
+    //write the assembled instructions to output file
     FILE* out = openFile(argv[2], "wb");
     if (writeInstrs(out, NULL, 0)) {
         fprintf(stderr, "Error writing binary file");
+        exit(EXIT_FAILURE);
     }
     fclose(out);
 

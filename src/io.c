@@ -1,6 +1,12 @@
-#include "io.h"
+#include <stdio.h>
+#include <stdint.h>
+#include "util.c"
 
 #define MAXLINE 512 //maximum line length including newline/EOF
+
+FILE* openFile(char* path, char* mode);
+char** readLines(FILE* file);
+int writeInstrs(FILE* file, uint32_t* instrs, int length);
 
 //open the source file in read only text-mode, and report any errors
 FILE* openFile(char* path, char* mode) {
