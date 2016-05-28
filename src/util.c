@@ -11,6 +11,7 @@ ShiftResult binaryShift(uint32_t shiftee, shiftType st, uint32_t amount) {
     if (amount == 0) {
         sr.carry = 0;
         sr.result = shiftee;
+        return sr;
     }
 
     //don't shift by more than bits than are in the shiftee
@@ -95,8 +96,8 @@ uint32_t extractBits(uint32_t binaryNumber, int UB, int LB) {
     return binaryNumber;
 }
 
-uint32_t extractBit(uint32_t binaryNumber, int i) {
-    return extractBits(binaryNumber, i, i);
+bool extractBit(uint32_t binaryNumber, int i) {
+    return (bool) ((binaryNumber & (1 << i )) >> i);
 }
 
 // dest: pointer to a 32bit to put the result into
@@ -163,7 +164,7 @@ uint32_t extractFragmentedBits(uint32_t instr, int upperBit, int lowerBit) {
 
 // sign extend an n-bit number.
 
-void signExtend(int32_t *i, int n) {
+void signExtend(int32_t *num, int n) {
     if (n > INTWIDTH) {
         fprintf(stderr, "Error in util: Attempting to sign extend a %d bit"
                 "number to %d bits", n, INTWIDTH);
@@ -171,6 +172,6 @@ void signExtend(int32_t *i, int n) {
 
     const int numPaddingBits = INTWIDTH - n;
 
-    *i <<= numPaddingBits;
-    *i = binaryShift(*i, ASR, numPaddingBits).result;
+    *num <<= numPaddingBits;
+    *num = binaryShift(*num, ASR, numPaddingBits).result;
 }

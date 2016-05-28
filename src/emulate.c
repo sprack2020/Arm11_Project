@@ -65,10 +65,6 @@ int main(int argc, char **argv) {
 }
 
 // Gets the next instruction from memory and increments PC
-// Crr
-// possible errors:
-//     - for loop logic
-//     - PC += INSTR_LENGTH: should be INSTR_LENGTH * 8bits?
 uint32_t getNextInstr(void) {
     uint32_t nextInstr = 0;
 

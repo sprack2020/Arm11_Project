@@ -9,9 +9,9 @@
 // behavior: checks opcode and performs instruction, possibly writes result to register and updates flags
 
 void dataProcess(uint32_t instr) {
-    bool I = (bool) extractBit(instr, IMM_BIT);
+    bool I = extractBit(instr, IMM_BIT);
     uint32_t opcode = extractFragmentedBits(instr, OPCODE_UPPER, OPCODE_LOWER);
-    bool S = (bool) extractBit(instr, S_BIT);
+    bool S = extractBit(instr, S_BIT);
     uint32_t RnVal = REGFILE[extractBits(instr, Rn_UPPER, Rn_LOWER)];
     uint32_t Rd = extractBits(instr, Rd_UPPER, Rd_LOWER);
     ShiftResult operand2WC = getOperand2(instr, I);
@@ -54,7 +54,7 @@ void dataProcess(uint32_t instr) {
             result = operand2;
             break;
         default:
-            fprintf(stderr, "invalid opcode in dataProcess: opcode was %d (0x%01x)\n", opcode, opcode);
+            fprintf(stderr, "invalid opcode in dataProcess: opcode was %d (0x%08x)\n", opcode, opcode);
             exit(2);
     }
 
@@ -62,7 +62,7 @@ void dataProcess(uint32_t instr) {
     if (S) {
         updateCPSR(C, Cbit);
         updateCPSR(!result, Zbit);
-        updateCPSR((bool) extractBit(result, MSB), Nbit);
+        updateCPSR((bool) extractBit(result, Nbit), Nbit);
     }
 
     if (writeResult) {

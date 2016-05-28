@@ -17,8 +17,8 @@
 #define MSB 7
 #define A_BIT 13
 #define S_BIT 12
-#define LSB_UPPER 31
-#define LSB_LOWER 24
+#define LSB_UPPER 7
+#define LSB_LOWER 0
 #define IMM_BIT 1
 #define PREPOST_BIT 0
 #define UP_BIT 15
@@ -40,8 +40,8 @@
 #define SHIFT_TYPE_UPPER 30
 #define SHIFT_TYPE_LOWER 29
 #define REG_SHIFT_BIT 28
-#define OFFSET_UPPER 8    // for branch instr, don't know if these are right?
-#define OFFSET_LOWER 31
+#define OFFSET_UPPER 15
+#define OFFSET_LOWER 24
 #define OPCODE_UPPER 0
 #define OPCODE_LOWER 13
 #define bit27 3
@@ -50,7 +50,7 @@
 #define SWAP_INDEX_ENDIANNESS(BIT) CHAR_BIT * (3 - (BIT) / CHAR_BIT) \
                                     + (BIT) % CHAR_BIT
 
-typedef enum {LSL = 00, LSR = 01, ASR = 10, ROR = 11} shiftType;
+typedef enum {LSL = 0, LSR = 1, ASR = 2, ROR = 3} shiftType;
 
 typedef struct {
   uint32_t result;
@@ -61,10 +61,10 @@ ShiftResult binaryShift(uint32_t shiftee, shiftType st, uint32_t amount);
 uint32_t rightShiftCarry(uint32_t shiftee, uint32_t amount);
 uint32_t createMask(unsigned int lower, unsigned int upper);
 uint32_t extractBits(uint32_t binaryNumber, int j, int LB);
-uint32_t extractBit (uint32_t binaryNumber, int i);
+bool extractBit (uint32_t binaryNumber, int i);
 void read32Bits(uint32_t *dest, uint8_t *src);
 uint32_t extractFragmentedBits(uint32_t instr, int upperBit, int lowerBit);
 void swapEndianness(uint32_t *number);
-void signExtend(int32_t *i, int n);
+void signExtend(int32_t *num, int n);
 
 #endif //ARM11_39_BINARYSHIFT_H

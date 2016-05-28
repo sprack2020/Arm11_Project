@@ -23,7 +23,7 @@ bool decodeAndExecute(uint32_t instr) {
         // puts("Executing data transfer instruction\n");
         dataTransfer(instr);
     }
-    else if (mulCheck && pattern == MUL_PATTERN) {
+    else if (!mulCheck && pattern == MUL_PATTERN) {
         // puts("Executing multiplier instruction\n");
         iMultiply(instr);
     }
@@ -31,5 +31,6 @@ bool decodeAndExecute(uint32_t instr) {
         // puts("Executing data process instruction\n");
         dataProcess(instr);
     }
-        return false;
+
+    return false;
 }

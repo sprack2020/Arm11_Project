@@ -5,8 +5,9 @@
 
 // prototypes
 uint32_t calculateOffset(uint32_t offsetBits, bool isImmediateOffset);
-void load(uint32_t toLoad, uint32_t Rd);
-void store(uint32_t Rn, uint32_t Rd);
+void load(uint32_t toLoadAddr, uint32_t Rd);
+void store(uint32_t RnVal, uint32_t Rd);
+bool checkValidAddress(uint32_t address);
 
 // PRE: instr is a data transfer instruction
 // behavior: Loads/stores access of memory as described in spec
@@ -57,17 +58,36 @@ uint32_t calculateOffset(uint32_t instr, bool isImmediateOffset) {
 }
 
 // Loads the data from MEM[Rn] into Rd
-void load(uint32_t toLoad, uint32_t Rd) {
-    read32Bits(REGFILE + Rd, MEM + toLoad);
+void load(uint32_t toLoadAddr, uint32_t Rd) {
+    if (!checkValidAddress(toLoadAddr)) {
+        return;
+    }
+
+    read32Bits(REGFILE + Rd, MEM + toLoadAddr);
     swapEndianness(REGFILE + Rd);
 }
 
 // stores the data from Rn into memory starting at address Rd
-void store(uint32_t Rn, uint32_t toStore) {
+void store(uint32_t RnVal, uint32_t toStore) {
+    if (!checkValidAddress(RnVal)) {
+        return;
+    }
+
     const int n = REG_LENGTH / MEM_LENGTH;
 
     for (int i = n - 1; i >= 0; i--) {
-        MEM[Rn + i] = extractBits(toStore, (i + 1) * MEM_LENGTH - 1,
+        MEM[RnVal + i] = extractBits(toStore, (i + 1) * MEM_LENGTH - 1,
                 i * MEM_LENGTH);
     }
+}
+
+bool checkValidAddress(uint32_t address) {
+    bool isValid = true;
+
+    if (address + (REG_LENGTH / MEM_LENGTH) - 1 > MEM_SIZE) {
+        printf("Error: Out of bounds memory access at address 0x%08x\n", address);
+        isValid = false;
+    }
+
+    return isValid;
 }

@@ -3,6 +3,8 @@
 //
 #include "branch.h"
 
+void clearBit(int32_t *num, int i);
+
 // PRE: instr is a branch instruction
 // behavior: adds the offset to PC
 void branch(uint32_t instr) {
@@ -10,9 +12,15 @@ void branch(uint32_t instr) {
     // the branch, but extractBits returns an unsigned int
     int32_t offset = extractFragmentedBits(instr, OFFSET_UPPER, OFFSET_LOWER);
 
-    // sign extend and shift offset
-    signExtend(&offset, OFFSET_SIZE);
+    // shift left
     offset <<= SHIFT_TO_OFFSET;
+
+    // truncate back to 24 bits
+    clearBit(&offset, OFFSET_SIZE);
+    clearBit(&offset, OFFSET_SIZE + 1);
+
+    // sign extend offset
+    signExtend(&offset, OFFSET_SIZE);
 
     // add the offset to PC
     int32_t newPC = ((int32_t) PC) + offset;
@@ -25,4 +33,8 @@ void branch(uint32_t instr) {
     }
 
     PC = (uint32_t) newPC;
+}
+
+void clearBit(int32_t *num, int i) {
+    *num &= ~(1 << i);
 }

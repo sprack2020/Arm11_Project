@@ -11,20 +11,21 @@ void iMultiply(uint32_t instr) {
     uint32_t Rd = extractBits(instr, Rd_MUL_UPPER, Rd_MUL_LOWER);
     uint32_t RnVal = REGFILE[extractBits(instr, Rn_MUL_UPPER, Rn_MUL_LOWER)];
     uint32_t RsVal = REGFILE[extractBits(instr, Rs_UPPER, Rs_LOWER)];
-    uint32_t Rm = extractBits(instr, Rm_UPPER, Rm_LOWER);
+    uint32_t RmVal = REGFILE[extractBits(instr, Rm_UPPER, Rm_LOWER)];
     bool Abit = (bool) extractBit(instr, A_BIT);
     bool Sbit = (bool) extractBit(instr, S_BIT);
     uint32_t acc = 0;
     uint32_t result;
 
     if (Abit) {
-        acc = REGFILE[Rm];
+        acc = RnVal;
     }
-    result = RnVal * RsVal + acc;
+    result = RmVal * RsVal + acc;
 
 
     if (Sbit) {
-        updateCPSR((bool) extractBit(result, MSB), Nbit); //Nbit = bit 31 of result
+        //Nbit = bit 31 of result
+        updateCPSR((bool) extractBit(result, Nbit), Nbit);
         updateCPSR(result != 0, Zbit);
     }
 

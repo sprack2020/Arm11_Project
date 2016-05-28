@@ -11,12 +11,12 @@
 bool checkCond(uint32_t instr) {
 
     bool N, Z, V;
-    N = (bool) extractBit(CPSR, Nbit);
-    Z = (bool) extractBit(CPSR, Zbit);
-    V = (bool) extractBit(CPSR, Vbit);
+    N = extractBit(CPSR, Nbit);
+    Z = extractBit(CPSR, Zbit);
+    V = extractBit(CPSR, Vbit);
 
     Cond cond;
-    cond.c0 = (bool) extractBit(instr, cond0);
+    cond.c0 = extractBit(instr, cond0);
     cond.c321 = (uint8_t) extractBits(instr, cond3, cond1);
 
     switch (cond.c321) {
