@@ -12,8 +12,8 @@ void iMultiply(uint32_t instr) {
     uint32_t RnVal = REGFILE[extractBits(instr, Rn_MUL_UPPER, Rn_MUL_LOWER)];
     uint32_t RsVal = REGFILE[extractBits(instr, Rs_UPPER, Rs_LOWER)];
     uint32_t RmVal = REGFILE[extractBits(instr, Rm_UPPER, Rm_LOWER)];
-    bool Abit = (bool) extractBit(instr, A_BIT);
-    bool Sbit = (bool) extractBit(instr, S_BIT);
+    bool Abit = extractBit(instr, A_BIT);
+    bool Sbit = extractBit(instr, S_BIT);
     uint32_t acc = 0;
     uint32_t result;
 
@@ -25,7 +25,7 @@ void iMultiply(uint32_t instr) {
 
     if (Sbit) {
         //Nbit = bit 31 of result
-        updateCPSR((bool) extractBit(result, Nbit), Nbit);
+        updateCPSR(extractBit(result, Nbit), Nbit);
         updateCPSR(result != 0, Zbit);
     }
 

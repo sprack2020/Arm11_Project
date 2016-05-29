@@ -16,7 +16,7 @@ ShiftResult getOperand2(uint32_t instr, bool immediate) {
         operand2 = binaryShift(imVal, ROR, rotAmount);
     }
     else {
-        bool isRegShift = (bool) extractBit(instr, REG_SHIFT_BIT);
+        bool isRegShift = extractBit(instr, REG_SHIFT_BIT);
         shiftType st = (shiftType) extractBits(instr, SHIFT_TYPE_UPPER, SHIFT_TYPE_LOWER);
         uint32_t RmVal = REGFILE[extractBits(instr, Rm_UPPER , Rm_LOWER)];
         uint32_t shiftAmount;

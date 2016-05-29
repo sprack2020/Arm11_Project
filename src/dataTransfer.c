@@ -13,7 +13,7 @@ bool checkValidAddress(uint32_t address);
 // behavior: Loads/stores access of memory as described in spec
 void dataTransfer(uint32_t instr) {
     // get I, l, u, Rn, Rd, P, offset
-    bool isImmediateOffset = (bool) extractBit(instr, IMM_BIT);
+    bool isImmediateOffset = extractBit(instr, IMM_BIT);
     uint32_t isPreIndex = extractBit(instr, PREPOST_BIT);
     uint32_t isUp = extractBit(instr, UP_BIT);
     uint32_t isLoad = extractBit(instr, LOAD_BIT);

@@ -9,9 +9,9 @@
 // i.e. branch(instr), dataTransfer(instr) etc.
 bool decodeAndExecute(uint32_t instr) {
 
-    bool isBranch = (bool) extractBit(instr, bit27);
-    bool isDataTransfer = (bool) extractBit(instr, bit26);
-    bool mulCheck = (bool) extractBit(instr, bit25);
+    bool isBranch = extractBit(instr, bit27);
+    bool isDataTransfer = extractBit(instr, bit26);
+    bool mulCheck = extractBit(instr, bit25);
     uint32_t pattern = extractBits(instr, PATTERN_UPPER, PATTERN_LOWER);
 
     if (isBranch) {

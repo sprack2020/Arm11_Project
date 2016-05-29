@@ -62,7 +62,7 @@ void dataProcess(uint32_t instr) {
     if (S) {
         updateCPSR(C, Cbit);
         updateCPSR(!result, Zbit);
-        updateCPSR((bool) extractBit(result, Nbit), Nbit);
+        updateCPSR(extractBit(result, Nbit), Nbit);
     }
 
     if (writeResult) {

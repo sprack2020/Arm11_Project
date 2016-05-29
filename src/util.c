@@ -32,8 +32,8 @@ ShiftResult binaryShift(uint32_t shiftee, shiftType st, uint32_t amount) {
             break;
 
         case ASR:
-            sr.carry = (bool) extractBit(shiftee, amount - 1);
-            bool msb = (bool) extractBit(shiftee, INTWIDTH - 1);
+            sr.carry = extractBit(shiftee, amount - 1);
+            bool msb = extractBit(shiftee, INTWIDTH - 1);
             uint32_t resultTop = 0;
             if (msb) {
                 resultTop = createMask(INTWIDTH - amount, INTWIDTH - 1);
