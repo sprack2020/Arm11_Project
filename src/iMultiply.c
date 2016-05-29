@@ -9,7 +9,6 @@
 void iMultiply(uint32_t instr) {
 
     uint32_t Rd = extractBits(instr, Rd_MUL_UPPER, Rd_MUL_LOWER);
-    uint32_t RnVal = REGFILE[extractBits(instr, Rn_MUL_UPPER, Rn_MUL_LOWER)];
     uint32_t RsVal = REGFILE[extractBits(instr, Rs_UPPER, Rs_LOWER)];
     uint32_t RmVal = REGFILE[extractBits(instr, Rm_UPPER, Rm_LOWER)];
     bool Abit = extractBit(instr, A_BIT);
@@ -18,7 +17,7 @@ void iMultiply(uint32_t instr) {
     uint32_t result;
 
     if (Abit) {
-        acc = RnVal;
+        acc = REGFILE[extractBits(instr, Rn_MUL_UPPER, Rn_MUL_LOWER)];
     }
     result = RmVal * RsVal + acc;
 
