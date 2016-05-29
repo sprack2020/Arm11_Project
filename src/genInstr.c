@@ -37,13 +37,15 @@ typedef enum {
 #define RSSHIFT 7
 #define RMSHIFT 0
 #define OP2SHIFT 0
-#define OFFSETSHIFT 0
+#define SDTOFFSHIFT 0
+#define BROFFSHIFT 0
 
 //non-input bit masks (bits that are always have the same value)
 //for various instructions
-#define DPMASK AL << CONDSHIFT
+#define DPMASK  AL << CONDSHIFT
 #define MULMASK AL << CONDSHIFT | 0x9 << 4
 #define SDTMASK AL << CONDSHIFT | 0x1 << 26
+#define BRMASK 0xA << 24
 
 //generate a data processing instruction with S set to 0 and a condition of
 //always. Assumes all field inputs are of appropriate length
@@ -68,6 +70,8 @@ uint32_t genMul(bool accumulate, int rd, int rn,
            rm         << RMSHIFT        ;
 }
 
+//generates a singel data transfer instruction  with a condition of always.
+//assumes all field inputs are of appropriate length
 uint32_t genSDT(bool immediate, bool preIndexing, bool up, bool load, int rn,
                 int rd, int offset) {
     return SDTMASK                   |
@@ -77,7 +81,13 @@ uint32_t genSDT(bool immediate, bool preIndexing, bool up, bool load, int rn,
            load        << LSHIFT     |
            rn          << RNSHIFT    |
            rd          << RDSHIFT    |
-           offset      << OFFSETSHIFT;
+           offset      << SDTOFFSHIFT;
 }
 
-
+//generates a branch instruction.
+//assumes all field inputs are of appropriate length
+uint32_t genBranch(int cond, long int offset) {
+    return BRMASK              |
+           cond   << CONDSHIFT |
+           offset << BROFFSHIFT;
+}
