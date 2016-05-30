@@ -4,30 +4,30 @@ project(arm11_39)
 set(CMAKE_C_FLAGS "-Wall -g -D_POSIX_SOURCE -D_BSD_SOURCE -std=c99 -Werror -pedantic")
 
 set(SOURCE_FILES
-        src/decodeAndExecute.c
-        src/branch.c
-        src/dataTransfer.c
-        src/checkCond.c
-        src/printState.c
-        src/iMultiply.c
-        src/dataProcess.c
-        src/getOperand2.c
-        src/updateCPSR.c
-        src/util.c
+        src/emulator/decodeAndExecute.c
+        src/emulator/branch.c
+        src/emulator/dataTransfer.c
+        src/emulator/checkCond.c
+        src/emulator/printState.c
+        src/emulator/iMultiply.c
+        src/emulator/dataProcess.c
+        src/emulator/getOperand2.c
+        src/emulator/updateCPSR.c
+        src/emulator/util.c
 )
 
 set(HEADER_FILES
         src/emulate.h
-        src/decodeAndExecute.h
-        src/branch.h
-        src/dataTransfer.h
-        src/checkCond.h
-        src/printState.h
-        src/iMultiply.h
-        src/dataProcess.h
-        src/getOperand2.h
-        src/updateCPSR.h
-        src/util.h
+        src/emulator/decodeAndExecute.h
+        src/emulator/branch.h
+        src/emulator/dataTransfer.h
+        src/emulator/checkCond.h
+        src/emulator/printState.h
+        src/emulator/iMultiply.h
+        src/emulator/dataProcess.h
+        src/emulator/getOperand2.h
+        src/emulator/updateCPSR.h
+        src/emulator/util.h
 )
 
 include_directories(src)

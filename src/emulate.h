@@ -8,10 +8,10 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-#include "checkCond.h"
-#include "decodeAndExecute.h"
-#include "printState.h"
-#include "util.h"
+#include "emulator/checkCond.h"
+#include "emulator/decodeAndExecute.h"
+#include "emulator/printState.h"
+#include "emulator/util.h"
 
 #define MEM_SIZE 65536
 #define NUM_REGISTERS 17
