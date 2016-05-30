@@ -1,4 +1,4 @@
-#include "genInstr.h"
+#include <assembler/genInstr.h>
 
 //generate a data processing instruction with S set to 0 and a condition of
 //always. Assumes all field inputs are of appropriate length

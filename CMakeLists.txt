@@ -3,6 +3,8 @@ project(arm11_39)
 
 set(CMAKE_C_FLAGS "-Wall -g -D_POSIX_SOURCE -D_BSD_SOURCE -std=c99 -Werror -pedantic")
 
+# EMULATOR
+
 set(SOURCE_FILES
         src/emulator/decodeAndExecute.c
         src/emulator/branch.c
@@ -13,7 +15,7 @@ set(SOURCE_FILES
         src/emulator/dataProcess.c
         src/emulator/getOperand2.c
         src/emulator/updateCPSR.c
-        src/emulator/util.c
+        src/util.c
 )
 
 set(HEADER_FILES
@@ -27,14 +29,33 @@ set(HEADER_FILES
         src/emulator/dataProcess.h
         src/emulator/getOperand2.h
         src/emulator/updateCPSR.h
-        src/emulator/util.h
+        src/util.h
 )
 
 include_directories(src)
 
 add_executable(emulate src/emulate.c ${SOURCE_FILES} ${HEADER_FILES})
-#add_executable(assemble src/assemble.c ${SOURCE_FILES} ${HEADER_FILES})
 
+################################################################################
+#EMULATOR
+
+set(ASSEMBLER_SOURCE_FILES
+        src/assembler/genInstr.c
+        src/assembler/io.c
+        src/assemble.c
+        src/util.c
+        src/assembler/assembler.c src/assembler/assembler.h)
+
+set(ASSEMBLER_HEADERS
+        src/assembler/io.h
+        src/assembler/genInstr.h
+        src/util.h
+    )
+
+add_executable(assemble src/assemble.c ${ASSEMBLER_SOURCE_FILES} ${ASSEMBLER_HEADER_FILES})
+
+################################################################################
+# TEST_EMULATOR
 
 set(TEST_SOURCE_FILES
         test/emulate/branch_test.c

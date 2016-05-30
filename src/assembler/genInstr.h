@@ -2,6 +2,7 @@
 #define ARM11_GENINSTR_H
 
 #include <stdbool.h>
+#include <stdint.h>
 
 typedef enum {
     AND = 0,
@@ -26,7 +27,7 @@ typedef enum {
     AL = 14
 } CondCodes;
 
-//bit positioning constants
+// bit positioning constants
 #define CONDSHIFT 27
 #define ISHIFT 25
 #define PSHIFT 24
@@ -43,16 +44,15 @@ typedef enum {
 #define SDTOFFSHIFT 0
 #define BROFFSHIFT 0
 
-//non-input bit masks (bits that are always have the same value)
-//for various instructions
+// non-input bit masks (bits that are always have the same value)
+// for various instructions
 #define DPMASK  AL << CONDSHIFT
 #define MULMASK AL << CONDSHIFT | 0x9 << 4
 #define SDTMASK AL << CONDSHIFT | 0x1 << 26
 #define BRMASK 0xA << 24
 
 uint32_t genDP(bool immediate, int opcode, int rn, int rd, int operand2);
-uint32_t genMul(bool accumulate, int rd, int rn,
-                int rs, int rm);
+uint32_t genMul(bool accumulate, int rd, int rn, int rs, int rm);
 uint32_t genSDT(bool immediate, bool preIndexing, bool up, bool load, int rn,
                 int rd, int offset);
 uint32_t genBranch(int cond, long int offset);

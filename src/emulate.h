@@ -11,7 +11,7 @@
 #include "emulator/checkCond.h"
 #include "emulator/decodeAndExecute.h"
 #include "emulator/printState.h"
-#include "emulator/util.h"
+#include "util.h"
 
 #define MEM_SIZE 65536
 #define NUM_REGISTERS 17

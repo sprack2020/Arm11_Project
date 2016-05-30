@@ -8,8 +8,8 @@
 
 #include <stdint.h>
 #include <stdio.h>
-#include "util.h"
-#include "emulate.h"
+#include <util.h>
+#include <emulate.h>
 
 #define OFFSET_SIZE 24
 #define SHIFT_TO_OFFSET 2
