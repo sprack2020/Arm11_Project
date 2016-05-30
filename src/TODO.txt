@@ -1,0 +1,139 @@
+- in decodeAndExecute, instr not being passed to its appropriate handler
+- make printing error msg macro or use perror
+- ensure !P -> Rn != Rm in data transfer
+- ensure Rm != PC in data transfer
+- >> in binaryShift
+
+
+//// emulate.c
+//
+//int main2(int argc, char *argv[]) {
+//    struct emulator emulator;
+//    emulator_init(&emulator);
+//    emulator_run(&emulator);
+//    emulator_deinit(&emulator);
+//}
+
+//// end emulate.c
+
+
+
+//// memory_util.h
+
+
+
+//// end_util
+
+#define GEN_IMPL_NEW(T) struct T *T##_new() {\
+    return T##_init(malloc(sizeof(struct T)));\
+}\
+
+#define NEW(T) T##_new()
+
+#define DELETE(T) T##_delete(T)
+
+#define GEN_IMPL_DELETE(T) void T##_delete(struct T *this) {\
+    free(T##_deinit(this));\
+}\
+
+//// delete this: emulator.h
+
+struct emulator {
+
+    ARMstate state;
+
+};
+
+GEN_IMPL_NEW(emulator)
+
+GEN_IMPL_DELETE(emulator)
+
+struct emulator *emulator_init(struct emulator *this);
+
+struct emulator *emulator_deinit(struct emulator *this);
+
+void emulator_run(struct emulator *this);
+
+uint32_t emulator_get_next_instr(struct emulator *this);
+
+//// end emulator.h
+
+//// emulator.c
+
+void test_new() {
+    struct emulator *emulator = NEW(emulator);
+    DELETE(emulator);
+    struct ARMstate *arm_state = NEW(ARMstate);
+}
+
+struct emulator *emulator_init(struct emulator *this) {
+    ARMstate_init(&this->state);
+    return this;
+}
+
+
+struct emulator *emulator_deinit(struct emulator *this) {
+    ARMstate_deinit(&this->state);
+    return this;
+}
+
+uint32_t emulator_get_next_instr(struct emulator *this) {
+    uint32_t nextInstr = 0;
+
+    read32Bits(&nextInstr, ARMState_instr_at_pc(&this->state));
+
+    this->state.registers[PC_INDEX] += INSTR_LENGTH;
+
+    return nextInstr;
+}
+
+//// end emulator.c
+
+//// ARMstate.h
+
+struct arm_state {
+
+    uint8_t memory[65536];
+    uint32_t registers[17];
+
+};
+
+//typedef struct ARMstate {
+//    uint8_t *memory;
+//    uint32_t *registers;
+//} ARMstate;
+
+struct ARMstate *ARMstate_init(struct ARMstate *this);
+
+struct ARMstate *ARMstate_deinit(struct ARMstate *this);
+
+uint32_t ARMState_pc(ARMstate *this);
+uint8_t ARMState_instr_at_pc(ARMstate *this);
+
+//// end ARMstate.h
+
+//// ARMstate.c
+
+// allocates and zeroes out the ARMstate
+ARMstate *ARMstate_init(ARMstate *this) {
+    this->memory = calloc(MEM_SIZE, sizeof(uint8_t));
+    this->registers = calloc(NUM_REGISTERS, sizeof(uint32_t));
+    return this;
+}
+
+// frees all the memory we used to store the system state
+ARMstate *ARMstate_deinit(ARMstate *this) {
+    free(this->memory);
+    free(this->registers);
+    return this;
+}
+
+uint32_t ARMState_pc(ARMstate *this) {
+    return this->registers[PC_INDEX];
+}
+
+uint8_t ARMState_instr_at_pc(ARMstate *this) {
+    return this->memory[ARMState_pc(this)];
+}
+
+//// end ARMstate.c

@@ -1,15 +1,33 @@
 CC      = gcc
-CFLAGS  = -Wall -g -D_POSIX_SOURCE -D_BSD_SOURCE -std=c99 -Werror -pedantic
+CFLAGS  = -Wall -g -D_POSIX_SOURCE -D_BSD_SOURCE -std=c99 -Werror -pedantic -I src
+LDFLAGS =
+SOURCES = emulate.c branch.c checkCond.c dataProcess.c dataTransfer.c decodeAndExecute.c getOperand2.c iMultiply.c printState.c updateCPSR.c util.c
+OBJECTS = $(SOURCES:.c=.o)
+EXECUTABLE = emulate
 
-.SUFFIXES: .c .o
+all: emulate
 
-.PHONY: all clean
+# emulator: $(SOURCES) $(EXECUTABLE)
+#
+# $(EXECUTABLE): $(OBJECTS)
+# 	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
 
-all: assemble emulate
+# %.o: %.c
+# 	$(CC) $(CFLAGS) $< -o $@
 
-assemble: assemble.o
+emulate:
+	$(CC) $(SOURCES) $(CFLAGS) -o emulate
 
-emulate: emulate.o
+# Given makefile, don't know how these work?
+# .SUFFIXES: .c .o
+#
+# .PHONY: all clean
+#
+# all: assemble emulate
+#
+# assemble: assemble.o
+#
+# emulate: emulate.o
 
 clean:
 	rm -f $(wildcard *.o)

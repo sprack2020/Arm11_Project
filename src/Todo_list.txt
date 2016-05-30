@@ -1,0 +1,29 @@
+Todo list:
+
+// when you complete something on the list don't remove it.
+// instead write your name next to it when you start working on it (so we don't accidentally do it twice)
+// and write the status of its production e.g. just started/testing/finished etc
+
+Emulate.c:
+    - load file into memory: shiraz/debugging/testing
+    - fetching the instruction and passing it to decodeAndExecute: shiraz/debugging/testing
+    - printState: shiraz/done
+    - checkCond: Tom/done?
+
+decodeAndExecute: Tom/done
+
+branch:
+    - Shiraz/testing
+
+dataProcess: Tom/coding done
+    - updateCPSR: Tom/coding done
+    - getOperand2: Tom/coding done
+
+dataTransfer:
+    - shiraz/testing
+
+iMultiply: Sarthak/Finished basic logic/pseudocode to be replaced tomorrow
+
+util:
+    - binaryShift:  Andy/finished but maybe broken, ASR wrong,
+    - extractBits: Shiraz/done

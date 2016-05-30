@@ -33,3 +33,9 @@ assemble
 *.nav
 *.toc
 
+#CLion project folder
+.idea/
+
+#files for my use - Shiraz
+testResult.txt
+backups_from_conflicts
