@@ -23,7 +23,7 @@ void Assembler_init(Assembler *a, char *sourceFile) {
     a->currInstrAddr = 0;
 }
 
-// assembles
+// assembles the source file
 void assemble(Assembler *this) {
     // do first pass
     createSymbolTable(this);
@@ -35,14 +35,16 @@ void assemble(Assembler *this) {
     writeToBinaryFile(this);
 }
 
-void createSymbolTable(Assembler *this) {
-    // do some shit
-}
+// static bool isLabel()
 
-void parseInstructions(Assembler *this) {
+static void createSymbolTable(Assembler *this) {
 
 }
 
-void writeToBinaryFile(Assembler *this) {
+static void parseInstructions(Assembler *this) {
+
+}
+
+static void writeToBinaryFile(Assembler *this) {
 
 }

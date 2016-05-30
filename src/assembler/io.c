@@ -3,7 +3,7 @@
 //open the source file in read only text-mode, and report any errors
 FILE *openFile(char *path, char *mode) {
     FILE *filePtr = fopen(path, mode);
-    if (filePtr == NULL) {
+    if (!filePtr) {
         fprintf(stderr, "Error opening source file: %s\n", path);
         exit(EXIT_FAILURE);
     }

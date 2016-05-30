@@ -44,13 +44,18 @@ set(ASSEMBLER_SOURCE_FILES
         src/assembler/io.c
         src/assemble.c
         src/util.c
-        src/assembler/assembler.c src/assembler/assembler.h)
+        src/assembler/assembler.c
+        src/assembler/ListMap.c
+    )
 
 set(ASSEMBLER_HEADERS
         src/assembler/io.h
         src/assembler/genInstr.h
         src/util.h
+        src/assembler/assembler.h
+        src/assembler/ListMap.h
     )
+
 
 add_executable(assemble src/assemble.c ${ASSEMBLER_SOURCE_FILES} ${ASSEMBLER_HEADER_FILES})
 
