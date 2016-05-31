@@ -1,10 +1,11 @@
 #ifndef ARM11_IO_H
 #define ARM11_IO_H
 
+#include <assembler/assembler.h>
 #include <stdio.h>
 #include <stdint.h>
 #include <util/util.h>
-#include <assembler/assembler.h>
+
 
 #define MAX_LINE_LENGTH 512 //maximum line length including newline/EOF
 

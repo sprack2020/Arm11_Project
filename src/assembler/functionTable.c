@@ -15,7 +15,7 @@ void functionTableAdd(
         char *mnen,
         assembleFunctionPointer func
 ) {
-    ListMapAdd(&this->listmap, mnen, func);
+    ListMapAdd(&this->listmap, mnen, &func);
 }
 
 assembleFunctionPointer functionTableGet(

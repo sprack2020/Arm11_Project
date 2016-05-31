@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <assembler/assemblerStruct.h>
 #include <assembler/assembler.h>
+
 
 int main(int argc, char **argv) {
     //check for correct number of arguments

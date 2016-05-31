@@ -49,7 +49,11 @@ set(ASSEMBLER_SOURCE_FILES
         src/util/ListMap.c
         src/util/ListMapNode.c
         src/util/ListMapIterator.c
-    )
+        src/assembler/functionTable.c
+        src/assembler/symbolTable.c
+        src/assembler/tokenHandlers.c
+        src/assembler/tokenizer.c
+        src/assembler/assemblerStruct.h)
 
 set(ASSEMBLER_HEADERS
         src/assembler/io.h
@@ -60,6 +64,10 @@ set(ASSEMBLER_HEADERS
         src/util/ListMap.h
         src/util/ListMapNode.h
         src/util/ListMapIterator.h
+        src/assembler/functionTable.h
+        src/assembler/symbolTable.h
+        src/assembler/tokenHandlers.h
+        src/assembler/tokenizer.h
     )
 
 
@@ -96,5 +104,5 @@ set(TEST_ASSEMBLE_HEADER
 
 include_directories(test)
 
-add_executable(testassemble test/assemble/test_assemble.c ${TEST_ASSEMBLE_SRC} ${TEST_ASSEMBLE_HEADER_FILES} ${SOURCE_FILES} ${HEADER_FILES}
-        ${ASSEMBLER_SOURCE_FILES} ${ASSEMBLER_HEADER_FILES})
+#add_executable(testassemble test/assemble/test_assemble.c ${TEST_ASSEMBLE_SRC} ${TEST_ASSEMBLE_HEADER_FILES} ${SOURCE_FILES} ${HEADER_FILES}
+#        ${ASSEMBLER_SOURCE_FILES} ${ASSEMBLER_HEADER_FILES})

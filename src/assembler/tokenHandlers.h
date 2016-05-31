@@ -4,6 +4,7 @@
 
 #include <stdint.h>
 #include "assembler.h"
+#include <util/util.h>
 
 #ifndef ARM11_39_TOKENHANDLERS_H
 #define ARM11_39_TOKENHANDLERS_H

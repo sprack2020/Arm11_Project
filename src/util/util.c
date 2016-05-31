@@ -177,4 +177,19 @@ void signExtend(int32_t *num, int n) {
     *num = binaryShift(*num, ASR, numPaddingBits).result;
 }
 
+shiftType strToShiftType(char* string) {
+    if (strcmp(string, "lsl")) {
+        return LSL;
+    } else if (strcmp(string, "lsr")) {
+        return LSR;
+    } else if (strcmp(string, "asr")) {
+        return ASR;
+    } else if (strcmp(string, "ror")) {
+        return ROR;
+    } else {
+        fprintf(stderr, "invalid shift type");
+        exit(EXIT_FAILURE);
+    }
+}
+
 
