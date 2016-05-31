@@ -5,13 +5,8 @@
 #ifndef ARM11_39_TOKENIZER_H
 #define ARM11_39_TOKENIZER_H
 
-typedef struct tokens {
-    char *mnen;
-    char *rd;
-    char *tok1;
-    char *tok2;
-    char *tok3;
-    char *tok4;
-} tokens;
+#include <string.h>
+
+#define NUM_TOKENS 6
 
 #endif //ARM11_39_TOKENIZER_H

@@ -63,7 +63,7 @@ set(ASSEMBLER_HEADERS
     )
 
 
-add_executable(assemble src/assemble.c ${ASSEMBLER_SOURCE_FILES} ${ASSEMBLER_HEADER_FILES} src/assembler/symbolTable.c src/assembler/symbolTable.h src/assembler/functionTable.c src/assembler/functionTable.h src/assembler/tokenizer.c src/assembler/tokenizer.h)
+add_executable(assemble src/assemble.c ${ASSEMBLER_SOURCE_FILES} ${ASSEMBLER_HEADER_FILES} src/assembler/symbolTable.c src/assembler/symbolTable.h src/assembler/functionTable.c src/assembler/functionTable.h src/assembler/tokenizer.c src/assembler/tokenizer.h src/assembler/tokenHandlers.c src/assembler/tokenHandlers.h)
 
 ################################################################################
 # TEST_EMULATOR
