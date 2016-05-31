@@ -3,11 +3,13 @@
 //
 #include "ListMap.h"
 
+//initialise a list map
 ListMap *ListMapInit(ListMap *this) {
     this->first = NULL;
     return this;
 }
 
+//takes a deleter function pointer and deletes the nodes from first to last
 ListMap *ListMapDeinit(
         ListMap *this,
         void (*deleter)(void *key, void *value)

@@ -12,17 +12,18 @@
 #define INSTR_LENGTH 4
 
 typedef struct Assembler {
-    FILE *sourceFile;
-    FILE *binaryFile;
+    char *sourcePath;
+    char *binaryPath;
     char **sourceLines;
     uint32_t *binaryProgram;
     int numLines;
+    int numInstrs;
     int firstEmptyAddr;
     int currInstrAddr;
 } Assembler;
 
-Assembler *newAssembler(char *srcPath);
-void Assembler_init(Assembler *a, char *sourceFile);
+Assembler *newAssembler(char **argv);
+void assemblerInit(Assembler *a, char *sourceFile, char *binaryPath);
 void assemble(Assembler *this);
-
+void assemblerDeInit(Assembler *this);
 #endif //ARM11_39_ASSEMBLER_H
