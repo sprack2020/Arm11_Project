@@ -24,21 +24,6 @@ int countLines(FILE *file) {
     return numLines;
 }
 
-//read all the lines (delimited by \n) in file to an array of strings
-char **readLines(FILE *file) {
-    int numLines = countLines(file);
-    char** lines = malloc(sizeof(char *) * numLines);
-
-    for (unsigned int i = 0; i < numLines; ++i) {
-        char* str = malloc(sizeof(char) * MAX_LINE_LENGTH);
-        if (fgets(str, MAX_LINE_LENGTH, file)) {
-            fprintf(stderr, "Error reading line %u", i);
-            break;
-        }
-    }
-
-    return lines;
-}
 
 /*  writes length (big endian) instructions to file (as little endian)
  *  returns 1 if any errors occured, 0 otherwise.

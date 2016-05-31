@@ -11,7 +11,7 @@ int main(int argc, char **argv) {
 
     //open source file in text mode and read the lines into an array
     FILE* src = openFile(argv[1], "rt");
-    char** lines = readLines(src);
+    char** lines = initSourceLines(src);
     fclose(src);
 
     //TODO: turn lines into instructions, somehow
