@@ -7,7 +7,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include "util.h"
+#include "util/util.h"
 #include "getOperand2.h"
 #include "emulate.h"
 

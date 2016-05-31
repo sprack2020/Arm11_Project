@@ -23,6 +23,10 @@ void Assembler_init(Assembler *a, char *sourceFile) {
     a->currInstrAddr = 0;
 }
 
+void AssemblerDeinit(Assembler *this) {
+    fclose(this->sourceFile);
+}
+
 // assembles the source file
 void assemble(Assembler *this) {
     // do first pass

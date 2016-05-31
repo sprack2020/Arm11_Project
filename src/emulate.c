@@ -1,8 +1,5 @@
 #include "emulate.h"
 
-// contains the state of the ARM system we are emulating
-ARMstate state;
-
 int main(int argc, char **argv) {
     // allocate and zero out memory and registers
     initialiseARMstate();

@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include "emulate.h"
 #include "getOperand2.h"
-#include "util.h"
+#include "util/util.h"
 
 #define REG_LENGTH 32
 #define MEM_LENGTH 8

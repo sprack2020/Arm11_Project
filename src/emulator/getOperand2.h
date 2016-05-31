@@ -6,7 +6,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include "util.h"
+#include "util/util.h"
 #include "updateCPSR.h"
 #include "emulate.h"
 

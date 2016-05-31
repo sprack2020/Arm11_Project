@@ -8,7 +8,7 @@
 
 #include <stdint.h>
 #include <stdio.h>
-#include <util.h>
+#include <util/util.h>
 #include <emulate.h>
 
 #define OFFSET_SIZE 24

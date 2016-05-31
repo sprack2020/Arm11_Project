@@ -8,7 +8,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdbool.h>
-#include "util.h"
+#include "util/util.h"
 #include "branch.h"
 #include "dataProcess.h"
 #include "iMultiply.h"

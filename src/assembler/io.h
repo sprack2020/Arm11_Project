@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include <stdint.h>
-#include <util.h>
+#include <util/util.h>
 
 #define MAX_LINE_LENGTH 512 //maximum line length including newline/EOF
 
