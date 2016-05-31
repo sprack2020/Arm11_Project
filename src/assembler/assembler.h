@@ -7,6 +7,7 @@
 #include <assembler/io.h>
 #include <util/ListMap.h>
 #include <string.h>
+#include <assembler/symbolTable.h>
 
 #define LABEL_DELIMITER ":"
 #define INSTR_LENGTH 4

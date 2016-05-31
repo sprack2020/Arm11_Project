@@ -3,12 +3,10 @@
 //
 #include "assembler.h"
 
-static void createSymbolTable(Assembler *this, ListMap *symbolTable);
+
 static void parseInstructions(Assembler *this);
 static void writeToBinaryFile(Assembler *this);
-static void initSourceLines(Assembler *assembler);
-static void handleLabel(Assembler *this, char *line, int lineNo,
-        ListMap *symbolTable);
+
 
 
 // constructs a new assembler and returns a pointer to it
@@ -36,7 +34,7 @@ void assemble(Assembler *this) {
     ListMapInit(&symbolTable);
 
     // do first pass
-    createSymbolTable(this, &symbolTable);
+    createSymbolTableAndCountInstrs(this, &symbolTable);
 
     // do second pass
     parseInstructions(this);
@@ -45,59 +43,11 @@ void assemble(Assembler *this) {
     writeToBinaryFile(this);
 }
 
-//read all the lines (delimited by \n) in file to an array of strings
-static void initSourceLines(Assembler *assembler) {
-    //open the source file in read text mode.
-    FILE *sourceFile = openFile(assembler->sourcePath, "rt");
-
-    // get number of lines and allocate space for lines array.
-    int numLines = countLines(sourceFile);
-    assembler->numLines = numLines;
-    assembler->sourceLines = malloc(sizeof(char*) * numLines);
-
-    // allocate space for and read in each line
-    for (unsigned int i = 0; i < numLines; ++i) {
-        char* str = malloc(sizeof(char) * MAX_LINE_LENGTH);
-
-        if (fgets(str, MAX_LINE_LENGTH, sourceFile)) {
-            fprintf(stderr, "Error reading line %u\n", i);
-            exit(EXIT_FAILURE);
-        }
-
-        //put the string pointer into sourceLines
-        assembler->sourceLines[i] = str;
-    }
-    fclose(sourceFile);
-}
 
 void assemblerDeInit(Assembler *this) {
     //something
 }
 
-static void handleLabel(
-        Assembler *this,
-        char *line,
-        int lineNo,
-        ListMap *symbolTable
-) {
-    // get the label
-    char *label = strtok(line, LABEL_DELIMITER);
-
-    lineNo *= INSTR_LENGTH;
-    // if there is a label
-    if (label != NULL) {
-        ListMapAdd(symbolTable, label, &lineNo); // check warning
-    }
-}
-
-static void createSymbolTable(Assembler *this, ListMap *symbolTable) {
-    char *currLine;
-    for (int i = 0, n = this->numLines; i < n; ++i) {
-        currLine = this->sourceLines[i];
-
-        handleLabel(this, currLine, i, symbolTable);
-    }
-}
 
 static void parseInstructions(Assembler *this) {
     // initialise ListMap<mneumonic, functions>

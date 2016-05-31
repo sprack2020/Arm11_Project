@@ -63,7 +63,7 @@ set(ASSEMBLER_HEADERS
     )
 
 
-add_executable(assemble src/assemble.c ${ASSEMBLER_SOURCE_FILES} ${ASSEMBLER_HEADER_FILES})
+add_executable(assemble src/assemble.c ${ASSEMBLER_SOURCE_FILES} ${ASSEMBLER_HEADER_FILES} src/assembler/symbolTable.c src/assembler/symbolTable.h)
 
 ################################################################################
 # TEST_EMULATOR

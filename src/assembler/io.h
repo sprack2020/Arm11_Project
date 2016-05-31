@@ -11,5 +11,6 @@
 FILE *openFile(char *path, char *mode);
 int writeInstrs(FILE *file, uint32_t *instrs, int length);
 int countLines(FILE *file);
+void initSourceLines(Assembler *assembler);
 
 #endif //ARM11_IO_H
