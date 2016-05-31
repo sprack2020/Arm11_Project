@@ -39,7 +39,7 @@ uint32_t genSDT(bool immediate, bool preIndexing, bool up, bool load, int rn,
 
 //generates a branch instruction.
 //assumes all field inputs are of appropriate length
-uint32_t genBranch(int cond, long int offset) {
+uint32_t genBranch(int cond, uint32_t offset) {
     return BRMASK              |
            cond   << CONDSHIFT |
            offset << BROFFSHIFT;
