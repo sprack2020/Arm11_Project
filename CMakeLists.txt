@@ -1,11 +1,12 @@
 cmake_minimum_required(VERSION 3.5)
 project(arm11_39)
 
-set(CMAKE_C_FLAGS "-Wall -g -D_POSIX_SOURCE -D_BSD_SOURCE -std=c99 -Werror -pedantic")
+set(CMAKE_C_FLAGS "-Wall -g -D_POSIX_SOURCE -D_BSD_SOURCE -std=c99 \
+        -Werror -pedantic")
 
 # EMULATOR
 
-set(SOURCE_FILES
+set(EMULATOR_SOURCE_FILES
         src/emulator/decodeAndExecute.c
         src/emulator/branch.c
         src/emulator/dataTransfer.c
@@ -17,9 +18,9 @@ set(SOURCE_FILES
         src/emulator/getOperand2.c
         src/emulator/updateCPSR.c
         src/util/util.c
-)
+        )
 
-set(HEADER_FILES
+set(EMULATOR_HEADER_FILES
         src/emulate.h
         src/emulator/decodeAndExecute.h
         src/emulator/branch.h
@@ -32,14 +33,15 @@ set(HEADER_FILES
         src/emulator/getOperand2.h
         src/emulator/updateCPSR.h
         src/util/util.h
-)
+        )
 
 include_directories(src)
 
-add_executable(emulate src/emulate.c ${SOURCE_FILES} ${HEADER_FILES})
+add_executable(emulate src/emulate.c ${EMULATOR_SOURCE_FILES}
+        ${EMULATOR_HEADER_FILES})
 
 ################################################################################
-#EMULATOR
+#ASSEMBLER
 
 set(ASSEMBLER_SOURCE_FILES
         src/assembler/genInstr.c
@@ -53,7 +55,8 @@ set(ASSEMBLER_SOURCE_FILES
         src/assembler/symbolTable.c
         src/assembler/tokenHandlers.c
         src/assembler/tokenizer.c
-        src/assembler/assemblerStruct.h)
+        src/assembler/assemblerStruct.h
+        )
 
 set(ASSEMBLER_HEADERS
         src/assembler/io.h
@@ -68,41 +71,44 @@ set(ASSEMBLER_HEADERS
         src/assembler/symbolTable.h
         src/assembler/tokenHandlers.h
         src/assembler/tokenizer.h
-    )
+        )
 
-
-add_executable(assemble src/assemble.c ${ASSEMBLER_SOURCE_FILES} ${ASSEMBLER_HEADER_FILES} src/assembler/symbolTable.c src/assembler/symbolTable.h src/assembler/functionTable.c src/assembler/functionTable.h src/assembler/tokenizer.c src/assembler/tokenizer.h src/assembler/tokenHandlers.c src/assembler/tokenHandlers.h)
+add_executable(assemble src/assemble.c ${ASSEMBLER_SOURCE_FILES}
+        ${ASSEMBLER_HEADER_FILES})
 
 ################################################################################
-# TEST_EMULATOR
+# EMULATOR TESTS
 
-set(TEST_SOURCE_FILES
-        #test/emulate/branch_test.c
-        #test/emulate/emulate_test.c
-        #test/emulate/printState_test.c
-        #test/emulate/util_test.c
+set(EMULATOR_TEST_SOURCE_FILES
+        test/emulate/branch_test.c
+        test/emulate/emulate_test.c
+        test/emulate/printState_test.c
+        test/emulate/util_test.c
         src/util/ListMap.c
         test/assemble/ListMapTests.c
 )
 
-set(TEST_HEADER_FILES
-        #test/emulate/branch_test.h
-        #test/emulate/util_test.h
+set(EMULATOR_TEST_HEADER_FILES
+        test/emulate/branch_test.h
+        test/emulate/util_test.h
         test/assemble/ListMapTests.h
         src/util/ListMap.h
 )
 
-# TEST_ASSEMBLE
-
-set(TEST_ASSEMBLE_SRC
-        test/assemble/ListMapTests.c
-)
-
-set(TEST_ASSEMBLE_HEADER
-        test/assemble/ListMapTests.h
-)
-
-include_directories(test)
-
-#add_executable(testassemble test/assemble/test_assemble.c ${TEST_ASSEMBLE_SRC} ${TEST_ASSEMBLE_HEADER_FILES} ${SOURCE_FILES} ${HEADER_FILES}
-#        ${ASSEMBLER_SOURCE_FILES} ${ASSEMBLER_HEADER_FILES})
+# ASSEMBLER TESTS
+#
+#set(TEST_ASSEMBLE_SRC
+#        test/assemble/ListMapTests.c
+#        test/assemble/test_assemble.c
+#        )
+#
+#set(TEST_ASSEMBLE_HEADER
+#        test/assemble/ListMapTests.h
+#        )
+#
+#include_directories(test)
+#
+#add_executable(testassemble ${TEST_ASSEMBLE_SRC} ${TEST_ASSEMBLE_HEADER_FILES}
+#        ${SOURCE_FILES} ${HEADER_FILES} ${ASSEMBLER_SOURCE_FILES}
+#        ${ASSEMBLER_HEADER_FILES}
+#        )
