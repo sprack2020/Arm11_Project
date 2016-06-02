@@ -1,11 +1,12 @@
 cmake_minimum_required(VERSION 3.5)
 project(arm11_39)
 
-set(CMAKE_C_FLAGS "-Wall -g -D_POSIX_SOURCE -D_BSD_SOURCE -std=c99 -Werror -pedantic")
+set(CMAKE_C_FLAGS "-Wall -g -D_POSIX_SOURCE -D_BSD_SOURCE -std=c99
+    -Werror -pedantic")
 
 # EMULATOR
 
-set(SOURCE_FILES
+set(EMULATOR_SOURCE_FILES
         src/emulator/decodeAndExecute.c
         src/emulator/branch.c
         src/emulator/dataTransfer.c
@@ -19,7 +20,7 @@ set(SOURCE_FILES
         src/util/util.c
 )
 
-set(HEADER_FILES
+set(EMULATOR_HEADER_FILES
         src/emulate.h
         src/emulator/decodeAndExecute.h
         src/emulator/branch.h
@@ -36,10 +37,11 @@ set(HEADER_FILES
 
 include_directories(src)
 
-add_executable(emulate src/emulate.c ${SOURCE_FILES} ${HEADER_FILES})
+add_executable(emulate src/emulate.c ${EMULATOR_SOURCE_FILES}
+                ${EMULATOR_HEADER_FILES})
 
 ################################################################################
-#EMULATOR
+#ASSEMBLER
 
 set(ASSEMBLER_SOURCE_FILES
         src/assembler/genInstr.c
@@ -49,6 +51,7 @@ set(ASSEMBLER_SOURCE_FILES
         src/util/ListMap.c
         src/util/ListMapNode.c
         src/util/ListMapIterator.c
+        src/assembler/symbolTable.c
     )
 
 set(ASSEMBLER_HEADERS
@@ -60,10 +63,12 @@ set(ASSEMBLER_HEADERS
         src/util/ListMap.h
         src/util/ListMapNode.h
         src/util/ListMapIterator.h
+        src/assembler/symbolTable.h
     )
 
 
-add_executable(assemble src/assemble.c ${ASSEMBLER_SOURCE_FILES} ${ASSEMBLER_HEADER_FILES} src/assembler/symbolTable.c src/assembler/symbolTable.h)
+add_executable(assemble src/assemble.c ${ASSEMBLER_SOURCE_FILES}
+                ${ASSEMBLER_HEADER_FILES})
 
 ################################################################################
 # TEST_EMULATOR
@@ -96,5 +101,7 @@ set(TEST_ASSEMBLE_HEADER
 
 include_directories(test)
 
-add_executable(testassemble test/assemble/test_assemble.c ${TEST_ASSEMBLE_SRC} ${TEST_ASSEMBLE_HEADER_FILES} ${SOURCE_FILES} ${HEADER_FILES}
-        ${ASSEMBLER_SOURCE_FILES} ${ASSEMBLER_HEADER_FILES})
+add_executable(testassemble test/assemble/test_assemble.c ${TEST_ASSEMBLE_SRC}
+        ${TEST_ASSEMBLE_HEADER_FILES} ${EMULATOR_SOURCE_FILES}
+        ${EMULATOR_HEADER_FILES} ${ASSEMBLER_SOURCE_FILES}
+        ${ASSEMBLER_HEADER_FILES})
