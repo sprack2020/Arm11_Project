@@ -18,7 +18,7 @@ static uint32_t generateShift(char **tokens);
 bool hasNoRd(char* mnem);
 bool hasNoRn(char *mnem);
 
-uint32_t handleDataProcessing(Assembler assembler, char **tokens) {
+uint32_t handleDataProcessing(Assembler *assembler, char **tokens) {
     bool imm = false;
     int opcode = (int) mnemToOpcode(tokens[0]);
     if (hasNoRd(tokens[0])) {
@@ -37,7 +37,7 @@ uint32_t handleDataProcessing(Assembler assembler, char **tokens) {
     }
 }
 
-uint32_t handleMultiply(Assembler assembler, char **tokens) {
+uint32_t handleMultiply(Assembler *assembler, char **tokens) {
     uint32_t rd = getValue(tokens[1]);
     uint32_t rm = getValue(tokens[2]);
     uint32_t rs = getValue(tokens[3]);
@@ -50,19 +50,19 @@ uint32_t handleMultiply(Assembler assembler, char **tokens) {
     }
 }
 
-uint32_t handleSDT(Assembler assembler, char **tokens) {
+uint32_t handleSDT(Assembler *assembler, char **tokens) {
     return 0;
 }
 
-uint32_t handleBranch(Assembler assembler, char **tokens) {
+uint32_t handleBranch(Assembler *assembler, char **tokens) {
+
+}
+
+uint32_t handleHalt(Assembler *assembler, char **tokens) {
     return 0;
 }
 
-uint32_t handleHalt(Assembler assembler, char **tokens) {
-    return 0;
-}
-
-uint32_t handleLSL(Assembler assembler, char **tokens) {
+uint32_t handleLSL(Assembler *assembler, char **tokens) {
     //rearrange tokens and pass to DP handler.
     tokens[0] = "mov";
     tokens[4] = tokens[2];
@@ -185,4 +185,28 @@ bool hasNoRn(char *mnem) {
     return strcmp(mnem, "mov") == 0;
 }
 
-uint32_t calc
+uint32_t calcOffset(Assembler assembler, uint32_t address) {
+    return address - assembler.currInstrAddr - PIPELINE_LENGTH;
+}
+
+CondCodes mnemToCondCode(char *mnem) {
+    if (strcmp(mnem, "eq") == 0) {
+        return EQ;
+    } else if (strcmp(mnem, "ne") == 0){
+        return NE;
+    } else if (strcmp(mnem, "ge") == 0){
+        return GE;
+    } else if (strcmp(mnem, "lt") == 0){
+        return LT;
+    } else if (strcmp(mnem, "gt") == 0){
+        return GT;
+    } else if (strcmp(mnem, "le") == 0){
+        return LE;
+    } else {
+        return AL;
+    }
+}
+
+uint32_t getLabelAddress(Assembler *assembler, char *label) {
+    return (uint32_t) ListMapGet(assembler->symbolTable, label, strEq);
+}
