@@ -19,6 +19,7 @@ bool hasNoRd(char *mnem);
 bool hasNoRn(char *mnem);
 CondCodes mnemToCondCode(char *mnem);
 uint32_t getLabelAddress(Assembler *assembler, char *label);
+uint32_t calcOffset(Assembler assembler, uint32_t address);
 
 uint32_t handleDataProcessing(Assembler *assembler, char **tokens) {
     bool imm = false;
@@ -44,24 +45,65 @@ uint32_t handleMultiply(Assembler *assembler, char **tokens) {
     uint32_t rd = getValue(tokens[1]);
     uint32_t rm = getValue(tokens[2]);
     uint32_t rs = getValue(tokens[3]);
-
+    uint32_t rn;
     if (strcmp(tokens[0], "mla")) {
-        uint32_t rn = getValue(tokens[4]);
+        rn = getValue(tokens[4]);
         return genMul(true, rd, rn, rs, rm);
     } else {
-        return genMul(false, rd, 0, rs, rm);
+        rn = 0;
     }
+
+    return genMul(false, rd, 0, rs, rm);
 }
 
 uint32_t handleSDT(Assembler *assembler, char **tokens) {
-    return 0;
+    //set fields to default
+    bool load = equalStrings(tokens[0], "ldr");
+    int rd = getValue(tokens[1]);
+    bool immediate = false;
+    bool preIndexing = false;
+    bool up = false;
+    int rn = 0;
+    int offset = 0;
+
+    if (tokens[2][0] == '=') {  //numeric constant
+        uint32_t constant = getValue(tokens[1]);
+        if (constant <= 0xFF) {  //constant will fit in a mov instruction
+            tokens[0] = "mov";
+            tokens[2][0] = '#';
+            return handleDataProcessing(assembler, tokens);
+        } else {
+            assembler->binaryProgram[assembler->firstEmptyAddr] = constant;
+            offset = calcOffset(assembler,
+                                (unsigned int) assembler->firstEmptyAddr);
+            assembler->firstEmptyAddr += 4;
+        }
+
+    } else {
+        immediate = true;
+        preIndexing = !((tokens[2][3] == ']' || tokens[2][4] == ']')
+                        && tokens[3] == NULL);
+        rn = getValue(tokens[2]);
+        if (tokens[3] != NULL) {
+            if (tokens[3][0] == '-') {
+                tokens[3] = &tokens[3][1]; //remove negative at start of Rm
+            } else {
+                up = true;
+            };
+            //offset is nearly identical to operand2, so use that function.
+            offset = handleOperand2(&tokens[3], &immediate);
+            immediate = !immediate; //immediate value is reversed for SDT.
+        }
+    }
+
+    return genSDT(immediate, preIndexing, up, load, rn, rd, offset);
 }
 
-//TODO: add support for non-labelm addresses
+//TODO: add support for non-label addresses
 uint32_t handleBranch(Assembler *assembler, char **tokens) {
     CondCodes cond = mnemToCondCode(&tokens[1][1]);
     uint32_t address = getLabelAddress(assembler, tokens [1]);
-    uint32_t offset = calcOffset(*assembler, address);
+    uint32_t offset = calcOffset(assembler, address);
 
     return genBranch(cond, offset);
 }
@@ -205,8 +247,8 @@ bool hasNoRn(char *mnem) {
     return equalStrings(mnem, "mov");
 }
 
-uint32_t calcOffset(Assembler assembler, uint32_t address) {
-    return address - assembler.currInstrAddr - PIPELINE_LENGTH;
+uint32_t calcOffset(Assembler *assembler, uint32_t address) {
+    return address - assembler->currInstrAddr - PIPELINE_LENGTH;
 }
 
 CondCodes mnemToCondCode(char *mnem) {
