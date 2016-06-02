@@ -2,7 +2,6 @@
 // Created by drspaceship on 31/05/16.
 //
 
-#include <util/util.h>
 #include "tokenHandlers.h"
 
 // prototypes
@@ -18,6 +17,8 @@ static uint32_t calculateShiftAmount(int n);
 static uint32_t generateShift(char **tokens);
 bool hasNoRd(char *mnem);
 bool hasNoRn(char *mnem);
+CondCodes mnemToCondCode(char *mnem);
+uint32_t getLabelAddress(Assembler *assembler, char *label);
 
 uint32_t handleDataProcessing(Assembler *assembler, char **tokens) {
     bool imm = false;
@@ -56,8 +57,13 @@ uint32_t handleSDT(Assembler *assembler, char **tokens) {
     return 0;
 }
 
+//TODO: add support for non-labelm addresses
 uint32_t handleBranch(Assembler *assembler, char **tokens) {
-    return 0;
+    CondCodes cond = mnemToCondCode(&tokens[1][1]);
+    uint32_t address = getLabelAddress(assembler, tokens [1]);
+    uint32_t offset = calcOffset(*assembler, address);
+
+    return genBranch(cond, offset);
 }
 
 uint32_t handleHalt(Assembler *assembler, char **tokens) {

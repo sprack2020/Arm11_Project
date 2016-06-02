@@ -6,7 +6,6 @@
 #define ARM11_39_ASSEMBLERSTRUCT_H
 
 #include <stdint.h>
-#include
 #include "functionTable.h"
 
 typedef struct Assembler {

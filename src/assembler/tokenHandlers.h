@@ -6,6 +6,8 @@
 #define ARM11_39_TOKENHANDLERS_H
 
 #include <stdint.h>
+#include <ctype.h>
+
 #include "assembler.h"
 #include <util/util.h>
 #include <assembler/genInstr.h>
