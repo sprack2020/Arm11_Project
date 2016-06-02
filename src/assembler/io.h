@@ -10,8 +10,8 @@
 #define MAX_LINE_LENGTH 512 //maximum line length including newline/EOF
 
 FILE *openFile(char *path, char *mode);
+void closeFile(FILE *file);
 int writeInstrs(FILE *file, uint32_t *instrs, int length);
 int countLines(FILE *file);
-void initSourceLines(Assembler *assembler);
 
 #endif //ARM11_IO_H

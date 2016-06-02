@@ -6,7 +6,6 @@
 #define ARM11_39_TOKENIZER_H
 
 #include <string.h>
-
-#define NUM_TOKENS 6
+#include <assert.h>
 
 #endif //ARM11_39_TOKENIZER_H

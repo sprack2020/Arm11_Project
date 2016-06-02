@@ -6,8 +6,8 @@
 #define ARM11_39_ASSEMBLERSTRUCT_H
 
 #include <stdint.h>
-#include
-#include "functionTable.h"
+
+#include <assembler/functionTable.h>
 
 typedef struct Assembler {
     char *sourcePath;

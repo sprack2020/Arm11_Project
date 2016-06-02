@@ -3,7 +3,7 @@
 
 static void parseInstructions(Assembler *this);
 static void writeToBinaryFile(Assembler *this);
-
+static void initSourceLines(Assembler *assembler);
 
 
 // constructs a new assembler and returns a pointer to it
@@ -23,6 +23,34 @@ void assemblerInit(Assembler *this, char *sourcePath, char *binaryPath) {
     this->firstEmptyAddr = 0;
     this->currInstrAddr = 0;
     initSourceLines(this);
+
+    // TODO: symbol and function tables
+}
+
+//read all the lines (delimited by \n) in file to an array of strings
+static void initSourceLines(Assembler *this) {
+    //open the source file in read text mode.
+    FILE *sourceFile = openFile(this->sourcePath, "rt");
+
+    // get number of lines and allocate space for lines array.
+    int numLines = countLines(sourceFile);
+    this->numLines = numLines;
+    this->sourceLines = malloc(sizeof(char*) * numLines);
+
+    // allocate space for and read in each line
+    for (int i = 0; i < numLines; ++i) {
+        char *str = malloc(sizeof(char) * MAX_LINE_LENGTH);
+
+        if (fgets(str, MAX_LINE_LENGTH, sourceFile)) {
+            fprintf(stderr, "Error reading line %u\n", i);
+            exit(EXIT_FAILURE);
+        }
+
+        //put the string pointer into sourceLines
+        this->sourceLines[i] = str;
+    }
+
+    closeFile(sourceFile);
 }
 
 // assembles the source file
@@ -40,19 +68,58 @@ void assemble(Assembler *this) {
     writeToBinaryFile(this);
 }
 
-
+// deinitialises an assembler
 void assemblerDeInit(Assembler *this) {
-    //something
+    // free sourcelines
+    for (int i = 0, n = this->numLines; i < n; i++) {
+        free(&this->sourceLines[i]);
+    }
+    free(this->sourceLines);
+
+    // free binary program
+    free(this->binaryProgram);
+
+    // TODO: free function/symbol table??
+
+    // don't free(this) i think
 }
 
-
+// ignore this code, its very wrong, am in process of writing it - Shiraz
+// parses .sourceLines into instructions stored in .binaryProgram
 static void parseInstructions(Assembler *this) {
+    // again, are we making the table local to the function or as a field?
+
     // initialise ListMap<mneumonic, functions>
+    functionTable ft;
+    functionTableInit(&ft);
 
     // iterate over each instruction
-    //     (lookup mneumonic map) (this, i)
+    //     (lookup mneumonic map) (this, line[i])
+    // tokens should be array of strings, how to allocate it?
+    char *tokens = malloc(sizeof(char) * MAX_LINE_LENGTH);
+
+    for (int i = 0, n = this->numLines; i < n; i++) {
+        getTokens(tokens, NUM_TOKENS, this->sourceLines[i]);
+        functionTableGet(&ft, mnen)(this, this->sourceLines[i]);
+    }
+
+    free(tokens);
 }
 
+// writes .binaryProgram to the file with name .binaryPath
 static void writeToBinaryFile(Assembler *this) {
-    // do some shit
+    assert(this->numInstrs > 0 && this->binaryProgram != NULL);
+
+    FILE *outfile = openFile(this->binaryPath);
+
+    int numWritten =
+            fwrite(this->binaryProgram, sizeof(uint32_t), numInstrs, outfile);
+    if (numWritten != numInstrs) {
+        fputs(stderr,
+                "Assembler: Error When writing instructions to binary file.\n");
+    }
+
+    if (fclose(outfile) == EOF) {
+        fputs(stderr, "Assembler: Error closing binary file");
+    }
 }
