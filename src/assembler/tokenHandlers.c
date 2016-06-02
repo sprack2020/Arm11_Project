@@ -32,7 +32,16 @@ uint32_t handleDataProcessing(Assembler assembler, char **tokens) {
     }
 }
 uint32_t handleMultiply(Assembler assembler, char **tokens) {
-    return 0;
+    uint32_t rd = getValue(tokens[1]);
+    uint32_t rm = getValue(tokens[2]);
+    uint32_t rs = getValue(tokens[3]);
+
+    if (strcmp(tokens[0], "mla")) {
+        uint32_t rn = getValue(tokens[4]);
+        return genMul(true, rd, rn, rs, rm);
+    } else {
+        return genMul(false, rd, 0, rs, rm);
+    }
 }
 uint32_t handleSDT(Assembler assembler, char **tokens) {
     return 0;
