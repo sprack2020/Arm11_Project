@@ -120,21 +120,11 @@ void read32Bits(uint32_t *dest, uint8_t *src) {
 
 // swaps the endianness of an instr
 void swapEndianness(uint32_t *number) {
-    const int n = INTWIDTH / CHAR_BIT;
-    uint32_t instrBytes[n];
-
-    uint32_t swappedEndianNum = 0;
-
-    // swap the endianness
-    for (int i = 0; i < n; i++ ) {
-        instrBytes[i] = extractBits(*number, (i + 1) * CHAR_BIT - 1,
-                i * CHAR_BIT);
-        instrBytes[i] <<= (n - i - 1) * CHAR_BIT;
-
-        swappedEndianNum |= instrBytes[i];
-    }
-
-    *number = swappedEndianNum;
+    uint32_t n = *number;
+    *number = (n & 0xFF << 0) << 24 |
+              (n & 0xFF << 8) << 8  |
+              (n & 0xFF << 16) >> 8 |
+              (n & 0xFF << 24) >> 24;
 }
 
 // Swaps the endianness of instr, converts the indexes and then extracts
