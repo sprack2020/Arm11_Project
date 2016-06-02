@@ -19,7 +19,7 @@ bool hasNoRd(char *mnem);
 bool hasNoRn(char *mnem);
 CondCodes mnemToCondCode(char *mnem);
 uint32_t getLabelAddress(Assembler *assembler, char *label);
-uint32_t calcOffset(Assembler assembler, uint32_t address);
+uint32_t calcOffset(Assembler *assembler, uint32_t address);
 
 uint32_t handleDataProcessing(Assembler *assembler, char **tokens) {
     bool imm = false;
@@ -99,10 +99,13 @@ uint32_t handleSDT(Assembler *assembler, char **tokens) {
     return genSDT(immediate, preIndexing, up, load, rn, rd, offset);
 }
 
-//TODO: add support for non-label addresses
 uint32_t handleBranch(Assembler *assembler, char **tokens) {
     CondCodes cond = mnemToCondCode(&tokens[1][1]);
-    uint32_t address = getLabelAddress(assembler, tokens [1]);
+    uint32_t address = isalpha(tokens[1][0]) ?
+                       //address starts with a char so is a label
+                       getLabelAddress(assembler, tokens[1]) :
+                       //else it's a numeric value
+                       getValue(tokens[1]);
     uint32_t offset = calcOffset(assembler, address);
 
     return genBranch(cond, offset);
