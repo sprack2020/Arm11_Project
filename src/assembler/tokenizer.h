@@ -8,4 +8,6 @@
 #include <string.h>
 #include <assert.h>
 
+void getTokens(char **buffer, int numTokens, char *line);
+
 #endif //ARM11_39_TOKENIZER_H
