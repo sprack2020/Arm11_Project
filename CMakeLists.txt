@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.5)
 project(arm11_39)
 
-set(CMAKE_C_FLAGS "-Wall -g -D_POSIX_SOURCE -D_BSD_SOURCE -std=c99
-    -Werror -pedantic")
+set(CMAKE_C_FLAGS "-Wall -g -D_POSIX_SOURCE -D_BSD_SOURCE -std=c99 \
+        -Werror -pedantic")
 
 # EMULATOR
 
@@ -74,22 +74,22 @@ add_executable(assemble src/assemble.c ${ASSEMBLER_SOURCE_FILES}
 # TEST_EMULATOR
 
 set(TEST_SOURCE_FILES
-        #test/emulate/branch_test.c
-        #test/emulate/emulate_test.c
-        #test/emulate/printState_test.c
-        #test/emulate/util_test.c
+        test/emulate/branch_test.c
+        test/emulate/emulate_test.c
+        test/emulate/printState_test.c
+        test/emulate/util_test.c
         src/util/ListMap.c
         test/assemble/ListMapTests.c
 )
 
 set(TEST_HEADER_FILES
-        #test/emulate/branch_test.h
-        #test/emulate/util_test.h
+        test/emulate/branch_test.h
+        test/emulate/util_test.h
         test/assemble/ListMapTests.h
         src/util/ListMap.h
 )
 
-# TEST_ASSEMBLE
+##ASSEMBLER TESTS
 
 set(TEST_ASSEMBLE_SRC
         test/assemble/ListMapTests.c
@@ -101,7 +101,7 @@ set(TEST_ASSEMBLE_HEADER
 
 include_directories(test)
 
-add_executable(testassemble test/assemble/test_assemble.c ${TEST_ASSEMBLE_SRC}
+add_executable(testassemble ${TEST_ASSEMBLE_SRC}
         ${TEST_ASSEMBLE_HEADER_FILES} ${EMULATOR_SOURCE_FILES}
         ${EMULATOR_HEADER_FILES} ${ASSEMBLER_SOURCE_FILES}
         ${ASSEMBLER_HEADER_FILES})
