@@ -16,6 +16,7 @@ static bool isValidImmediate(
 static uint32_t calculateShiftAmount(int n);
 static uint32_t generateShift(char **tokens);
 bool hasNoRd(char* mnem);
+bool hasNoRn(char *mnem);
 
 uint32_t handleDataProcessing(Assembler assembler, char **tokens) {
     bool imm = false;
@@ -24,6 +25,10 @@ uint32_t handleDataProcessing(Assembler assembler, char **tokens) {
         uint32_t operand2 = handleOperand2(&tokens[2], &imm);
         uint32_t rn = getValue(tokens[1]);
         return genDP(imm, opcode, rn, 0, operand2);
+    } else if (hasNoRn(tokens[0])) {
+        uint32_t operand2 = handleOperand2(&tokens[2], &imm);
+        uint32_t rd = getValue(tokens[1]);
+        return genDP(imm, opcode, 0, rd, operand2);
     } else {
         uint32_t operand2 = handleOperand2(&tokens[3], &imm);
         uint32_t rd = getValue(tokens[1]);
@@ -31,6 +36,7 @@ uint32_t handleDataProcessing(Assembler assembler, char **tokens) {
         return genDP(imm, opcode, rn, rd, operand2);
     }
 }
+
 uint32_t handleMultiply(Assembler assembler, char **tokens) {
     uint32_t rd = getValue(tokens[1]);
     uint32_t rm = getValue(tokens[2]);
@@ -169,10 +175,14 @@ static uint32_t generateShift(char **tokens) {
     }
 }
 
-bool hasNoRd(char* mnem) {
-    return strcmp(mnem, "mov") == 0 ||
-           strcmp(mnem, "tst") == 0 ||
+bool hasNoRd(char *mnem) {
+    return strcmp(mnem, "tst") == 0 ||
            strcmp(mnem, "teq") == 0 ||
            strcmp(mnem, "cmp") == 0;
 }
 
+bool hasNoRn(char *mnem) {
+    return strcmp(mnem, "mov") == 0;
+}
+
+uint32_t calc
