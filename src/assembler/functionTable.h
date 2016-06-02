@@ -10,6 +10,7 @@
 #include <assembler/tokenizer.h>
 #include <string.h>
 #include <assembler/assemblerStruct.h>
+#include <util/util.h>
 
 typedef struct functionTable {
     ListMap listmap;

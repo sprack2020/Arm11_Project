@@ -4,8 +4,6 @@
 
 #include "functionTable.h"
 
-static bool strEq(void *str1, void *str2);
-
 void functionTableInit(functionTable *this) {
     ListMapInit(&this->listmap);
 }
@@ -23,8 +21,4 @@ assembleFunctionPointer functionTableGet(
         char *mnen
 ) {
     return (assembleFunctionPointer) (void **)ListMapGet(&this->listmap, mnen, &strEq);
-}
-
-static bool strEq(void *str1, void *str2) {
-    return strcmp((char *)str1, (char *)str2) == 0;
 }
