@@ -18,7 +18,6 @@ static uint32_t calculateShiftAmount(int n);
 static uint32_t generateShift(char **tokens);
 bool hasNoRd(char *mnem);
 
-//
 uint32_t handleDataProcessing(Assembler *assembler, char **tokens) {
     bool imm = false;
     int opcode = (int) mnemToOpcode(tokens[0]);
@@ -35,20 +34,40 @@ uint32_t handleDataProcessing(Assembler *assembler, char **tokens) {
         return genDP(imm, opcode, rn, rd, operand2);
     }
 }
+
 uint32_t handleMultiply(Assembler *assembler, char **tokens) {
-    return 0;
+    uint32_t rd = getValue(tokens[1]);
+    uint32_t rm = getValue(tokens[2]);
+    uint32_t rs = getValue(tokens[3]);
+
+    if (strcmp(tokens[0], "mla")) {
+        uint32_t rn = getValue(tokens[4]);
+        return genMul(true, rd, rn, rs, rm);
+    } else {
+        return genMul(false, rd, 0, rs, rm);
+    }
 }
+
 uint32_t handleSDT(Assembler *assembler, char **tokens) {
     return 0;
 }
+
 uint32_t handleBranch(Assembler *assembler, char **tokens) {
     return 0;
 }
+
 uint32_t handleHalt(Assembler *assembler, char **tokens) {
     return 0;
 }
+
 uint32_t handleLSL(Assembler *assembler, char **tokens) {
-    return 0;
+    //rearrange tokens and pass to DP handler.
+    tokens[0] = "mov";
+    tokens[4] = tokens[2];
+    strcpy(tokens[2], tokens[1]);
+    tokens[3] = "lsl";
+
+    return handleDataProcessing(assembler,tokens);
 }
 
 
@@ -167,9 +186,14 @@ static uint32_t generateShift(char **tokens) {
     }
 }
 
-bool hasNoRd(char* mnem) {
-    return equalStrings(mnem, "mov") ||
-           equalStrings(mnem, "tst") ||
+bool hasNoRd(char *mnem) {
+    return equalStrings(mnem, "tst") ||
            equalStrings(mnem, "teq") ||
            equalStrings(mnem, "cmp");
 }
+
+bool hasNoRn(char *mnem) {
+    return equalStrings(mnem, "mov");
+}
+
+uint32_t calc
