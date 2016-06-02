@@ -1,7 +1,3 @@
-//
-// Created by drspaceship on 30/05/16.
-//
-
 #ifndef ARM11_39_MEMORY_UTIL_H
 #define ARM11_39_MEMORY_UTIL_H
 
