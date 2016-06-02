@@ -15,14 +15,14 @@ void functionTableAdd(
         char *mnen,
         assembleFunctionPointer func
 ) {
-    ListMapAdd(&this->listmap, mnen, &func);
+    ListMapAdd(&this->listmap, mnen, func);
 }
 
 assembleFunctionPointer functionTableGet(
         functionTable *this,
         char *mnen
 ) {
-    return (assembleFunctionPointer) ListMapGet(&this->listmap, mnen, &strEq);
+    return (assembleFunctionPointer) (void **)ListMapGet(&this->listmap, mnen, &strEq);
 }
 
 static bool strEq(void *str1, void *str2) {

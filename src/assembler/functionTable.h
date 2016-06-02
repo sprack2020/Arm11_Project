@@ -9,12 +9,13 @@
 #include <stdint.h>
 #include <assembler/tokenizer.h>
 #include <string.h>
+#include <assembler/assemblerStruct.h>
 
 typedef struct functionTable {
     ListMap listmap;
 } functionTable;
 
-typedef uint32_t (*assembleFunctionPointer)(char**);
+typedef uint32_t (*assembleFunctionPointer)(Assembler*, char**);
 
 void functionTableInit(
         functionTable *ft

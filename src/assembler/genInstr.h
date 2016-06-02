@@ -3,6 +3,11 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+#include <assembler/genInstr.h>
 
 typedef enum {
     AND = 0,
@@ -56,5 +61,6 @@ uint32_t genMul(bool accumulate, int rd, int rn, int rs, int rm);
 uint32_t genSDT(bool immediate, bool preIndexing, bool up, bool load, int rn,
                 int rd, int offset);
 uint32_t genBranch(int cond, uint32_t offset);
+DPOpcodes mnemToOpcode(char *mnem);
 
 #endif //ARM11_GENINSTR_H

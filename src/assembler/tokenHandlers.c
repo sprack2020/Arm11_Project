@@ -15,11 +15,21 @@ static bool isValidImmediate(
 );
 static uint32_t calculateShiftAmount(int n);
 static uint32_t generateShift(char **tokens);
-
-
+bool hasNoRd(char* mnem);
 
 uint32_t handleDataProcessing(Assembler assembler, char **tokens) {
-    return 0;
+    bool imm = false;
+    int opcode = (int) mnemToOpcode(tokens[0]);
+    if (hasNoRd(tokens[0])) {
+        uint32_t operand2 = handleOperand2(&tokens[2], &imm);
+        uint32_t rn = getValue(tokens[1]);
+        return genDP(imm, opcode, rn, 0, operand2);
+    } else {
+        uint32_t operand2 = handleOperand2(&tokens[3], &imm);
+        uint32_t rd = getValue(tokens[1]);
+        uint32_t rn = getValue(tokens[2]);
+        return genDP(imm, opcode, rn, rd, operand2);
+    }
 }
 uint32_t handleMultiply(Assembler assembler, char **tokens) {
     return 0;
@@ -138,5 +148,12 @@ static uint32_t generateShift(char **tokens) {
         fprintf(stderr, "invalid shift argument");
         exit(EXIT_FAILURE);
     }
+}
+
+bool hasNoRd(char* mnem) {
+    return strcmp(mnem, "mov") == 0 ||
+           strcmp(mnem, "tst") == 0 ||
+           strcmp(mnem, "teq") == 0 ||
+           strcmp(mnem, "cmp") == 0;
 }
 

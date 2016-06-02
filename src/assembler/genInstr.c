@@ -1,4 +1,4 @@
-#include <assembler/genInstr.h>
+#include "genInstr.h"
 
 //generate a data processing instruction with S set to 0 and a condition of
 //always. Assumes all field inputs are of appropriate length
@@ -43,5 +43,34 @@ uint32_t genBranch(int cond, uint32_t offset) {
     return BRMASK              |
            cond   << CONDSHIFT |
            offset << BROFFSHIFT;
+}
+
+//take a mnemonic string and return the DP opcode associated with it
+//ugly function but most elegant/simplest way around this problem
+DPOpcodes mnemToOpcode(char *mnem) {
+    if (strcmp(mnem, "and") == 0) {
+        return AND;
+    } else if (strcmp(mnem, "eor")) {
+        return EOR;
+    } else if (strcmp(mnem, "sub")) {
+        return SUB;
+    } else if (strcmp(mnem, "rsb")) {
+        return RSB;
+    } else if (strcmp(mnem, "add")) {
+        return ADD;
+    } else if (strcmp(mnem, "tst")) {
+        return TST;
+    } else if (strcmp(mnem, "teq")) {
+        return TEQ;
+    } else if (strcmp(mnem, "cmp")) {
+        return CMP;
+    } else if (strcmp(mnem, "orr")) {
+        return ORR;
+    } else if (strcmp(mnem, "mov")) {
+        return MOV;
+    } else {
+        fprintf(stderr, "invalid DP mnemonic");
+        exit(EXIT_FAILURE);
+    }
 }
 
