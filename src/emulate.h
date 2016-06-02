@@ -4,10 +4,18 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-#include "emulator/checkCond.h"
-#include "emulator/decodeAndExecute.h"
-#include "emulator/printState.h"
-#include "util/util.h"
+#include <emulator/checkCond.h>
+#include <emulator/decodeAndExecute.h>
+#include <emulator/printState.h>
+#include <util/util.h>
+
+typedef struct ARMstate {
+    uint8_t *memory;
+    uint32_t *registers;
+} ARMstate;
+
+// contians ARMState
+#include <emulator/global_state.h>
 
 #define MEM_SIZE 65536
 #define NUM_REGISTERS 17
@@ -26,13 +34,6 @@
 #define Zbit 30
 #define Cbit 29
 #define Vbit 28
-
-typedef struct ARMstate {
-    uint8_t *memory;
-    uint32_t *registers;
-} ARMstate;
-
-extern ARMstate state;
 
 // prototypes
 uint32_t getNextInstr(void);

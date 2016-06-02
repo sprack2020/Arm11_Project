@@ -106,7 +106,7 @@ static void parseInstructions(Assembler *this) {
     // for each line, get the tokens and generate the instruction
     for (int i = 0, n = this->numLines; i < n; i++) {
         getTokens(tokens, NUM_TOKENS, this->sourceLines[i]);
-        char mnem[] = tokens[0];
+        char *mnem = tokens[0];
 
         functionTableGet(&ft, mnem)(this, this->sourceLines[i]);
     }
@@ -119,18 +119,19 @@ static void parseInstructions(Assembler *this) {
 
 // writes .binaryProgram to the file with name .binaryPath
 static void writeToBinaryFile(Assembler *this) {
-    assert(this->numInstrs > 0 && this->binaryProgram != NULL);
+    int numInstrs = this->numInstrs;
+    assert(numInstrs > 0 && this->binaryProgram != NULL);
 
-    FILE *outfile = openFile(this->binaryPath);
+    FILE *outfile = openFile(this->binaryPath, "w");
 
     int numWritten =
             fwrite(this->binaryProgram, sizeof(uint32_t), numInstrs, outfile);
     if (numWritten != numInstrs) {
-        fputs(stderr,
-                "Assembler: Error When writing instructions to binary file.\n");
+        fputs("Assembler: Error When writing instructions to binary file.\n",
+                stderr);
     }
 
     if (fclose(outfile) == EOF) {
-        fputs(stderr, "Assembler: Error closing binary file");
+        fputs("Assembler: Error closing binary file", stderr);
     }
 }

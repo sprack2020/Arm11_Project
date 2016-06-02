@@ -11,7 +11,7 @@ FILE *openFile(char *path, char *mode) {
     return filePtr;
 }
 
-void closeFile(File *file) {
+void closeFile(FILE *file) {
     int closeErrorCode = fclose(file);
 
     if (closeErrorCode == EOF) {

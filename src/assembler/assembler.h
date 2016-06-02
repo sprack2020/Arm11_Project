@@ -7,6 +7,8 @@
 #include <assembler/io.h>
 #include <assembler/symbolTable.h>
 #include <util/ListMap.h>
+#include <assembler/functionTable.h>
+#include <assembler/tokenizer.h>
 
 
 #define LABEL_DELIMITER ":"
