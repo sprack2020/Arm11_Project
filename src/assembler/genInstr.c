@@ -44,3 +44,4 @@ uint32_t genBranch(int cond, uint32_t offset) {
            cond   << CONDSHIFT |
            offset << BROFFSHIFT;
 }
+
