@@ -64,5 +64,6 @@ uint32_t extractFragmentedBits(uint32_t instr, int upperBit, int lowerBit);
 void swapEndianness(uint32_t *number);
 void signExtend(int32_t *num, int n);
 shiftType strToShiftType(char* string);
+inline bool equalStrings(char *s1, char *s2);
 
 #endif //ARM11_39_BINARYSHIFT_H

@@ -48,29 +48,28 @@ uint32_t genBranch(int cond, uint32_t offset) {
 //take a mnemonic string and return the DP opcode associated with it
 //ugly function but most elegant/simplest way around this problem
 DPOpcodes mnemToOpcode(char *mnem) {
-    if (strcmp(mnem, "and") == 0) {
+    if (equalStrings(mnem, "and")) {
         return AND;
-    } else if (strcmp(mnem, "eor")) {
+    } else if (equalStrings(mnem, "eor")) {
         return EOR;
-    } else if (strcmp(mnem, "sub")) {
+    } else if (equalStrings(mnem, "and")) {
         return SUB;
-    } else if (strcmp(mnem, "rsb")) {
+    } else if (equalStrings(mnem, "rsb")) {
         return RSB;
-    } else if (strcmp(mnem, "add")) {
+    } else if (equalStrings(mnem, "add")) {
         return ADD;
-    } else if (strcmp(mnem, "tst")) {
+    } else if (equalStrings(mnem, "tst")) {
         return TST;
-    } else if (strcmp(mnem, "teq")) {
+    } else if (equalStrings(mnem, "teq")) {
         return TEQ;
-    } else if (strcmp(mnem, "cmp")) {
+    } else if (equalStrings(mnem, "cmp")) {
         return CMP;
-    } else if (strcmp(mnem, "orr")) {
+    } else if (equalStrings(mnem, "orr")) {
         return ORR;
-    } else if (strcmp(mnem, "mov")) {
+    } else if (equalStrings(mnem, "mov")) {
         return MOV;
     } else {
         fprintf(stderr, "invalid DP mnemonic");
         exit(EXIT_FAILURE);
     }
 }
-

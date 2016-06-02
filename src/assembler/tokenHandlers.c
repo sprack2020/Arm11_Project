@@ -5,6 +5,7 @@
 #include <util/util.h>
 #include "tokenHandlers.h"
 
+// prototypes
 static uint32_t getValue(char *expr);
 static uint32_t handleOperand2(char **tokens, bool *imm);
 static int getFirstOnePos(uint32_t num);
@@ -15,15 +16,18 @@ static bool isValidImmediate(
 );
 static uint32_t calculateShiftAmount(int n);
 static uint32_t generateShift(char **tokens);
-bool hasNoRd(char* mnem);
+bool hasNoRd(char *mnem);
 
-uint32_t handleDataProcessing(Assembler assembler, char **tokens) {
+//
+uint32_t handleDataProcessing(Assembler *assembler, char **tokens) {
     bool imm = false;
     int opcode = (int) mnemToOpcode(tokens[0]);
+
     if (hasNoRd(tokens[0])) {
         uint32_t operand2 = handleOperand2(&tokens[2], &imm);
         uint32_t rn = getValue(tokens[1]);
         return genDP(imm, opcode, rn, 0, operand2);
+
     } else {
         uint32_t operand2 = handleOperand2(&tokens[3], &imm);
         uint32_t rd = getValue(tokens[1]);
@@ -31,19 +35,19 @@ uint32_t handleDataProcessing(Assembler assembler, char **tokens) {
         return genDP(imm, opcode, rn, rd, operand2);
     }
 }
-uint32_t handleMultiply(Assembler assembler, char **tokens) {
+uint32_t handleMultiply(Assembler *assembler, char **tokens) {
     return 0;
 }
-uint32_t handleSDT(Assembler assembler, char **tokens) {
+uint32_t handleSDT(Assembler *assembler, char **tokens) {
     return 0;
 }
-uint32_t handleBranch(Assembler assembler, char **tokens) {
+uint32_t handleBranch(Assembler *assembler, char **tokens) {
     return 0;
 }
-uint32_t handleHalt(Assembler assembler, char **tokens) {
+uint32_t handleHalt(Assembler *assembler, char **tokens) {
     return 0;
 }
-uint32_t handleLSL(Assembler assembler, char **tokens) {
+uint32_t handleLSL(Assembler *assembler, char **tokens) {
     return 0;
 }
 
@@ -75,22 +79,26 @@ static uint32_t handleOperand2(char **tokens, bool *imm) {
             int firstOnePos = getFirstOnePos(value);
             uint32_t shiftAmount;
             bool isValid = isValidImmediate(value, firstOnePos, &shiftAmount);
+
             if (!isValid) {
                 fprintf(stderr, "cannot fit value into operand2");
                 exit(EXIT_FAILURE);
             }
+
             return binaryShift(value, ROR, 32 - shiftAmount).result;
-        }
-        else {
+
+        } else {
             return value;
         }
-    }
-    else if (tokens[0][0] == 'r') {
+
+    } else if (tokens[0][0] == 'r') {
         uint32_t Rm = getValue(tokens[0]);
         uint32_t shift = generateShift(&tokens[1]);
-        return shift << 4 | Rm;
+        return shift << REG_FILED_LENGTH | Rm;
+
     } else {
-        fprintf(stderr, "invalid operand 2");
+        fprintf(stderr,
+                "Error in tokenHandlers: handleOperand2: invalid operand 2");
         exit(EXIT_FAILURE);
     }
 }
@@ -101,7 +109,10 @@ static int getFirstOnePos(uint32_t num) {
             return i;
         }
     }
+
     // should never return -1
+    fprintf(stderr,
+            "Error in tokenHandlers:  getFirstOnePos: Invalid num %u", num);
     return -1;
 }
 
@@ -109,6 +120,7 @@ static bool isValidImmediate(uint32_t num, int firstOnePos, uint32_t *shiftAmoun
     int zeroCount = 0;
     bool currBit;
     int currPos = firstOnePos;
+
     while (currPos != firstOnePos - 1) {
         currBit = extractBit(num, currPos);
         if (currBit) {
@@ -125,6 +137,7 @@ static bool isValidImmediate(uint32_t num, int firstOnePos, uint32_t *shiftAmoun
 
         currPos = (currPos + 1) % 32;
     }
+
     return false;
 }
 
@@ -137,13 +150,17 @@ static uint32_t generateShift(char **tokens) {
     if (tokens[0] == NULL) {
         return 0;
     }
+
     shiftType shiftType = strToShiftType(tokens[0]);
+
     if (tokens[1][0] == '#') {
         uint32_t shiftAmount = getValue(tokens[1]);
         return shiftAmount << 3 | shiftType << 1;
+
     } else if (tokens[1][0] == 'r') {
         uint32_t shiftReg = getValue(tokens[1]);
         return shiftReg << 4 | shiftType << 1 | 1;
+
     } else {
         fprintf(stderr, "invalid shift argument");
         exit(EXIT_FAILURE);
@@ -151,9 +168,8 @@ static uint32_t generateShift(char **tokens) {
 }
 
 bool hasNoRd(char* mnem) {
-    return strcmp(mnem, "mov") == 0 ||
-           strcmp(mnem, "tst") == 0 ||
-           strcmp(mnem, "teq") == 0 ||
-           strcmp(mnem, "cmp") == 0;
+    return equalStrings(mnem, "mov") ||
+           equalStrings(mnem, "tst") ||
+           equalStrings(mnem, "teq") ||
+           equalStrings(mnem, "cmp");
 }
-

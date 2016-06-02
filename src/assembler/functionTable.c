@@ -22,7 +22,7 @@ assembleFunctionPointer functionTableGet(
         functionTable *this,
         char *mnen
 ) {
-    return (assembleFunctionPointer) (void **)ListMapGet(&this->listmap, mnen, &strEq);
+    return (assembleFunctionPointer) (void **) ListMapGet(&this->listmap, mnen, &strEq);
 }
 
 static bool strEq(void *str1, void *str2) {
