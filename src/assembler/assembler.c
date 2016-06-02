@@ -7,9 +7,9 @@ static void writeToBinaryFile(Assembler *this);
 
 
 // constructs a new assembler and returns a pointer to it
-Assembler *newAssembler(char **argv) {
+Assembler *newAssembler(char *sourcePath, char *binaryPath) {
     Assembler *a = malloc(sizeof(Assembler));
-    assemblerInit(a, argv[1], argv[2]);
+    assemblerInit(a, sourcePath, binaryPath);
 
     return a;
 }

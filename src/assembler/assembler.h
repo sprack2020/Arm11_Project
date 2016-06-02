@@ -12,7 +12,7 @@
 #define INSTR_LENGTH 4
 
 
-Assembler *newAssembler(char **argv);
+Assembler *newAssembler(char *sourcePath, char *binaryPath);
 void assemblerInit(Assembler *a, char *sourceFile, char *binaryPath);
 void assemble(Assembler *this);
 void assemblerDeInit(Assembler *this);

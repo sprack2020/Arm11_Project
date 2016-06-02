@@ -11,7 +11,8 @@ int main(int argc, char **argv) {
         exit(EXIT_FAILURE);
     }
 
-    Assembler *assembler = newAssembler(argv);
+    Assembler assembler;
+    assemblerInit(&assembler, argv[1], argv[2]);
     assemble(assembler);
     assemblerDeInit(assembler);
 
