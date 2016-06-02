@@ -20,5 +20,5 @@ assembleFunctionPointer functionTableGet(
         functionTable *this,
         char *mnen
 ) {
-    return (assembleFunctionPointer) (void **)ListMapGet(&this->listmap, mnen, &strEq);
+    return (assembleFunctionPointer) (void **) ListMapGet(&this->listmap, mnen, &strEq);
 }

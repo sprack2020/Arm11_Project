@@ -176,6 +176,10 @@ shiftType strToShiftType(char* string) {
     }
 }
 
+inline bool equalStrings(char *s1, char *s2) {
+    return strcmp(s1, s2) == 0;
+}
+
 bool strEq(void *str1, void *str2) {
     return strcmp((char *)str1, (char *)str2) == 0;
 }

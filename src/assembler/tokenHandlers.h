@@ -11,6 +11,7 @@
 #include <assembler/genInstr.h>
 
 #define PIPELINE_LENGTH 8
+#define REG_FILED_LENGTH 4
 
 uint32_t handleDataProcessing(Assembler *assembler, char **tokens);
 uint32_t handleMultiply(Assembler *assembler, char **tokens);

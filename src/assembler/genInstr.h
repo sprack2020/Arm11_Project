@@ -8,6 +8,7 @@
 #include <stdlib.h>
 
 #include <assembler/genInstr.h>
+#include <util/util.h>
 
 typedef enum {
     AND = 0,
