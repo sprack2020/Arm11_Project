@@ -19,27 +19,26 @@ static uint32_t generateShift(char **tokens);
 
 
 uint32_t handleDataProcessing(Assembler assembler, char **tokens) {
-
+    return 0;
 }
 uint32_t handleMultiply(Assembler assembler, char **tokens) {
-
+    return 0;
 }
 uint32_t handleSDT(Assembler assembler, char **tokens) {
-
+    return 0;
 }
 uint32_t handleBranch(Assembler assembler, char **tokens) {
-
+    return 0;
 }
 uint32_t handleHalt(Assembler assembler, char **tokens) {
-
+    return 0;
 }
 uint32_t handleLSL(Assembler assembler, char **tokens) {
-
+    return 0;
 }
 
 
 static uint32_t getValue(char *expr) {
-
     long value;
     if (expr[0] == '#' || expr[0] == 'r') {
         value = strtol(&expr[1], NULL, 0);
@@ -59,7 +58,6 @@ static uint32_t getValue(char *expr) {
 
 // PRE: tokens points to the first string argument of operand2
 static uint32_t handleOperand2(char **tokens, bool *imm) {
-
     if (tokens[0][0] == '#') {
         *imm = true;
         uint32_t value = getValue(tokens[0]);
@@ -81,6 +79,9 @@ static uint32_t handleOperand2(char **tokens, bool *imm) {
         uint32_t Rm = getValue(tokens[0]);
         uint32_t shift = generateShift(&tokens[1]);
         return shift << 4 | Rm;
+    } else {
+        fprintf(stderr, "invalid operand 2");
+        exit(EXIT_FAILURE);
     }
 }
 // PRE: num is not 0
