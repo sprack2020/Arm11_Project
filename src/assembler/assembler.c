@@ -96,14 +96,25 @@ static void parseInstructions(Assembler *this) {
     // iterate over each instruction
     //     (lookup mneumonic map) (this, line[i])
     // tokens should be array of strings, how to allocate it?
-    char *tokens = malloc(sizeof(char) * MAX_LINE_LENGTH);
+    char *tokens[NUM_TOKENS];
 
-    for (int i = 0, n = this->numLines; i < n; i++) {
-        getTokens(tokens, NUM_TOKENS, this->sourceLines[i]);
-        functionTableGet(&ft, mnen)(this, this->sourceLines[i]);
+    // definitely find a more optimal way instead of allocating so much memory
+    for (int i = 0; i < NUM_TOKENS; i++) {
+        tokens[i] = malloc(MAX_LINE_LENGTH * sizeof(char));
     }
 
-    free(tokens);
+    // for each line, get the tokens and generate the instruction
+    for (int i = 0, n = this->numLines; i < n; i++) {
+        getTokens(tokens, NUM_TOKENS, this->sourceLines[i]);
+        char mnem[] = tokens[0];
+
+        functionTableGet(&ft, mnem)(this, this->sourceLines[i]);
+    }
+
+    // free tokens
+    for (int i = 0; i < NUM_TOKENS; i++) {
+        free(tokens[i]);
+    }
 }
 
 // writes .binaryProgram to the file with name .binaryPath

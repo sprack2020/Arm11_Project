@@ -1,29 +1,30 @@
 CC      = gcc
 CFLAGS  = -O3 -Wall -g -D_POSIX_SOURCE -D_BSD_SOURCE -std=c99 -Werror -pedantic -I .
 LDFLAGS =
-SOURCES = emulate.c emulator/global_state.c emulator/branch.c emulator/checkCond.c emulator/dataProcess.c emulator/dataTransfer.c emulator/decodeAndExecute.c emulator/getOperand2.c emulator/iMultiply.c emulator/printState.c emulator/updateCPSR.c util/util.c
-OBJECTS = $(SOURCES:.c=.o)
-EXECUTABLE = emulate
+EMULATE_SOURCES = emulate.c emulator/global_state.c emulator/branch.c emulator/checkCond.c emulator/dataProcess.c emulator/dataTransfer.c emulator/decodeAndExecute.c emulator/getOperand2.c emulator/iMultiply.c emulator/printState.c emulator/updateCPSR.c util/util.c
+ASSEMBLER_SOURCES = assemble.c assembler/assembler.c assembler/functionTable.c assembler/genInstr.c assembler/io.c assembler/symbolTable.c assembler/tokenHandler.c assembler/tokenizer.c util/util.c util/ListMap.c util/ListMapIterator.c util/ListMapNode.c
+EMULATE_OBJECTS = $(EMULATE_SOURCES:.c=.o)
+ASSEMBLER_OBJECTS =  $(ASSEMBLER_SOURCES:.c=.o)
 
-all: emulate
+all: emulate assemble
 
-# emulator: $(SOURCES) $(EXECUTABLE)
-#
+emulate: $(EMULATE_OBJECTS) $@
+
+assemble: $(ASSEMBLER_SOURCES) $@
+
 # $(EXECUTABLE): $(OBJECTS)
 # 	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
 
-# %.o: %.c
-# 	$(CC) $(CFLAGS) $< -o $@
+%.o: %.c
+	$(CC) $(CFLAGS) $< -o $@
 
-emulate:
-	$(CC) $(SOURCES) $(CFLAGS) -o emulate
+# emulate:
+# 	$(CC) $(SOURCES) $(CFLAGS) -o emulate
 
-# Given makefile, don't know how these work?
 # .SUFFIXES: .c .o
 #
-# .PHONY: all clean
+ .PHONY: all clean
 #
-# all: assemble emulate
 #
 # assemble: assemble.o
 #
