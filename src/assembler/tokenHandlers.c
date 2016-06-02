@@ -43,17 +43,27 @@ uint32_t handleMultiply(Assembler assembler, char **tokens) {
         return genMul(false, rd, 0, rs, rm);
     }
 }
+
 uint32_t handleSDT(Assembler assembler, char **tokens) {
     return 0;
 }
+
 uint32_t handleBranch(Assembler assembler, char **tokens) {
     return 0;
 }
+
 uint32_t handleHalt(Assembler assembler, char **tokens) {
     return 0;
 }
+
 uint32_t handleLSL(Assembler assembler, char **tokens) {
-    return 0;
+    //rearrange tokens and pass to DP handler.
+    tokens[0] = "mov";
+    tokens[4] = tokens[2];
+    strcpy(tokens[2], tokens[1]);
+    tokens[3] = "lsl";
+
+    return handleDataProcessing(assembler,tokens);
 }
 
 
