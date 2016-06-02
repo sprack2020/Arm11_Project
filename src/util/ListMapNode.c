@@ -1,11 +1,4 @@
-//
-// Created by drspaceship on 30/05/16.
-//
-
 #include <stdlib.h>
-#include <stdio.h>
-#include <errno.h>
-#include <stdbool.h>
 #include <assert.h>
 #include "ListMapNode.h"
 

@@ -1,7 +1,3 @@
-//
-// Created by drspaceship on 31/05/16.
-//
-
 #include "HashMap.h"
 
 const int DEFAULT_BUCKETS = 16;

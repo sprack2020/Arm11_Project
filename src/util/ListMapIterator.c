@@ -1,7 +1,3 @@
-//
-// Created by drspaceship on 30/05/16.
-//
-
 #include "ListMapIterator.h"
 #include "ListMap.h"
 

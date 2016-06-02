@@ -1,9 +1,5 @@
-//
-// Created by drspaceship on 22/05/16.
-//
 #ifndef ARM11_39_BINARYSHIFT_H
 #define ARM11_39_BINARYSHIFT_H
-
 
 #include <limits.h>
 #include <stdbool.h>

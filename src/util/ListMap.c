@@ -1,6 +1,3 @@
-//
-// Created by drspaceship on 30/05/16.
-//
 #include "ListMap.h"
 
 //initialise a list map
