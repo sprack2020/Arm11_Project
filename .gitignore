@@ -39,3 +39,6 @@ assemble
 #files for my use - Shiraz
 testResult.txt
 backups_from_conflicts
+CMakeCache.txt
+CMakeFiles
+cmake_install.cmake

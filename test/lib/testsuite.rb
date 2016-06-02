@@ -85,7 +85,7 @@ class TestSuite
     Dir.mktmpdir do |dir|
       Dir.chdir(dir) do
         run_results = Utils.run3("/usr/bin/timeout",
-                           ["--kill-after=5", "3", @emulate, binary_path],
+                           ["--kill-after=10", "7", @emulate, binary_path],
                            nil, 1024 * 1024 * 100)
       end
     end

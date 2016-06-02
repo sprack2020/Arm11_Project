@@ -4,12 +4,12 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdbool.h>
-#include "util/util.h"
-#include "branch.h"
-#include "dataProcess.h"
-#include "iMultiply.h"
-#include "dataTransfer.h"
-#include "emulate.h"
+#include <util/util.h>
+#include <emulator/branch.h>
+#include <emulator/dataProcess.h>
+#include <emulator/iMultiply.h>
+#include <emulator/dataTransfer.h>
+#include <emulate.h>
 
 #define PATTERN_UPPER 31
 #define PATTERN_LOWER 28

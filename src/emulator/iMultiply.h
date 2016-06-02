@@ -3,9 +3,9 @@
 
 
 #include <stdint.h>
-#include "checkCond.h"
-#include "updateCPSR.h"
-#include "emulate.h"
+#include <emulator/checkCond.h>
+#include <emulator/updateCPSR.h>
+#include <emulate.h>
 
 // Rn and Rd are swapped in multiply instruction
 #define Rn_MUL_UPPER 23

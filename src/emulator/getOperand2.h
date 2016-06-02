@@ -3,9 +3,9 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include "util/util.h"
-#include "updateCPSR.h"
-#include "emulate.h"
+#include <util/util.h>
+#include <emulator/updateCPSR.h>
+#include <emulate.h>
 
 
 ShiftResult getOperand2(uint32_t instr, bool immediate);

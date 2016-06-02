@@ -3,9 +3,9 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include "util/util.h"
-#include "getOperand2.h"
-#include "emulate.h"
+#include <util/util.h>
+#include <emulator/getOperand2.h>
+#include <emulate.h>
 
 #define and 0x0
 #define eor 0x1
@@ -21,4 +21,3 @@
 void dataProcess(uint32_t instr);
 
 #endif //ARM11_39_DATAPROCESS_H
-

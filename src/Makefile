@@ -1,7 +1,7 @@
 CC      = gcc
-CFLAGS  = -Wall -g -D_POSIX_SOURCE -D_BSD_SOURCE -std=c99 -Werror -pedantic -I src
+CFLAGS  = -O3 -Wall -g -D_POSIX_SOURCE -D_BSD_SOURCE -std=c99 -Werror -pedantic -I .
 LDFLAGS =
-SOURCES = emulate.c branch.c checkCond.c dataProcess.c dataTransfer.c decodeAndExecute.c getOperand2.c iMultiply.c printState.c updateCPSR.c util.c
+SOURCES = emulate.c emulator/global_state.c emulator/branch.c emulator/checkCond.c emulator/dataProcess.c emulator/dataTransfer.c emulator/decodeAndExecute.c emulator/getOperand2.c emulator/iMultiply.c emulator/printState.c emulator/updateCPSR.c util/util.c
 OBJECTS = $(SOURCES:.c=.o)
 EXECUTABLE = emulate
 
