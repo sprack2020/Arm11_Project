@@ -1,9 +1,5 @@
-//
-// Created by drspaceship on 20/05/16.
-//
 #ifndef ARM11_39_DECODEANDEXECUTE_H
 #define ARM11_39_DECODEANDEXECUTE_H
-
 
 #include <stdint.h>
 #include <stdio.h>
@@ -21,6 +17,5 @@
 #define bit25 1
 
 bool decodeAndExecute(uint32_t instr);
-
 
 #endif //ARM11_39_DECODEANDEXECUTE_H

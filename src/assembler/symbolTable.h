@@ -1,7 +1,3 @@
-//
-// Created by drspaceship on 31/05/16.
-//
-
 #ifndef ARM11_39_SYMBOLTABLE_H
 #define ARM11_39_SYMBOLTABLE_H
 

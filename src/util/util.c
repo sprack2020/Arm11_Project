@@ -1,7 +1,3 @@
-//
-// Created by drspaceship on 22/05/16.
-//
-#include <assembler/assembler.h>
 #include "util.h"
 
 // POST: returns a 32bit int shifted based on shiftType
@@ -104,8 +100,7 @@ bool extractBit(uint32_t binaryNumber, int i) {
 // dest: pointer to a 32bit to put the result into
 // src:  pointer to a memory address (element of 8 bit array)
 // post: Will read four consecutive 8 bit elements from memory starting from
-//       address src. --Reads the bytes accounting for that fact that they are
-//       ordered according to the wrong endianness-- wrong, no byte order change
+//       address src.
 void read32Bits(uint32_t *dest, uint8_t *src) {
     // get number of memory addresses we will have to read to accumulate
     // 32 bits
@@ -164,7 +159,6 @@ uint32_t extractFragmentedBits(uint32_t instr, int upperBit, int lowerBit) {
 }
 
 // sign extend an n-bit number.
-
 void signExtend(int32_t *num, int n) {
     if (n > INTWIDTH) {
         fprintf(stderr, "Error in util: Attempting to sign extend a %d bit"

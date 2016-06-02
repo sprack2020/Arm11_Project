@@ -1,7 +1,6 @@
 #ifndef ARM11_39_PRINTSTATE_H
 #define ARM11_39_PRINTSTATE_H
 
-
 #include <string.h>
 #include "emulate.h"
 

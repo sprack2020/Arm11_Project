@@ -1,6 +1,3 @@
-//
-// Created by drspaceship on 22/05/16.
-//
 #include "printState.h"
 
 // gets the correct spacing to put before the ':'

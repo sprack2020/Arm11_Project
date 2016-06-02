@@ -1,16 +1,11 @@
-//
-// Created by drspaceship on 22/05/16.
-//
 #ifndef ARM11_39_DATAPROCESS_H
 #define ARM11_39_DATAPROCESS_H
-
 
 #include <stdint.h>
 #include <stdbool.h>
 #include "util/util.h"
 #include "getOperand2.h"
 #include "emulate.h"
-
 
 #define and 0x0
 #define eor 0x1
@@ -23,12 +18,7 @@
 #define orr 0xc
 #define mov 0xd
 
-
-
-
 void dataProcess(uint32_t instr);
-
-
 
 #endif //ARM11_39_DATAPROCESS_H
 

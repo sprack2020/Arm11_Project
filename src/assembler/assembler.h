@@ -1,6 +1,3 @@
-//
-// Created by shiraz on 30/05/16.
-//
 #ifndef ARM11_39_ASSEMBLER_H
 #define ARM11_39_ASSEMBLER_H
 

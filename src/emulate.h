@@ -1,9 +1,5 @@
-//
-// Created by drspaceship on 20/05/16.
-//
 #ifndef ARM11_39_EMULATE_H
 #define ARM11_39_EMULATE_H
-
 
 #include <stdint.h>
 #include <stdlib.h>
@@ -42,6 +38,5 @@ extern ARMstate state;
 uint32_t getNextInstr(void);
 void initialiseARMstate(void);
 void deallocARMState(void);
-
 
 #endif

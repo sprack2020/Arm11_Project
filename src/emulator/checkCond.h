@@ -1,9 +1,5 @@
-//
-// Created by drspaceship on 22/05/16.
-//
 #ifndef ARM11_39_CHECKCOND_H
 #define ARM11_39_CHECKCOND_H
-
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -26,6 +22,5 @@ typedef struct Cond {
 } Cond;
 
 bool checkCond(uint32_t instr);
-
 
 #endif //ARM11_39_CHECKCOND_H

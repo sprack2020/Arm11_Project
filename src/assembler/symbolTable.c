@@ -1,7 +1,3 @@
-//
-// Created by drspaceship on 31/05/16.
-//
-
 #include <ctype.h>
 #include "symbolTable.h"
 

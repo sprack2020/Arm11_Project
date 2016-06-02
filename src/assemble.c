@@ -13,6 +13,5 @@ int main(int argc, char **argv) {
     assemble(assembler);
     assemblerDeInit(assembler);
 
-
     return EXIT_SUCCESS;
 }

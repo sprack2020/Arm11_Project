@@ -1,6 +1,3 @@
-//
-// Created by drspaceship on 20/05/16.
-//
 #include "branch.h"
 
 void clearBit(int32_t *num, int i);

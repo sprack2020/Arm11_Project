@@ -1,13 +1,8 @@
-//
-// Created by drspaceship on 22/05/16.
-//
-
 #include "dataProcess.h"
 
 // PRE: instr is a data process instruction
 // assume: PC does not feature in the instruction
 // behavior: checks opcode and performs instruction, possibly writes result to register and updates flags
-
 void dataProcess(uint32_t instr) {
     bool I = extractBit(instr, IMM_BIT);
     uint32_t opcode = extractFragmentedBits(instr, OPCODE_UPPER, OPCODE_LOWER);
@@ -19,8 +14,6 @@ void dataProcess(uint32_t instr) {
     bool C = operand2WC.carry;
     bool writeResult = true;
     uint32_t result = 0;
-
-    // printf("\topcode = %d, operand2 = %d\n", opcode, operand2);
 
     switch (opcode) {
         case tst:
@@ -57,7 +50,6 @@ void dataProcess(uint32_t instr) {
             fprintf(stderr, "invalid opcode in dataProcess: opcode was %d (0x%08x)\n", opcode, opcode);
             exit(2);
     }
-
 
     if (S) {
         updateCPSR(C, Cbit);

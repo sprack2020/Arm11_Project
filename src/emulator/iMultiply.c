@@ -1,13 +1,8 @@
-//
-// Created by drspaceship on 22/05/16.
-//
 #include "iMultiply.h"
 
 // PRE: instr is a multiply instruction and in big endian
 // behavior: multiplication instruction as in spec
-
 void iMultiply(uint32_t instr) {
-
     uint32_t Rd = extractBits(instr, Rd_MUL_UPPER, Rd_MUL_LOWER);
     uint32_t RsVal = REGFILE[extractBits(instr, Rs_UPPER, Rs_LOWER)];
     uint32_t RmVal = REGFILE[extractBits(instr, Rm_UPPER, Rm_LOWER)];
@@ -20,7 +15,6 @@ void iMultiply(uint32_t instr) {
         acc = REGFILE[extractBits(instr, Rn_MUL_UPPER, Rn_MUL_LOWER)];
     }
     result = RmVal * RsVal + acc;
-
 
     if (Sbit) {
         //Nbit = bit 31 of result

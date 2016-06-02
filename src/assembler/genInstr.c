@@ -23,7 +23,7 @@ uint32_t genMul(bool accumulate, int rd, int rn,
            rm         << RMSHIFT        ;
 }
 
-//generates a singel data transfer instruction  with a condition of always.
+//generates a single data transfer instruction  with a condition of always.
 //assumes all field inputs are of appropriate length
 uint32_t genSDT(bool immediate, bool preIndexing, bool up, bool load, int rn,
                 int rd, int offset) {
@@ -39,7 +39,7 @@ uint32_t genSDT(bool immediate, bool preIndexing, bool up, bool load, int rn,
 
 //generates a branch instruction.
 //assumes all field inputs are of appropriate length
-uint32_t genBranch(int cond, long int offset) {
+uint32_t genBranch(int cond, uint32_t offset) {
     return BRMASK              |
            cond   << CONDSHIFT |
            offset << BROFFSHIFT;

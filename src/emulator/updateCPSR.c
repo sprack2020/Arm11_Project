@@ -1,13 +1,9 @@
-//
-// Created by drspaceship on 23/05/16.
-//
-
 #include "updateCPSR.h"
 
 void updateCPSR(bool bit, unsigned int bitnum) {
-
     if (bitnum > Nbit || bitnum < Vbit) {
-        fprintf(stderr, "%s. bitnum = %d", "updateCPSR bitnum value is not in range", bitnum);
+        fprintf(stderr, "%s. bitnum = %d",
+                "updateCPSR bitnum value is not in range", bitnum);
         exit(2);
     }
 

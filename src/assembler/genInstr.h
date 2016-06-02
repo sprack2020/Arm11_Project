@@ -55,6 +55,6 @@ uint32_t genDP(bool immediate, int opcode, int rn, int rd, int operand2);
 uint32_t genMul(bool accumulate, int rd, int rn, int rs, int rm);
 uint32_t genSDT(bool immediate, bool preIndexing, bool up, bool load, int rn,
                 int rd, int offset);
-uint32_t genBranch(int cond, long int offset);
+uint32_t genBranch(int cond, uint32_t offset);
 
 #endif //ARM11_GENINSTR_H

@@ -1,13 +1,9 @@
-//
-// Created by drspaceship on 23/05/16.
-//
 #include "getOperand2.h"
 
 // PRE: instr is a dataProcess or dataTransfer instruction
 // immediate should be derived from the I bit
 // POST: returns a 32 bit int for operand2 and a carry value
 ShiftResult getOperand2(uint32_t instr, bool immediate) {
-
     ShiftResult operand2;
 
     if (immediate) {
