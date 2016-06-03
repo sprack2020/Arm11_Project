@@ -3,16 +3,17 @@
 
 #include <assembler/assembler.h>
 
-
 void createSymbolTableAndCountInstrs(
-        Assembler *this,
+        Assembler *this
 );
+
 void handleLabel(
         Assembler *this,
         char *line,
         int lineNo,
-        int *instructionlessLabels,
+        int *instructionlessLabels
 );
+
 bool hasInstr(
         char *line
 );

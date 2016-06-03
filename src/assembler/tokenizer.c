@@ -4,7 +4,6 @@
 
 #include "tokenizer.h"
 
-
 void getTokens(char **buffer, int numTokens, char *line) {
     assert(numTokens >= 0);
 

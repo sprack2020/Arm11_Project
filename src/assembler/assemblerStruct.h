@@ -19,7 +19,7 @@ typedef struct Assembler {
     int numInstrs;
     int firstEmptyAddr;
     int currInstrAddr;
-    symbolTable symbolTable;
+    ListMap *symbolTable;
 } Assembler;
 
 #endif //ARM11_39_ASSEMBLERSTRUCT_H

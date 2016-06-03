@@ -21,7 +21,7 @@ void assemblerInit(Assembler *this, char *sourcePath, char *binaryPath) {
     this->numInstrs = 0;
     this->firstEmptyAddr = 0;
     this->currInstrAddr = 0;
-    this->symbolTable = malloc(sizeof(symbolTable));
+    this->symbolTable = malloc(sizeof(ListMap));
     ListMapInit(this->symbolTable);
     initSourceLines(this);
 }
