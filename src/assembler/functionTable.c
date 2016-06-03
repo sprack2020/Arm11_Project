@@ -4,6 +4,10 @@
 
 #include "functionTable.h"
 
+#define NUM_MNEMONICS 24
+
+
+
 void functionTableInit(functionTable *this) {
     ListMapInit(&this->listmap);
 
@@ -55,6 +59,27 @@ uint32_t functionTableGetAndApply(
         Assembler *a,
         char **tokens
 ) {
-    assembleFunctionPointer *fp = functionTableGet(this, mnen);
-    return (*fp)(a, tokens);
+//    assembleFunctionPointer *fp = functionTableGet(this, mnen);
+//    return (*fp)(a, tokens);
+    char* mnems[NUM_MNEMONICS] =
+            {"add", "sub", "rsb", "and", "eor", "orr", "mov", "tst", "teq",
+             "cmp", "mul", "mla", "ldr", "str", "beq", "bne", "bge", "blt",
+             "bgt", "ble", "b", "lsl", "andeq", "halt"};
+    assembleFunctionPointer asmFuncs[NUM_MNEMONICS] =
+            {&handleDataProcessing, &handleDataProcessing, &handleDataProcessing,
+             &handleDataProcessing, &handleDataProcessing, &handleDataProcessing,
+             &handleDataProcessing, &handleDataProcessing, &handleDataProcessing,
+             &handleDataProcessing, &handleMultiply, &handleMultiply, &handleSDT,
+             &handleSDT, &handleBranch, &handleBranch, &handleBranch,
+             &handleBranch, &handleBranch, &handleBranch, &handleBranch,
+             &handleLSL, &handleHalt, &handleHalt};
+
+    for (int i = 0; i < NUM_MNEMONICS; ++i) {
+        if (!strcmp(mnems[i], mnen)) {
+            return (asmFuncs[i])(a, tokens);
+        }
+    }
+
+    fprintf(stderr, "mnemonic not matched to any assemble function");
+    exit(EXIT_FAILURE);
 }
