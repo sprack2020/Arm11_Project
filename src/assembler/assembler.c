@@ -106,7 +106,7 @@ static void parseInstructions(Assembler *this) {
         char *mnem = tokens[0];
 
         // if mnem is null, we have a blank line from stripped label
-        if (menm != NULL) {
+        if (mnem != NULL) {
             this->binaryProgram[i] =
                     functionTableGetAndApply(&ft, mnem, this, tokens);
             this->currInstrAddr += INSTR_LENGTH;
