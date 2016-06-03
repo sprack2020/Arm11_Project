@@ -1,6 +1,36 @@
 #ifndef ARM11_39_BINARYSHIFT_H
 #define ARM11_39_BINARYSHIFT_H
 
+typedef enum {
+    LSL = 0,
+    LSR = 1,
+    ASR = 2,
+    ROR = 3
+} shiftType;
+
+typedef enum {
+    AND = 0,
+    EOR = 1,
+    SUB = 2,
+    RSB = 3,
+    ADD = 4,
+    TST = 8,
+    TEQ = 9,
+    CMP = 10,
+    ORR = 12,
+    MOV = 13
+} DPOpcodes;
+
+typedef enum {
+    EQ = 0,
+    NE = 1,
+    GE = 10,
+    LT = 11,
+    GT = 12,
+    LE = 13,
+    AL = 14
+} CondCodes;
+
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -50,35 +80,6 @@
 #define SWAP_INDEX_ENDIANNESS(BIT) CHAR_BIT * (3 - (BIT) / CHAR_BIT) \
                                     + (BIT) % CHAR_BIT
 
-typedef enum {
-    LSL = 0,
-    LSR = 1,
-    ASR = 2,
-    ROR = 3
-} shiftType;
-
-typedef enum {
-    AND = 0,
-    EOR = 1,
-    SUB = 2,
-    RSB = 3,
-    ADD = 4,
-    TST = 8,
-    TEQ = 9,
-    CMP = 10,
-    ORR = 12,
-    MOV = 13
-} DPOpcodes;
-
-typedef enum {
-    EQ = 0,
-    NE = 1,
-    GE = 10,
-    LT = 11,
-    GT = 12,
-    LE = 13,
-    AL = 14
-} CondCodes;
 
 typedef struct {
   uint32_t result;

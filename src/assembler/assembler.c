@@ -21,6 +21,8 @@ void assemblerInit(Assembler *this, char *sourcePath, char *binaryPath) {
     this->numInstrs = 0;
     this->firstEmptyAddr = 0;
     this->currInstrAddr = 0;
+    this->symbolTable = malloc(sizeof(symbolTable));
+    ListMapInit(this->symbolTable);
     initSourceLines(this);
 }
 
@@ -52,9 +54,6 @@ static void initSourceLines(Assembler *this) {
 
 // assembles the source file
 void assemble(Assembler *this) {
-    ListMap symbolTable;
-    ListMapInit(&symbolTable);
-
     // do first pass
     createSymbolTableAndCountInstrs(this, &symbolTable);
 
@@ -75,10 +74,11 @@ void assemblerDeInit(Assembler *this) {
 
     // free binary program
     free(this->binaryProgram);
+}
 
-    // TODO: free function/symbol table??
-
-    // don't free(this) i think
+void assemblerDeconstruct(Assembler *this) {
+    assemblerDeInit(this);
+    free(this);
 }
 
 // ignore this code, its very wrong, am in process of writing it - Shiraz
@@ -117,14 +117,16 @@ static void parseInstructions(Assembler *this) {
 
 // writes .binaryProgram to the file with name .binaryPath
 static void writeToBinaryFile(Assembler *this) {
-    int numToWrite = this->firstEmptyAddr; //write up to firstEmptyAddress
+    // write to the first empty address
+    int numToWrite = this->firstEmptyAddr;
     assert(numToWrite > 0 && this->binaryProgram != NULL);
 
     FILE *outfile = openFile(this->binaryPath, "wb");
 
     // write to the binaryProgram array, checking for errors
     int numWritten =
-            (int) fwrite(this->binaryProgram, sizeof(uint32_t), numToWrite, outfile);
+            (int) fwrite(this->binaryProgram, sizeof(uint32_t),
+            numToWrite, outfile);
     if (numWritten != numToWrite) {
         fputs("Assembler: Error When writing instructions to binary file.\n",
                 stderr);

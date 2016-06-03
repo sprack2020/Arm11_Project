@@ -11,7 +11,6 @@
 #define REG_FILED_LENGTH 4
 
 #include <util/util.h>
-#include
 
 uint32_t handleOperand2(char **tokens, bool *imm);
 int getFirstOnePos(uint32_t num);
