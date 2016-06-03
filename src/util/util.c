@@ -1,3 +1,4 @@
+
 #include "util.h"
 
 // POST: returns a 32bit int shifted based on shiftType
@@ -161,6 +162,7 @@ void signExtend(int32_t *num, int n) {
     *num = binaryShift(*num, ASR, numPaddingBits).result;
 }
 
+//TODO: make less hacky
 shiftType strToShiftType(char* string) {
     if (strcmp(string, "lsl")) {
         return LSL;
@@ -176,10 +178,44 @@ shiftType strToShiftType(char* string) {
     }
 }
 
+CondCodes mnemToCondCode(char *mnem) {
+    char *condStrings[NUMCONDCODES] = {"eq", "ne", "ge", "lt", "gt", "le", "al"};
+    CondCodes condCodes[NUMCONDCODES] = {EQ, NE, GE, LT, GT, LE, AL};
+
+    for (int i = 0; i < NUMCONDCODES; ++i) {
+        if (strcmp(mnem, condStrings[i])) {
+            return condCodes[i];
+        }
+    }
+
+    fprintf(stderr, "condition %s did not match any known condition", mnem);
+    exit(EXIT_FAILURE);
+}
+
+uint32_t getValue(char *expr) {
+    long value;
+    if (expr[0] == '#' || expr[0] == 'r') {
+        value = strtol(&expr[1], NULL, 0);
+        if (value >= (1 << 8)) {
+            fprintf(stderr, "expr exceeds 8 bits");
+            exit(EXIT_FAILURE);
+        }
+        return (uint32_t) value;
+    }
+    value = strtol(expr, NULL, 0);
+    if (value >= (1 << 26)) {
+        fprintf(stderr, "expr exceeds 26 bits");
+        exit(EXIT_FAILURE);
+    }
+    return (uint32_t) value;
+}
+
 inline bool equalStrings(char *s1, char *s2) {
     return strcmp(s1, s2) == 0;
 }
 
-bool strEq(void *str1, void *str2) {
+bool strcmpFromVoid(void *str1, void *str2) {
     return strcmp((char *)str1, (char *)str2) == 0;
 }
+
+

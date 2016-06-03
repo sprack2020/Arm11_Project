@@ -11,9 +11,9 @@
 #include "assembler.h"
 #include <util/util.h>
 #include <assembler/genInstr.h>
+#include <assembler/tokenHandlerUtil.h>
 
-#define PIPELINE_LENGTH 8
-#define REG_FILED_LENGTH 4
+#define NUMCONDCODES 7
 
 uint32_t handleDataProcessing(Assembler *assembler, char **tokens);
 uint32_t handleMultiply(Assembler *assembler, char **tokens);

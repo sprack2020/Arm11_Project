@@ -8,6 +8,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <assembler/genInstr.h>
+#include <assembler/tokenHandlers.h>
+
 #define INTWIDTH 32
 
 // keeping the instructions in little endian
@@ -64,7 +67,8 @@ uint32_t extractFragmentedBits(uint32_t instr, int upperBit, int lowerBit);
 void swapEndianness(uint32_t *number);
 void signExtend(int32_t *num, int n);
 shiftType strToShiftType(char* string);
+uint32_t getValue(char *expr);
 bool equalStrings(char *s1, char *s2);
-bool strEq(void *str1, void *str2);
+bool strcmpFromVoid(void *str1, void *str2);
 
 #endif //ARM11_39_BINARYSHIFT_H
