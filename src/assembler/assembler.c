@@ -122,10 +122,10 @@ static void writeToBinaryFile(Assembler *this) {
     int numInstrs = this->numInstrs;
     assert(numInstrs > 0 && this->binaryProgram != NULL);
 
-    FILE *outfile = openFile(this->binaryPath, "w");
+    FILE *outfile = openFile(this->binaryPath, "wb");
 
     int numWritten =
-            fwrite(this->binaryProgram, sizeof(uint32_t), numInstrs, outfile);
+            (int) fwrite(this->binaryProgram, sizeof(uint32_t), this->firstEmptyAddr, outfile);
     if (numWritten != numInstrs) {
         fputs("Assembler: Error When writing instructions to binary file.\n",
                 stderr);

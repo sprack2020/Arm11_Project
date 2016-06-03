@@ -76,7 +76,7 @@ uint32_t handleSDT(Assembler *assembler, char **tokens) {
             assembler->binaryProgram[assembler->firstEmptyAddr] = constant;
             offset = calcOffset(assembler,
                                 (unsigned int) assembler->firstEmptyAddr);
-            assembler->firstEmptyAddr += 4;
+            ++assembler->firstEmptyAddr;
         }
 
     } else {
