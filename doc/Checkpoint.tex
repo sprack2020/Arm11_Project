@@ -5,7 +5,6 @@
 \begin{document}
 
 \title{ARM Checkpoint Group 39}
-\author{TODO}
 
 \maketitle
 
@@ -15,10 +14,12 @@ In group meetings, we regularly dissected the problem at hand as a team. At the 
 
 \begin{itemize}
 
-The code we’d written followed a consistent coding convention.
-Our code individually aligned with the specifications of the design proposed in the previous group meeting.
-Our code collectively worked together without any hiccups.
-Any pseudo code was converted into code, or discussed at the group meeting.
+    \item The code we’d written followed a consistent coding convention.
+    \item Our code individually aligned with the specifications of the design proposed in the previous group meeting.
+    \item Our code collectively worked together without any hiccups.
+    \item Any pseudo code was converted into code, or discussed at the group meeting.
+
+\end{itemize}
 
 Being active outside group meetings was important, especially on social media messaging services, and we made sure that all questions outside meetings were swiftly answered by a group member to ensure maximum efficiency. 
 
@@ -27,17 +28,18 @@ We feel that the approach we have used now ensures everyone works with freedom a
 Our emulator is structured to work in the following manner:
 
 \begin{itemize}
-The instruction is fetched.
-decodeAndExecture takes the instruction to find out what type of instruction it is (Branch, Data Processing, etc.)
-Depending on the type of instruction, the relevant method is called and the necessary steps, such as updating results, CPSR flags, etc. are taken.
-This loops until the halt instruction is fetched.
+
+    \item The instruction is fetched.
+    \item decodeAndExecture takes the instruction to find out what type of instruction it is (Branch, Data Processing, etc.)
+    \item Depending on the type of instruction, the relevant method is called and the necessary steps, such as updating results, CPSR flags, etc. are taken.
+    \item This loops until the halt instruction is fetched.
+
+\end{itemize}
 
 We feel that the assembler will need to be reimplemented i.e. that methods for the emulator won’t necessarily make it into the assembler, since the tasks at hand are completely different. However, in the case that we find that such a possibility exists, our code is structured in a manner that makes code reusability efficient.
 
 We feel that implementing the extension will be difficult as there is no level or standard that measures how “good” or “bad” an extension is. However, we are constantly thinking about ideas besides doing the project and we hope to design and implement an extension that is of value and shows the hard work we’ve put in throughout the project.
 
 We look forward to the challenges ahead and we are confident that at the end we will have a project that we would be proud to present in the weeks to come.
-
-Bla Bla Bla
 
 \end{document}
