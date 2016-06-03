@@ -5,7 +5,6 @@ static void parseInstructions(Assembler *this);
 static void writeToBinaryFile(Assembler *this);
 static void initSourceLines(Assembler *assembler);
 
-
 // constructs a new assembler and returns a pointer to it
 Assembler *newAssembler(char *sourcePath, char *binaryPath) {
     Assembler *a = malloc(sizeof(Assembler));
@@ -118,15 +117,15 @@ static void parseInstructions(Assembler *this) {
 
 // writes .binaryProgram to the file with name .binaryPath
 static void writeToBinaryFile(Assembler *this) {
-    int numInstrs = this->numInstrs;
-    assert(numInstrs > 0 && this->binaryProgram != NULL);
+    int numToWrite = this->firstEmptyAddr; //write up to firstEmptyAddress
+    assert(numToWrite > 0 && this->binaryProgram != NULL);
 
     FILE *outfile = openFile(this->binaryPath, "wb");
 
     // write to the binaryProgram array, checking for errors
     int numWritten =
-            (int) fwrite(this->binaryProgram, sizeof(uint32_t), this->firstEmptyAddr, outfile);
-    if (numWritten != numInstrs) {
+            (int) fwrite(this->binaryProgram, sizeof(uint32_t), numToWrite, outfile);
+    if (numWritten != numToWrite) {
         fputs("Assembler: Error When writing instructions to binary file.\n",
                 stderr);
     }
