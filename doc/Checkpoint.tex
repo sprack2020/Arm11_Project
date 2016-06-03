@@ -8,6 +8,8 @@
 
 \maketitle
 
+\section{Introduction and Group Strategy}
+
 Looking back over a week of many group meeting and even more productive work on the ARM11 project, it’s safe to say that the way forward looks promising. After many group meetings and much more deliberation on how to approach the problem of emulating the architecture given, we are pleased with our work so far and look forward to completing the other components, such as the assembler.
 
 In group meetings, we regularly dissected the problem at hand as a team. At the end, we divided the tasks into four equal components amongst ourselves, ensuring that everyone was involved in the proceedings. Moreover, before every group meeting, the following was checked:
@@ -25,16 +27,28 @@ Being active outside group meetings was important, especially on social media me
 
 We feel that the approach we have used now ensures everyone works with freedom and to their full potential, and don’t see it changing unless a particular task demands it.
 
+\section{Structure of the Emulator}
+
 Our emulator is structured to work in the following manner:
 
 \begin{itemize}
 
     \item The instruction is fetched.
-    \item decodeAndExecture takes the instruction to find out what type of instruction it is (Branch, Data Processing, etc.)
-    \item Depending on the type of instruction, the relevant method is called and the necessary steps, such as updating results, CPSR flags, etc. are taken.
-    \item This loops until the halt instruction is fetched.
+    
+    \begin{itemize}
+    
+        \item The instruction is passed to decodeAndExecute which  takes the instruction to find out what type of instruction it is (Branch, Data Processing, etc.)
+        \item Depending on the type of instruction, the relevant method is called and the necessary steps, such as updating results, CPSR flags, etc. are taken.
+        \item This loops until the halt instruction is fetched.
+        \item This loops until the halt instruction is fetched.
+    \end{itemize}
+  
+    \item printState outputs the state of the registers
+    \item deallocARMstate frees the memory that was used, ensuring that memory usage isn't bloated
 
 \end{itemize}
+
+\section{Future challenges}
 
 We feel that the assembler will need to be reimplemented i.e. that methods for the emulator won’t necessarily make it into the assembler, since the tasks at hand are completely different. However, in the case that we find that such a possibility exists, our code is structured in a manner that makes code reusability efficient.
 
