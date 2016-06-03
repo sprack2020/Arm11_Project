@@ -40,7 +40,7 @@ static void initSourceLines(Assembler *this) {
     for (int i = 0; i < numLines; ++i) {
         char *str = malloc(sizeof(char) * MAX_LINE_LENGTH);
 
-        if (fgets(str, MAX_LINE_LENGTH, sourceFile)) {
+        if (!fgets(str, MAX_LINE_LENGTH, sourceFile)) {
             fprintf(stderr, "Error reading line %u\n", i);
             exit(EXIT_FAILURE);
         }
