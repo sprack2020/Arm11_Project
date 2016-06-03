@@ -90,6 +90,8 @@ static void parseInstructions(Assembler *this) {
     functionTable ft;
     functionTableInit(&ft);
 
+    this->binaryProgram = malloc(sizeof(uint32_t) * 2 * this->numInstrs);
+
     // iterate over each instruction
     //     (lookup mneumonic map) (this, line[i])
     // tokens should be array of strings, how to allocate it?
@@ -114,9 +116,9 @@ static void parseInstructions(Assembler *this) {
     }
 
     // free tokens
-    for (int i = 0; i < NUM_TOKENS; i++) {
-        free(tokens[i]);
-    }
+//    for (int i = 0; i < NUM_TOKENS; i++) {
+//        free(tokens[i]);
+//    }
 }
 
 // writes .binaryProgram to the file with name .binaryPath
