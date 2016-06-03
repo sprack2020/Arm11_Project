@@ -20,7 +20,9 @@ void handleLabel(
         int *instructionlessLabels
 ) {
     // get the label
-    char *label = strtok(line, LABEL_DELIMITER);
+    char *label = malloc(sizeof(char) * MAX_LINE_LENGTH);
+    strcpy(label, line);
+    label = strtok(line, LABEL_DELIMITER);
     int instrAddress = lineNo * INSTR_LENGTH;
 
     // if there is a label
@@ -31,6 +33,8 @@ void handleLabel(
             (*instructionlessLabels)++;
         }
     }
+
+    free(label);
 }
 
 bool hasInstr(char *line) {
