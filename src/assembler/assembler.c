@@ -55,7 +55,7 @@ static void initSourceLines(Assembler *this) {
 // assembles the source file
 void assemble(Assembler *this) {
     // do first pass
-    createSymbolTableAndCountInstrs(this, &symbolTable);
+    createSymbolTableAndCountInstrs(this);
 
     // do second pass
     parseInstructions(this);

@@ -6,14 +6,12 @@
 
 void createSymbolTableAndCountInstrs(
         Assembler *this,
-        ListMap *symbolTable
 );
 void handleLabel(
         Assembler *this,
         char *line,
         int lineNo,
         int *instructionlessLabels,
-        ListMap *symbolTable
 );
 bool hasInstr(
         char *line
