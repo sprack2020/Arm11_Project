@@ -16,10 +16,20 @@ void functionTableAdd(
     ListMapAdd(&this->listmap, mnen, func);
 }
 
-assembleFunctionPointer functionTableGet(
+assembleFunctionPointer *functionTableGet(
         functionTable *this,
         char *mnen
 ) {
-    return (assembleFunctionPointer) (void **) ListMapGet(&this->listmap, mnen,
-                                                          &strcmpFromVoid);
+    return ListMapGet(&this->listmap, mnen, &strEq);
+}
+
+// TODO: name better, maybe incorporate the getting as well
+uint32_t functionTableGetAndApply(
+        functionTable *this,
+        char *mnen,
+        Assembler *a,
+        char **tokens
+) {
+    assembleFunctionPointer *fp = functionTableGet(this, mnen);
+    return (*fp)(a, tokens);
 }

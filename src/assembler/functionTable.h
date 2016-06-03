@@ -21,14 +21,23 @@ typedef uint32_t (*assembleFunctionPointer)(Assembler *, char **);
 void functionTableInit(
         functionTable *ft
 );
+
 void functionTableAdd(
         functionTable *ft,
         char *mnen,
         assembleFunctionPointer fs
 );
-assembleFunctionPointer functionTableGet(
+
+assembleFunctionPointer *functionTableGet(
         functionTable *this,
         char *mnen
+);
+
+uint32_t functionTableGetAndApply(
+        functionTable *this,
+        char *mnen,
+        Assembler *a,
+        char **tokens
 );
 
 #endif //ARM11_39_FUNCTIONTABLE_H
