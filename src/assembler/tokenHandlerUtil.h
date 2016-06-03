@@ -1,6 +1,12 @@
 #ifndef ARM11_39_TOKENHANDLERUTIL_H
 #define ARM11_39_TOKENHANDLERUTIL_H
 
+#include <stdbool.h>
+#include <stdint.h>
+
+#include <assembler/assemblerStruct.h>
+#include <util/util.h>
+
 #define PIPELINE_LENGTH 8
 #define REG_FILED_LENGTH 4
 

@@ -2,9 +2,10 @@ CC      = gcc
 CFLAGS  = -O3 -Wall -g -D_POSIX_SOURCE -D_BSD_SOURCE -std=c99 -pedantic -I .
 LDFLAGS =
 EMULATE_SOURCES = emulate.c emulator/global_state.c emulator/branch.c emulator/checkCond.c emulator/dataProcess.c emulator/dataTransfer.c emulator/decodeAndExecute.c emulator/getOperand2.c emulator/iMultiply.c emulator/printState.c emulator/updateCPSR.c util/util.c
-ASSEMBLER_SOURCES = assemble.c assembler/assembler.c assembler/functionTable.c assembler/genInstr.c assembler/io.c assembler/symbolTable.c assembler/tokenHandler.c assembler/tokenizer.c util/util.c util/ListMap.c util/ListMapIterator.c util/ListMapNode.c
-EMULATE_OBJECTS = $(EMULATE_SOURCES:.c=.o)
+EMULATE_OBJECTS =  $(EMULATE_SOURCES:.c=.o)
+ASSEMBLER_SOURCES = assemble.c assembler/assembler.c assembler/functionTable.c assembler/genInstr.c assembler/io.c assembler/symbolTable.c assembler/tokenHandlers.c assembler/tokenizer.c util/util.c util/ListMap.c util/ListMapIterator.c util/ListMapNode.c assembler/tokenHandlerUtil.c
 ASSEMBLER_OBJECTS =  $(ASSEMBLER_SOURCES:.c=.o)
+
 
 all: emulate assemble
 
@@ -18,20 +19,12 @@ assemble: $(ASSEMBLER_OBJECTS)
 %.o: %.c %.h
 	$(CC) $(CFLAGS) $< -c -o $@
 
-# emulate:
-# 	$(CC) $(SOURCES) $(CFLAGS) -o emulate
+.SUFFIXES: .c .o
 
-# .SUFFIXES: .c .o
-#
- .PHONY: all clean
-#
-#
-# assemble: assemble.o
-#
-# emulate: emulate.o
+.PHONY: all clean
 
 clean:
-	# rm -f $(wildcard *.o)
-	rm -f $(EMULATE_OBJECTS) $(ASSEMBLER_OBJECTS)
+	rm -f $(wildcard *.o)
+	# rm -f $(EMULATE_OBJECTS) $(ASSEMBLER_OBJECTS)
 	rm -f assemble
 	rm -f emulate

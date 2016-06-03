@@ -23,8 +23,6 @@ void assemblerInit(Assembler *this, char *sourcePath, char *binaryPath) {
     this->firstEmptyAddr = 0;
     this->currInstrAddr = 0;
     initSourceLines(this);
-
-    // TODO: symbol and function tables
 }
 
 //read all the lines (delimited by \n) in file to an array of strings

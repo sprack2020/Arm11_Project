@@ -13,14 +13,14 @@ void functionTableAdd(
         char *mnen,
         assembleFunctionPointer func
 ) {
-    ListMapAdd(&this->listmap, mnen, func);
+    ListMapAdd(&this->listmap, mnen, (void **) &func);
 }
 
 assembleFunctionPointer *functionTableGet(
         functionTable *this,
         char *mnen
 ) {
-    return ListMapGet(&this->listmap, mnen, &strEq);
+    return ListMapGet(&this->listmap, mnen, &strcmpFromVoid);
 }
 
 // TODO: name better, maybe incorporate the getting as well
