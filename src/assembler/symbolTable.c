@@ -10,7 +10,7 @@ void createSymbolTableAndCountInstrs(Assembler *this, ListMap *symbolTable) {
         handleLabel(this, currLine, i, &instructionlessLabels, symbolTable);
     }
     this->numInstrs = this->numLines - instructionlessLabels;
-
+    this->firstEmptyAddr = this->numInstrs;
 }
 
 void handleLabel(
