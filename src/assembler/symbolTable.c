@@ -1,4 +1,4 @@
-#include <ctype.h>
+
 #include "symbolTable.h"
 
 void createSymbolTableAndCountInstrs(Assembler *this) {
@@ -21,11 +21,11 @@ void handleLabel(
 ) {
     // get the label
     char *label = strtok(line, LABEL_DELIMITER);
-    lineNo *= INSTR_LENGTH;
+    int instrAddress = lineNo * INSTR_LENGTH;
 
     // if there is a label
-    if (label != NULL) {
-        ListMapAdd(this->symbolTable, label, &lineNo);
+    if (strcmp(line, label)) {
+        ListMapAdd(this->symbolTable, label, &instrAddress);
         char *restOfLine = strtok(NULL, "\n\0");
         if (!hasInstr(restOfLine)) {
             (*instructionlessLabels)++;

@@ -53,11 +53,13 @@ set(ASSEMBLER_SOURCE_FILES
         src/assembler/functionTable.c
         src/assembler/symbolTable.c
         src/assembler/tokenHandlers.c
+        src/assembler/tokenHandlerUtil.c
         src/assembler/tokenizer.c
         src/assembler/assemblerStruct.h
         src/util/GenericListMapNode.c src/util/GenericListMapNode.h test/assemble/GenericListMap_String_FP_test.c test/assemble/GenericListMap_String_FP_test.h src/util/GenericListMap.c src/util/GenericListMap.h src/util/GenericListMapIterator.c src/util/GenericListMapIterator.h src/util/FunctionTable.c src/util/FunctionTable.h)
 
 set(ASSEMBLER_HEADERS
+        src/assembler/assemblerStruct.h
         src/assembler/io.h
         src/assembler/genInstr.h
         src/util/util.h
@@ -69,11 +71,13 @@ set(ASSEMBLER_HEADERS
         src/assembler/functionTable.h
         src/assembler/symbolTable.h
         src/assembler/tokenHandlers.h
+        src/assembler/tokenHandlerUtil.h
         src/assembler/tokenizer.h
         )
 
-add_executable(assemble src/assemble.c ${ASSEMBLER_SOURCE_FILES}
-        ${ASSEMBLER_HEADER_FILES})
+add_executable(assemble src/assemble.c ${ASSEMBLER_HEADER_FILES}
+        ${ASSEMBLER_SOURCE_FILES}
+        )
 
 ################################################################################
 # EMULATOR TESTS

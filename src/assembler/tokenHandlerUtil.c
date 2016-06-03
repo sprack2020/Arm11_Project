@@ -112,5 +112,5 @@ uint32_t calcOffset(Assembler *assembler, uint32_t address) {
 }
 
 uint32_t getLabelAddress(Assembler *assembler, char *label) {
-    return (uint32_t) ListMapGet(assembler->symbolTable, label, strcmpFromVoid);
+    return *(uint32_t*) ListMapGet(assembler->symbolTable, label, strcmpFromVoid);
 }

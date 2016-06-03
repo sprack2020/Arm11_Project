@@ -1,6 +1,8 @@
 #ifndef ARM11_39_SYMBOLTABLE_H
 #define ARM11_39_SYMBOLTABLE_H
 
+#include <ctype.h>
+#include <assembler/assemblerStruct.h>
 #include <assembler/assembler.h>
 
 void createSymbolTableAndCountInstrs(

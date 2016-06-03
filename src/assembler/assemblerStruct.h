@@ -8,7 +8,6 @@
 #include <stdint.h>
 
 #include <util/ListMap.h>
-#include <assembler/symbolTable.h>
 
 typedef struct Assembler {
     char *sourcePath;

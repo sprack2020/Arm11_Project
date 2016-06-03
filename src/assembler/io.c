@@ -30,6 +30,7 @@ int countLines(FILE *file) {
         ++numLines;
     }
 
+    rewind(file);
     return numLines;
 }
 
