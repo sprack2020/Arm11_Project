@@ -55,7 +55,7 @@ set(ASSEMBLER_SOURCE_FILES
         src/assembler/tokenHandlers.c
         src/assembler/tokenizer.c
         src/assembler/assemblerStruct.h
-        )
+        src/util/GenericListMapNode.c src/util/GenericListMapNode.h test/assemble/GenericListMap_String_FP_test.c test/assemble/GenericListMap_String_FP_test.h src/util/GenericListMap.c src/util/GenericListMap.h src/util/GenericListMapIterator.c src/util/GenericListMapIterator.h src/util/FunctionTable.c src/util/FunctionTable.h)
 
 set(ASSEMBLER_HEADERS
         src/assembler/io.h
