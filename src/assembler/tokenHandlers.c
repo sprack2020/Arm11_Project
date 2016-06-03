@@ -58,7 +58,8 @@ uint32_t handleSDT(Assembler *assembler, char **tokens) {
             tokens[2][0] = '#';
             return handleDataProcessing(assembler, tokens);
         } else {
-            assembler->binaryProgram[assembler->firstEmptyAddr] = constant;
+            assembler->binaryProgram[(assembler->firstEmptyAddr) / INSTR_LENGTH]
+                    = constant;
             offset = calcOffset(assembler,
                                 (unsigned int) assembler->firstEmptyAddr);
             ++assembler->firstEmptyAddr;

@@ -11,6 +11,7 @@
 #include <string.h>
 #include <assembler/assemblerStruct.h>
 #include <util/util.h>
+#include <assembler/tokenHandlers.h>
 
 typedef struct functionTable {
     ListMap listmap;

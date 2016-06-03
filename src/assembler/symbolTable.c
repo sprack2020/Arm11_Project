@@ -17,7 +17,7 @@ void handleLabel(
         Assembler *this,
         char *line,
         int lineNo,
-        int *instructionlessLabels,
+        int *instructionlessLabels
 ) {
     // get the label
     char *label = strtok(line, LABEL_DELIMITER);
