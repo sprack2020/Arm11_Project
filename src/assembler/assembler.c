@@ -105,8 +105,12 @@ static void parseInstructions(Assembler *this) {
         getTokens(tokens, NUM_TOKENS, this->sourceLines[i]);
         char *mnem = tokens[0];
 
-        // get the right function and call it
-        this->binaryProgram[i] = functionTableGetAndApply(&ft, mnem, this, tokens);
+        // if mnem is null, we have a blank line from stripped label
+        if (menm != NULL) {
+            this->binaryProgram[i] =
+                    functionTableGetAndApply(&ft, mnem, this, tokens);
+            this->currInstrAddr += INSTR_LENGTH;
+        }
     }
 
     // free tokens
