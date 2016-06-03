@@ -108,7 +108,7 @@ bool hasNoRn(char *mnem) {
 }
 
 uint32_t calcOffset(Assembler *assembler, uint32_t address) {
-    return address - assembler->currInstrAddr - PIPELINE_LENGTH;
+    return address - (assembler->currInstrAddr * 4) - PIPELINE_LENGTH;
 }
 
 uint32_t getLabelAddress(Assembler *assembler, char *label) {
