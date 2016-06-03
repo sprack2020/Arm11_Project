@@ -14,7 +14,7 @@ typedef struct ARMstate {
     uint32_t *registers;
 } ARMstate;
 
-// contians ARMState
+// contians ARMState state, what we are emulating on
 #include <emulator/global_state.h>
 
 #define MEM_SIZE 65536

@@ -217,5 +217,3 @@ inline bool equalStrings(char *s1, char *s2) {
 bool strcmpFromVoid(void *str1, void *str2) {
     return strcmp((char *)str1, (char *)str2) == 0;
 }
-
-

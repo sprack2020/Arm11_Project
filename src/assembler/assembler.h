@@ -20,5 +20,6 @@ Assembler *newAssembler(char *sourcePath, char *binaryPath);
 void assemblerInit(Assembler *a, char *sourceFile, char *binaryPath);
 void assemble(Assembler *this);
 void assemblerDeInit(Assembler *this);
+void assemblerDeconstruct(Assembler *this);
 
 #endif //ARM11_39_ASSEMBLER_H

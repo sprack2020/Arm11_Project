@@ -4,27 +4,42 @@
 
 \begin{document}
 
-\title{ARM Checkpoint... }
-\author{TODO}
+\title{ARM Checkpoint Group 39}
 
 \maketitle
 
-\section{Group Organisation}
+Looking back over a week of many group meeting and even more productive work on the ARM11 project, it’s safe to say that the way forward looks promising. After many group meetings and much more deliberation on how to approach the problem of emulating the architecture given, we are pleased with our work so far and look forward to completing the other components, such as the assembler.
 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-culpa qui officia deserunt mollit anim id est laborum.
+In group meetings, we regularly dissected the problem at hand as a team. At the end, we divided the tasks into four equal components amongst ourselves, ensuring that everyone was involved in the proceedings. Moreover, before every group meeting, the following was checked:
 
-\section{Implementation Strategies}
+\begin{itemize}
 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-culpa qui officia deserunt mollit anim id est laborum.
+    \item The code we’d written followed a consistent coding convention.
+    \item Our code individually aligned with the specifications of the design proposed in the previous group meeting.
+    \item Our code collectively worked together without any hiccups.
+    \item Any pseudo code was converted into code, or discussed at the group meeting.
+
+\end{itemize}
+
+Being active outside group meetings was important, especially on social media messaging services, and we made sure that all questions outside meetings were swiftly answered by a group member to ensure maximum efficiency. 
+
+We feel that the approach we have used now ensures everyone works with freedom and to their full potential, and don’t see it changing unless a particular task demands it.
+
+Our emulator is structured to work in the following manner:
+
+\begin{itemize}
+
+    \item The instruction is fetched.
+    \item decodeAndExecture takes the instruction to find out what type of instruction it is (Branch, Data Processing, etc.)
+    \item Depending on the type of instruction, the relevant method is called and the necessary steps, such as updating results, CPSR flags, etc. are taken.
+    \item This loops until the halt instruction is fetched.
+
+\end{itemize}
+
+We feel that the assembler will need to be reimplemented i.e. that methods for the emulator won’t necessarily make it into the assembler, since the tasks at hand are completely different. However, in the case that we find that such a possibility exists, our code is structured in a manner that makes code reusability efficient.
+
+We feel that implementing the extension will be difficult as there is no level or standard that measures how “good” or “bad” an extension is. However, we are constantly thinking about ideas besides doing the project and we hope to design and implement an extension that is of value and shows the hard work we’ve put in throughout the project.
+
+We look forward to the challenges ahead and we are confident that at the end we will have a project that we would be proud to present in the weeks to come.
 
 \end{document}

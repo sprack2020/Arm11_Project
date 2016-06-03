@@ -8,7 +8,7 @@
 #include <stdint.h>
 
 #include <util/ListMap.h>
-// #include <assembler/functionTable.h>
+#include <assembler/symbolTable.h>
 
 typedef struct Assembler {
     char *sourcePath;
@@ -19,8 +19,7 @@ typedef struct Assembler {
     int numInstrs;
     int firstEmptyAddr;
     int currInstrAddr;
-    ListMap *symbolTable;
-    //functionTable *ft;
+    symbolTable symbolTable;
 } Assembler;
 
 #endif //ARM11_39_ASSEMBLERSTRUCT_H
