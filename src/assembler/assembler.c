@@ -108,7 +108,8 @@ static void parseInstructions(Assembler *this) {
         getTokens(tokens, NUM_TOKENS, this->sourceLines[i]);
         char *mnem = tokens[0];
 
-        functionTableGet(&ft, mnem)(this, this->sourceLines[i]);
+        // get the right function and call it
+        this->binaryProgram[i] = functionTableGetAndApply(&ft, mnem, this, tokens);
     }
 
     // free tokens
@@ -124,6 +125,7 @@ static void writeToBinaryFile(Assembler *this) {
 
     FILE *outfile = openFile(this->binaryPath, "wb");
 
+    // write to the binaryProgram array, checking for errors
     int numWritten =
             (int) fwrite(this->binaryProgram, sizeof(uint32_t), this->firstEmptyAddr, outfile);
     if (numWritten != numInstrs) {
@@ -131,6 +133,7 @@ static void writeToBinaryFile(Assembler *this) {
                 stderr);
     }
 
+    // close the outfile
     if (fclose(outfile) == EOF) {
         fputs("Assembler: Error closing binary file", stderr);
     }
