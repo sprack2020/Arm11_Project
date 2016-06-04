@@ -183,7 +183,7 @@ CondCodes mnemToCondCode(char *mnem) {
     CondCodes condCodes[NUMCONDCODES] = {EQ, NE, GE, LT, GT, LE, AL};
 
     for (int i = 0; i < NUMCONDCODES; ++i) {
-        if (strcmp(mnem, condStrings[i])) {
+        if (equalStrings(mnem, condStrings[i])) {
             return condCodes[i];
         }
     }
@@ -215,5 +215,5 @@ inline bool equalStrings(char *s1, char *s2) {
 }
 
 bool strcmpFromVoid(void *str1, void *str2) {
-    return strcmp((char *)str1, (char *)str2) == 0;
+    return (strcmp((char *)str1, (char *)str2) == 0);
 }
