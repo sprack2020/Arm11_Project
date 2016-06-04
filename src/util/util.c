@@ -206,6 +206,13 @@ uint32_t getValue(char *expr) {
             exit(EXIT_FAILURE);
         }
         return (uint32_t) value;
+    } else if (expr[0] == '=') {
+        value = strtol(&expr[1], NULL, 0);
+        if ((unsigned long)value >= (1 << 31)) {
+            fprintf(stderr, "expr exceeds 32 bits");
+            exit(EXIT_FAILURE);
+        }
+        return (uint32_t) value;
     }
     value = strtol(expr, NULL, 0);
     if (value >= (1 << 26)) {

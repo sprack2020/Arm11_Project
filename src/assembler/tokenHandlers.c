@@ -53,7 +53,7 @@ uint32_t handleSDT(Assembler *assembler, char **tokens) {
 
     if (tokens[2][0] == '=') {  //numeric constant
         immediate = true;
-        uint32_t constant = getValue(tokens[1]);
+        uint32_t constant = getValue(tokens[2]);
         if (constant <= 0xFF) {  //constant will fit in a mov instruction
             tokens[0] = "mov";
             tokens[2][0] = '#';
