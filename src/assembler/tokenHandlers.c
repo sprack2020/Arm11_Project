@@ -52,6 +52,7 @@ uint32_t handleSDT(Assembler *assembler, char **tokens) {
     int offset = 0;
 
     if (tokens[2][0] == '=') {  //numeric constant
+        immediate = true;
         uint32_t constant = getValue(tokens[1]);
         if (constant <= 0xFF) {  //constant will fit in a mov instruction
             tokens[0] = "mov";
@@ -66,10 +67,10 @@ uint32_t handleSDT(Assembler *assembler, char **tokens) {
         }
 
     } else {
-        immediate = true;
-        preIndexing = !((tokens[2][3] == ']' || tokens[2][4] == ']')
-                        && tokens[3] == NULL);
+        preIndexing = (tokens[2][3] != ']' && tokens[2][4] != ']')
+                        || tokens[3] == NULL;
         rn = getValue(tokens[2]);
+        up = true;
         if (tokens[3] != NULL) {
             if (tokens[3][0] == '-') {
                 tokens[3] = &tokens[3][1]; //remove negative at start of Rm

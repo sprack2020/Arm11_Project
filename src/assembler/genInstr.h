@@ -35,6 +35,7 @@
 #define BRMASK 0xA << 24
 
 #define NUMDPINSTRS 10
+
 uint32_t genDP(bool immediate, int opcode, bool setCPSR, int rn, int rd, int operand2);
 uint32_t genMul(bool accumulate, int rd, int rn, int rs, int rm);
 uint32_t genSDT(bool immediate, bool preIndexing, bool up, bool load, int rn,
