@@ -23,7 +23,7 @@ void handleLabel(
     char *label = malloc(sizeof(char) * MAX_LINE_LENGTH);
     strcpy(label, line);
     label = strtok(label, LABEL_DELIMITER);
-    int instrAddress = lineNo * INSTR_LENGTH;
+    int instrAddress = this->currInstrAddr;
 
     // if there is a label
     if (strcmp(line, label)) {

@@ -89,7 +89,7 @@ uint32_t handleBranch(Assembler *assembler, char **tokens) {
     CondCodes cond = mnemToCondCode(&tokens[0][1]);
     uint32_t address = isalpha(tokens[1][0]) ?
                        //address starts with a char so is a label
-                       (getLabelAddress(assembler, tokens[1]) * INSTR_LENGTH) :
+                       getLabelAddress(assembler, tokens[1]) :
                        //else it's a numeric value
                        getValue(tokens[1]);
     uint32_t offset = calcOffset(assembler, address);
