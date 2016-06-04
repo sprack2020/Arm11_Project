@@ -55,7 +55,7 @@ assembleFunctionPointer *functionTableGet(
 // TODO: name better, maybe incorporate the getting as well
 uint32_t functionTableGetAndApply(
         functionTable *this,
-        char *mnen,
+        char *mnem,
         Assembler *a,
         char **tokens
 ) {
@@ -75,11 +75,11 @@ uint32_t functionTableGetAndApply(
              &handleLSL, &handleHalt, &handleHalt};
 
     for (int i = 0; i < NUM_MNEMONICS; ++i) {
-        if (!strcmp(mnems[i], mnen)) {
+        if (!strcmp(mnems[i], mnem)) {
             return (asmFuncs[i])(a, tokens);
         }
     }
 
-    fprintf(stderr, "mnemonic not matched to any assemble function");
+    fprintf(stderr, "mnemonic %s not matched to any assemble function", mnem);
     exit(EXIT_FAILURE);
 }
