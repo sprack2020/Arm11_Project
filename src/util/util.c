@@ -180,7 +180,7 @@ shiftType strToShiftType(char* string) {
 
 CondCodes mnemToCondCode(char *mnem) {
     //if empty condition, assume always
-    if (!mnem) {
+    if (equalStrings(mnem, "")) {
         mnem = "al";
     }
 
