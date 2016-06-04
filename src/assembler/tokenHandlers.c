@@ -86,7 +86,7 @@ uint32_t handleSDT(Assembler *assembler, char **tokens) {
 }
 
 uint32_t handleBranch(Assembler *assembler, char **tokens) {
-    CondCodes cond = mnemToCondCode(&tokens[1][1]);
+    CondCodes cond = mnemToCondCode(&tokens[0][1]);
     uint32_t address = isalpha(tokens[1][0]) ?
                        //address starts with a char so is a label
                        getLabelAddress(assembler, tokens[1]) :
