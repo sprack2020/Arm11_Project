@@ -38,8 +38,8 @@ void handleLabel(
 }
 
 bool hasInstr(char *line) {
-    while (isspace(*line)) {
+    while (line != NULL && isspace(*line)) {
         line++;
     }
-    return (bool) isalpha(*line);
+    return line == NULL ? false : (bool) isalpha(*line);
 }
