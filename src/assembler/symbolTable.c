@@ -34,11 +34,11 @@ void handleLabel(
         if (!hasInstr(restOfLine)) {
             (*instructionlessLabels)++;
         } else {
-            this->currInstrAddr++;
+            this->currInstrAddr+= INSTR_LENGTH;
         }
     } else {
         free(label);
-        this->currInstrAddr++;
+        this->currInstrAddr+= INSTR_LENGTH;
     }
 }
 
