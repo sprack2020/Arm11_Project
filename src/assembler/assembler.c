@@ -109,7 +109,7 @@ static void parseInstructions(Assembler *this) {
 
         // if mnem is null, we have a blank line from stripped label
         if (mnem != NULL) {
-            this->binaryProgram[i] =
+            this->binaryProgram[this->currInstrAddr / 4] =
                     functionTableGetAndApply(&ft, mnem, this, tokens);
             this->currInstrAddr += INSTR_LENGTH;
         }
@@ -124,7 +124,7 @@ static void parseInstructions(Assembler *this) {
 // writes .binaryProgram to the file with name .binaryPath
 static void writeToBinaryFile(Assembler *this) {
     // write to the first empty address
-    int numToWrite = this->firstEmptyAddr;
+    int numToWrite = this->firstEmptyAddr / INSTR_LENGTH;
     assert(numToWrite > 0 && this->binaryProgram != NULL);
 
     FILE *outfile = openFile(this->binaryPath, "wb");
