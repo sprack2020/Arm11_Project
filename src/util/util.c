@@ -179,6 +179,11 @@ shiftType strToShiftType(char* string) {
 }
 
 CondCodes mnemToCondCode(char *mnem) {
+    //if empty condition, assume always
+    if (!mnem) {
+        mnem = "al";
+    }
+
     char *condStrings[NUMCONDCODES] = {"eq", "ne", "ge", "lt", "gt", "le", "al"};
     CondCodes condCodes[NUMCONDCODES] = {EQ, NE, GE, LT, GT, LE, AL};
 
