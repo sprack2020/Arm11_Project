@@ -13,16 +13,16 @@ uint32_t handleDataProcessing(Assembler *assembler, char **tokens) {
     if (hasNoRd(tokens[0])) {
         uint32_t operand2 = handleOperand2(&tokens[2], &imm);
         uint32_t rn = getValue(tokens[1]);
-        return genDP(imm, opcode, rn, 0, operand2);
+        return genDP(imm, opcode, true, rn, 0, operand2);
     } else if (hasNoRn(tokens[0])) {
         uint32_t operand2 = handleOperand2(&tokens[2], &imm);
         uint32_t rd = getValue(tokens[1]);
-        return genDP(imm, opcode, 0, rd, operand2);
+        return genDP(imm, opcode, false, 0, rd, operand2);
     } else {
         uint32_t operand2 = handleOperand2(&tokens[3], &imm);
         uint32_t rd = getValue(tokens[1]);
         uint32_t rn = getValue(tokens[2]);
-        return genDP(imm, opcode, rn, rd, operand2);
+        return genDP(imm, opcode, false, rn, rd, operand2);
     }
 }
 
@@ -89,7 +89,7 @@ uint32_t handleBranch(Assembler *assembler, char **tokens) {
     CondCodes cond = mnemToCondCode(&tokens[0][1]);
     uint32_t address = isalpha(tokens[1][0]) ?
                        //address starts with a char so is a label
-                       getLabelAddress(assembler, tokens[1]) :
+                       (getLabelAddress(assembler, tokens[1]) * INSTR_LENGTH) :
                        //else it's a numeric value
                        getValue(tokens[1]);
     uint32_t offset = calcOffset(assembler, address);

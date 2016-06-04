@@ -12,17 +12,17 @@
 
 
 // bit positioning constants
-#define CONDSHIFT 27
+#define CONDSHIFT 28
 #define ISHIFT 25
 #define PSHIFT 24
 #define USHIFT 23
 #define OPCODESHIFT 21
+#define ASHIFT 21
 #define LSHIFT 20
-#define ASHIFT 20
-#define SSHIFT 19
-#define RNSHIFT 15
-#define RDSHIFT 11
-#define RSSHIFT 7
+#define SSHIFT 20
+#define RNSHIFT 16
+#define RDSHIFT 12
+#define RSSHIFT 8
 #define RMSHIFT 0
 #define OP2SHIFT 0
 #define SDTOFFSHIFT 0
@@ -35,7 +35,7 @@
 #define SDTMASK AL << CONDSHIFT | 0x1 << 26
 #define BRMASK 0xA << 24
 
-uint32_t genDP(bool immediate, int opcode, int rn, int rd, int operand2);
+uint32_t genDP(bool immediate, int opcode, bool setCPSR, int rn, int rd, int operand2);
 uint32_t genMul(bool accumulate, int rd, int rn, int rs, int rm);
 uint32_t genSDT(bool immediate, bool preIndexing, bool up, bool load, int rn,
                 int rd, int offset);

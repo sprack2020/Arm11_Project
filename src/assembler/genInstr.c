@@ -2,10 +2,12 @@
 
 //generate a data processing instruction with S set to 0 and a condition of
 //always. Assumes all field inputs are of appropriate length
-uint32_t genDP(bool immediate, int opcode, int rn, int rd, int operand2) {
+uint32_t genDP(bool immediate, int opcode, bool setCPSR, int rn, int rd,
+               int operand2) {
     return DPMASK                   |
            immediate << ISHIFT      |
            opcode    << OPCODESHIFT |
+           setCPSR   << SSHIFT      |
            rn        << RNSHIFT     |
            rd        << RDSHIFT     |
            operand2  << OP2SHIFT    ;
