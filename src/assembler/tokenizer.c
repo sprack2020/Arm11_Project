@@ -22,7 +22,7 @@ char* stripLabel(char* line) {
     while (line[i]) {
         if (line [i] == ':') {
             //if we are, set result to the first char after skipping all space
-            res = skipSpace(++line);
+            res = skipSpace(&line[++i]);
         }
         ++i;
     }
