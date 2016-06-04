@@ -31,7 +31,7 @@ uint32_t handleMultiply(Assembler *assembler, char **tokens) {
     uint32_t rm = getValue(tokens[2]);
     uint32_t rs = getValue(tokens[3]);
     uint32_t rn;
-    if (strcmp(tokens[0], "mla")) {
+    if (equalStrings(tokens[0], "mla")) {
         rn = getValue(tokens[4]);
         return genMul(true, rd, rn, rs, rm);
     } else {
