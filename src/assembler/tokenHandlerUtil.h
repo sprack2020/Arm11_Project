@@ -25,7 +25,7 @@ bool hasNoRd(char *mnem);
 bool hasNoRn(char *mnem);
 CondCodes mnemToCondCode(char *mnem);
 uint32_t getLabelAddress(Assembler *assembler, char *label);
-uint32_t calcOffset(Assembler *assembler, uint32_t address);
+uint32_t calcOffset(Assembler *assembler, uint32_t address, bool reduce);
 
 
 #endif //ARM11_39_TOKENHANDLERUTIL_H

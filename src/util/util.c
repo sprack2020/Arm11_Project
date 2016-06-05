@@ -164,13 +164,13 @@ void signExtend(int32_t *num, int n) {
 
 //TODO: make less hacky
 shiftType strToShiftType(char* string) {
-    if (strcmp(string, "lsl")) {
+    if (equalStrings(string, "lsl")) {
         return LSL;
-    } else if (strcmp(string, "lsr")) {
+    } else if (equalStrings(string, "lsr")) {
         return LSR;
-    } else if (strcmp(string, "asr")) {
+    } else if (equalStrings(string, "asr")) {
         return ASR;
-    } else if (strcmp(string, "ror")) {
+    } else if (equalStrings(string, "ror")) {
         return ROR;
     } else {
         fprintf(stderr, "invalid shift type");

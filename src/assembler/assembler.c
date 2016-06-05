@@ -47,12 +47,11 @@ static void initSourceLines(Assembler *this) {
 
         //strip leading space on line, and if it was empty, don't count it.
         str = skipSpace(str);
-        if (*str == '\0') {
+        if (*str != '\0') {
+            this->sourceLines[i] = str;
+        } else {
             --i;
         }
-
-        //put the string pointer into sourceLines
-        this->sourceLines[i] = str;
     }
 
     closeFile(sourceFile);
@@ -102,9 +101,9 @@ static void parseInstructions(Assembler *this) {
     char *tokens[NUM_TOKENS];
 
     // definitely find a more optimal way instead of allocating so much memory
-    for (int i = 0; i < NUM_TOKENS; i++) {
-        tokens[i] = malloc(MAX_LINE_LENGTH * sizeof(char));
-    }
+//    for (int i = 0; i < NUM_TOKENS; i++) {
+//        tokens[i] = malloc(MAX_LINE_LENGTH * sizeof(char));
+//    }
 
     // for each line, get the tokens and generate the instruction
     for (int i = 0, n = this->numLines; i < n; i++) {

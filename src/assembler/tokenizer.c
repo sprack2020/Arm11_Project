@@ -10,9 +10,12 @@ void getTokens(char **buffer, int numTokens, char *line) {
 
     line = stripLabel(line);
     buffer[0] = strtok(line, " ");
-    for (int i = 1; i < numTokens; ++i) {
+    for (int i = 1; i < numTokens - 2; ++i) {
         buffer[i] = skipSpace(strtok(NULL, ",\n"));
     }
+    //split the last but one token on a space
+    buffer[numTokens - 2] = skipSpace(strtok(NULL, " "));
+    buffer[numTokens - 1] = skipSpace(strtok(NULL, "\n\0"));
 }
 
 char* stripLabel(char* line) {

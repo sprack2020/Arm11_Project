@@ -46,13 +46,13 @@ uint32_t handleSDT(Assembler *assembler, char **tokens) {
     bool load = equalStrings(tokens[0], "ldr");
     int rd = getValue(tokens[1]);
     bool immediate = false;
-    bool preIndexing = false;
-    bool up = false;
-    int rn = 0;
+    bool preIndexing = true;
+    bool up = true;
+    int rn = 0xF;
     int offset = 0;
 
     if (tokens[2][0] == '=') {  //numeric constant
-        immediate = true;
+        immediate = false;
         uint32_t constant = getValue(tokens[2]);
         if (constant <= 0xFF) {  //constant will fit in a mov instruction
             tokens[0] = "mov";
@@ -62,21 +62,20 @@ uint32_t handleSDT(Assembler *assembler, char **tokens) {
             assembler->binaryProgram[(assembler->firstEmptyAddr) / INSTR_LENGTH]
                     = constant;
             offset = calcOffset(assembler,
-                                (unsigned int) assembler->firstEmptyAddr);
-            ++assembler->firstEmptyAddr;
+                                (unsigned int) assembler->firstEmptyAddr, false);
+            assembler->firstEmptyAddr += INSTR_LENGTH;
         }
 
     } else {
         preIndexing = (tokens[2][3] != ']' && tokens[2][4] != ']')
                         || tokens[3] == NULL;
         rn = getValue(&tokens[2][1]);
-        up = true;
         if (tokens[3] != NULL) {
-            if (tokens[3][0] == '-') {
-                tokens[3] = &tokens[3][1]; //remove negative at start of Rm
-            } else {
-                up = true;
-            };
+            if (tokens[3][1] == '-') {
+                up = false;
+                tokens[3][1] = '#'; //change negative at start of Rm to #
+                tokens[3] = &tokens[3][1]; //make token 3 start at last #
+            }
             //offset is nearly identical to operand2, so use that function.
             offset = handleOperand2(&tokens[3], &immediate);
             immediate = !immediate; //immediate value is reversed for SDT.
@@ -93,7 +92,7 @@ uint32_t handleBranch(Assembler *assembler, char **tokens) {
                        getLabelAddress(assembler, tokens[1]) :
                        //else it's a numeric value
                        getValue(tokens[1]);
-    uint32_t offset = calcOffset(assembler, address);
+    uint32_t offset = calcOffset(assembler, address, true);
 
     return genBranch(cond, offset);
 }
@@ -105,8 +104,8 @@ uint32_t handleHalt(Assembler *assembler, char **tokens) {
 uint32_t handleLSL(Assembler *assembler, char **tokens) {
     //rearrange tokens and pass to DP handler.
     tokens[0] = "mov";
-    tokens[4] = tokens[2];
-    strcpy(tokens[2], tokens[1]);
+    tokens[4] = strdup(tokens[2]);
+    tokens[2] = strdup(tokens[1]);
     tokens[3] = "lsl";
 
     return handleDataProcessing(assembler,tokens);

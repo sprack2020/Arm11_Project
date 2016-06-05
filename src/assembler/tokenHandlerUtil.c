@@ -119,8 +119,11 @@ bool hasNoRn(char *mnem) {
     return equalStrings(mnem, "mov");
 }
 
-uint32_t calcOffset(Assembler *assembler, uint32_t address) {
+uint32_t calcOffset(Assembler *assembler, uint32_t address, bool reduce) {
     uint32_t offset = address - (assembler->currInstrAddr + PIPELINE_LENGTH);
+    if (!reduce) {
+        return offset;
+    }
     uint32_t reducedOffset = extractBits(offset, 24, 0) |
                            extractBit(offset, 31) << 25;
     return binaryShift(reducedOffset, LSR, 2).result;
