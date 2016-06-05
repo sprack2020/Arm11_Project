@@ -11,7 +11,7 @@ void getTokens(char **buffer, int numTokens, char *line) {
     line = stripLabel(line);
     buffer[0] = strtok(line, " ");
     for (int i = 1; i < numTokens; ++i) {
-        buffer[i] = strtok(NULL, ",\n");
+        buffer[i] = skipSpace(strtok(NULL, ",\n"));
     }
 }
 
@@ -31,6 +31,10 @@ char* stripLabel(char* line) {
 }
 
 char* skipSpace(char* line) {
+    if (line == NULL) {
+        return line;
+    }
+
     while (isspace(*line)) {
         line++;
     }
