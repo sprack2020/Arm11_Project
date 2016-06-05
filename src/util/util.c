@@ -198,28 +198,7 @@ CondCodes mnemToCondCode(char *mnem) {
 }
 
 uint32_t getValue(char *expr) {
-    long value;
-    if (expr[0] == '#' || expr[0] == 'r') {
-        value = strtol(&expr[1], NULL, 0);
-        if (value >= (1 << 8)) {
-            fprintf(stderr, "expr exceeds 8 bits");
-            exit(EXIT_FAILURE);
-        }
-        return (uint32_t) value;
-    } else if (expr[0] == '=') {
-        value = strtol(&expr[1], NULL, 0);
-        if ((unsigned long)value >= (1 << 31)) {
-            fprintf(stderr, "expr exceeds 32 bits");
-            exit(EXIT_FAILURE);
-        }
-        return (uint32_t) value;
-    }
-    value = strtol(expr, NULL, 0);
-    if (value >= (1 << 26)) {
-        fprintf(stderr, "expr exceeds 26 bits");
-        exit(EXIT_FAILURE);
-    }
-    return (uint32_t) value;
+    return (uint32_t) strtol(!isdigit(expr[0]) ? &expr[1] : expr, NULL, 0);
 }
 
 inline bool equalStrings(char *s1, char *s2) {
