@@ -7,7 +7,6 @@
 struct ListMap;
 
 typedef struct ListMapIterator {
-    ListMapNode **currentPtr;
     ListMapNode *current;
     ListMapNode *next;
 } ListMapIterator;

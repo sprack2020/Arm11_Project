@@ -14,8 +14,6 @@
 
 typedef uint32_t (*instructionHandler)(Assembler *, char **);
 
-GEN_LISTMAP_NODE_H(char *, instructionHandler)
-GEN_LISTMAP_ITERATOR_H(char *, instructionHandler)
-GEN_LISTMAP_H(char *, instructionHandler)
+//GEN_LISTMAP(char *, instructionHandler);
 
 #endif //ARM11_39_FUNCTIONTABLE_H

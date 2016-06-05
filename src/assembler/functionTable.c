@@ -6,43 +6,56 @@
 
 #define NUM_MNEMONICS 24
 
+const assembleFunctionPointer dp = handleDataProcessing;
+const assembleFunctionPointer mul = handleMultiply;
+const assembleFunctionPointer sdt = handleSDT;
+const assembleFunctionPointer branch = handleSDT;
+const assembleFunctionPointer lsl = handleLSL;
+const assembleFunctionPointer halt = handleHalt;
 
+#include <util/GenericListMap.h>
+
+typedef char *st;
+
+GEN_LISTMAP(char, assembleFunctionPointer);
+
+ListMap(char, assembleFunctionPointer) l;
 
 void functionTableInit(functionTable *this) {
     ListMapInit(&this->listmap);
 
-    functionTableAdd(this, "add", &handleDataProcessing);
-    functionTableAdd(this, "sub", &handleDataProcessing);
-    functionTableAdd(this, "rsb", &handleDataProcessing);
-    functionTableAdd(this, "and", &handleDataProcessing);
-    functionTableAdd(this, "eor", &handleDataProcessing);
-    functionTableAdd(this, "orr", &handleDataProcessing);
-    functionTableAdd(this, "mov", &handleDataProcessing);
-    functionTableAdd(this, "tst", &handleDataProcessing);
-    functionTableAdd(this, "teq", &handleDataProcessing);
-    functionTableAdd(this, "cmp", &handleDataProcessing);
-    functionTableAdd(this, "mul", &handleMultiply);
-    functionTableAdd(this, "mla", &handleMultiply);
-    functionTableAdd(this, "ldr", &handleSDT);
-    functionTableAdd(this, "str", &handleSDT);
-    functionTableAdd(this, "beq", &handleBranch);
-    functionTableAdd(this, "bne", &handleBranch);
-    functionTableAdd(this, "bge", &handleBranch);
-    functionTableAdd(this, "blt", &handleBranch);
-    functionTableAdd(this, "bgt", &handleBranch);
-    functionTableAdd(this, "ble", &handleBranch);
-    functionTableAdd(this, "b", &handleBranch);
-    functionTableAdd(this, "lsl", &handleLSL);
-    functionTableAdd(this, "andeq", &handleHalt);
-    functionTableAdd(this, "halt", &handleHalt);
+    functionTableAdd(this, "add", &dp);
+    functionTableAdd(this, "sub", &dp);
+    functionTableAdd(this, "rsb", &dp);
+    functionTableAdd(this, "and", &dp);
+    functionTableAdd(this, "eor", &dp);
+    functionTableAdd(this, "orr", &dp);
+    functionTableAdd(this, "mov", &dp);
+    functionTableAdd(this, "tst", &dp);
+    functionTableAdd(this, "teq", &dp);
+    functionTableAdd(this, "cmp", &dp);
+    functionTableAdd(this, "mul", &mul);
+    functionTableAdd(this, "mla", &mul);
+    functionTableAdd(this, "ldr", &sdt);
+    functionTableAdd(this, "str", &sdt);
+    functionTableAdd(this, "beq", &branch);
+    functionTableAdd(this, "bne", &branch);
+    functionTableAdd(this, "bge", &branch);
+    functionTableAdd(this, "blt", &branch);
+    functionTableAdd(this, "bgt", &branch);
+    functionTableAdd(this, "ble", &branch);
+    functionTableAdd(this, "b", &branch);
+    functionTableAdd(this, "lsl", &lsl);
+    functionTableAdd(this, "andeq", &halt);
+    functionTableAdd(this, "halt", &halt);
 }
 
 void functionTableAdd(
         functionTable *this,
         char *mnen,
-        assembleFunctionPointer func
+        const assembleFunctionPointer *func
 ) {
-    ListMapAdd(&this->listmap, mnen, (void **) &func);
+    ListMapAdd(&this->listmap, mnen, (void **) func);
 }
 
 assembleFunctionPointer *functionTableGet(
@@ -59,27 +72,7 @@ uint32_t functionTableGetAndApply(
         Assembler *a,
         char **tokens
 ) {
-//    assembleFunctionPointer *fp = functionTableGet(this, mnen);
-//    return (*fp)(a, tokens);
-    char* mnems[NUM_MNEMONICS] =
-            {"add", "sub", "rsb", "and", "eor", "orr", "mov", "tst", "teq",
-             "cmp", "mul", "mla", "ldr", "str", "beq", "bne", "bge", "blt",
-             "bgt", "ble", "b", "lsl", "andeq", "halt"};
-    assembleFunctionPointer asmFuncs[NUM_MNEMONICS] =
-            {&handleDataProcessing, &handleDataProcessing, &handleDataProcessing,
-             &handleDataProcessing, &handleDataProcessing, &handleDataProcessing,
-             &handleDataProcessing, &handleDataProcessing, &handleDataProcessing,
-             &handleDataProcessing, &handleMultiply, &handleMultiply, &handleSDT,
-             &handleSDT, &handleBranch, &handleBranch, &handleBranch,
-             &handleBranch, &handleBranch, &handleBranch, &handleBranch,
-             &handleLSL, &handleHalt, &handleHalt};
-
-    for (int i = 0; i < NUM_MNEMONICS; ++i) {
-        if (!strcmp(mnems[i], mnem)) {
-            return (asmFuncs[i])(a, tokens);
-        }
-    }
-
-    fprintf(stderr, "mnemonic %s not matched to any assemble function", mnem);
-    exit(EXIT_FAILURE);
+    assembleFunctionPointer *fp = functionTableGet(this, mnem);
+    assert(fp != NULL);
+    return (*fp)(a, tokens);
 }

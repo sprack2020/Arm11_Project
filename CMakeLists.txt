@@ -55,8 +55,7 @@ set(ASSEMBLER_SOURCE_FILES
         src/assembler/tokenHandlers.c
         src/assembler/tokenHandlerUtil.c
         src/assembler/tokenizer.c
-        src/assembler/assemblerStruct.h
-        src/util/GenericListMapNode.c src/util/GenericListMapNode.h test/assemble/GenericListMap_String_FP_test.c test/assemble/GenericListMap_String_FP_test.h src/util/GenericListMap.c src/util/GenericListMap.h src/util/GenericListMapIterator.c src/util/GenericListMapIterator.h src/util/FunctionTable.c src/util/FunctionTable.h)
+)
 
 set(ASSEMBLER_HEADERS
         src/assembler/assemblerStruct.h
@@ -73,6 +72,11 @@ set(ASSEMBLER_HEADERS
         src/assembler/tokenHandlers.h
         src/assembler/tokenHandlerUtil.h
         src/assembler/tokenizer.h
+        src/util/GenericListMapNode.h
+        src/assembler/assemblerStruct.h
+        src/util/GenericListMap.h
+        src/util/GenericListMapIterator.h
+        src/util/FunctionTable.h
         )
 
 add_executable(assemble src/assemble.c ${ASSEMBLER_HEADER_FILES}
@@ -103,6 +107,7 @@ set(EMULATOR_TEST_HEADER_FILES
 #set(TEST_ASSEMBLE_SRC
 #        test/assemble/ListMapTests.c
 #        test/assemble/test_assemble.c
+#        test/assemble/GenericListMap_String_FP_test.c
 #        )
 #
 #set(TEST_ASSEMBLE_HEADER

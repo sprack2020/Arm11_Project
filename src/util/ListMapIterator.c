@@ -7,7 +7,6 @@ ListMapIterator *ListMapIteratorInitWithListMap(
 ) {
     assert(listMap != NULL);
     this->current = listMap->first;
-    this->currentPtr = &listMap->first;
     if (this->current != NULL) {
         this->next = this->current->next;
     }
@@ -28,6 +27,5 @@ ListMapNode *ListMapIteratorNext(
         return ret;
     }
     this->current = ret->next;
-    this->currentPtr = &ret->next;
     return ret;
 }

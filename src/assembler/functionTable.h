@@ -26,7 +26,7 @@ void functionTableInit(
 void functionTableAdd(
         functionTable *ft,
         char *mnen,
-        assembleFunctionPointer fs
+        const assembleFunctionPointer *fs
 );
 
 assembleFunctionPointer *functionTableGet(

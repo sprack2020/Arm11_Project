@@ -68,7 +68,7 @@ void assemble(Assembler *this) {
 void assemblerDeInit(Assembler *this) {
     // free sourcelines
     for (int i = 0, n = this->numLines; i < n; i++) {
-        free(&this->sourceLines[i]);
+        free(this->sourceLines[i]);
     }
     free(this->sourceLines);
 
@@ -84,8 +84,6 @@ void assemblerDeconstruct(Assembler *this) {
 // ignore this code, its very wrong, am in process of writing it - Shiraz
 // parses .sourceLines into instructions stored in .binaryProgram
 static void parseInstructions(Assembler *this) {
-    // again, are we making the table local to the function or as a field?
-
     // initialise ListMap<mneumonic, functions>
     functionTable ft;
     functionTableInit(&ft);
