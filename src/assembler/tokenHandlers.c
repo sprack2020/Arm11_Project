@@ -69,7 +69,7 @@ uint32_t handleSDT(Assembler *assembler, char **tokens) {
     } else {
         preIndexing = (tokens[2][3] != ']' && tokens[2][4] != ']')
                         || tokens[3] == NULL;
-        rn = getValue(tokens[2]);
+        rn = getValue(&tokens[2][1]);
         up = true;
         if (tokens[3] != NULL) {
             if (tokens[3][0] == '-') {
