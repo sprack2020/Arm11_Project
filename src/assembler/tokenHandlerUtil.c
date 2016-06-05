@@ -112,11 +112,11 @@ uint32_t calcOffset(Assembler *assembler, uint32_t address) {
 }
 
 uint32_t getLabelAddress(Assembler *assembler, char *label) {
-    uint32_t *valPtr = (uint32_t*) ListMapGet(assembler->symbolTable,
+    int *valPtr = (int *) ListMapGet(assembler->symbolTable,
                                     label, strcmpFromVoid);
     if (valPtr == NULL) {
         fprintf(stderr, "couldn't find label %s", label);
         exit(EXIT_FAILURE);
     }
-    return *valPtr;
+    return (uint32_t) *valPtr;
 }

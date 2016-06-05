@@ -13,14 +13,6 @@ const assembleFunctionPointer branch = handleSDT;
 const assembleFunctionPointer lsl = handleLSL;
 const assembleFunctionPointer halt = handleHalt;
 
-#include <util/GenericListMap.h>
-
-typedef char *st;
-
-GEN_LISTMAP(char, assembleFunctionPointer);
-
-ListMap(char, assembleFunctionPointer) l;
-
 void functionTableInit(functionTable *this) {
     ListMapInit(&this->listmap);
 

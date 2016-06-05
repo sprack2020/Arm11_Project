@@ -26,7 +26,8 @@ int countLines(FILE *file) {
     int numLines = 0;
 
     //while fgets does not return a NULL pointer (indicating EOF)
-    while (fgets(lineBuff, MAX_LINE_LENGTH, file) != NULL) {
+    while (fgets(lineBuff, MAX_LINE_LENGTH, file) != NULL &&
+                *(lineBuff = skipSpace(lineBuff)) != '\0') {
         ++numLines;
     }
 

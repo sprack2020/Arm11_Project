@@ -9,6 +9,8 @@ void createSymbolTableAndCountInstrs(Assembler *this) {
 
         handleLabel(this, currLine, i, &instructionlessLabels);
     }
+    //reset current instruction address.
+    this->currInstrAddr = 0;
     this->numInstrs = this->numLines - instructionlessLabels;
     this->firstEmptyAddr = this->numInstrs * INSTR_LENGTH;
 }
@@ -23,17 +25,21 @@ void handleLabel(
     char *label = malloc(sizeof(char) * MAX_LINE_LENGTH);
     strcpy(label, line);
     label = strtok(label, LABEL_DELIMITER);
-    int instrAddress = this->currInstrAddr;
+    int *instrAddress = malloc(sizeof(int));
+    *instrAddress = this->currInstrAddr;
 
     // if there is a label
     if (strcmp(line, label)) {
-        ListMapAdd(this->symbolTable, label, &instrAddress);
+        ListMapAdd(this->symbolTable, label, instrAddress);
         char *restOfLine = strtok(NULL, "\n\0");
         if (!hasInstr(restOfLine)) {
             (*instructionlessLabels)++;
+        } else {
+            this->currInstrAddr+= INSTR_LENGTH;
         }
     } else {
         free(label);
+        this->currInstrAddr+= INSTR_LENGTH;
     }
 }
 

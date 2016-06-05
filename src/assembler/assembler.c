@@ -45,6 +45,12 @@ static void initSourceLines(Assembler *this) {
             exit(EXIT_FAILURE);
         }
 
+        //strip leading space on line, and if it was empty, don't count it.
+        str = skipSpace(str);
+        if (*str == '\0') {
+            --i;
+        }
+
         //put the string pointer into sourceLines
         this->sourceLines[i] = str;
     }

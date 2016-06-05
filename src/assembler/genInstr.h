@@ -10,7 +10,6 @@
 #include <assembler/genInstr.h>
 #include <util/util.h>
 
-
 // bit positioning constants
 #define CONDSHIFT 28
 #define ISHIFT 25
@@ -34,6 +33,8 @@
 #define MULMASK AL << CONDSHIFT | 0x9 << 4
 #define SDTMASK AL << CONDSHIFT | 0x1 << 26
 #define BRMASK 0xA << 24
+
+#define NUMDPINSTRS 10
 
 uint32_t genDP(bool immediate, int opcode, bool setCPSR, int rn, int rd, int operand2);
 uint32_t genMul(bool accumulate, int rd, int rn, int rs, int rm);

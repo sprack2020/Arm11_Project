@@ -50,28 +50,17 @@ uint32_t genBranch(int cond, uint32_t offset) {
 //take a mnemonic string and return the DP opcode associated with it
 //ugly function but most elegant/simplest way around this problem
 DPOpcodes mnemToOpcode(char *mnem) {
-    if (equalStrings(mnem, "and")) {
-        return AND;
-    } else if (equalStrings(mnem, "eor")) {
-        return EOR;
-    } else if (equalStrings(mnem, "and")) {
-        return SUB;
-    } else if (equalStrings(mnem, "rsb")) {
-        return RSB;
-    } else if (equalStrings(mnem, "add")) {
-        return ADD;
-    } else if (equalStrings(mnem, "tst")) {
-        return TST;
-    } else if (equalStrings(mnem, "teq")) {
-        return TEQ;
-    } else if (equalStrings(mnem, "cmp")) {
-        return CMP;
-    } else if (equalStrings(mnem, "orr")) {
-        return ORR;
-    } else if (equalStrings(mnem, "mov")) {
-        return MOV;
-    } else {
-        fprintf(stderr, "invalid DP mnemonic");
-        exit(EXIT_FAILURE);
+    char* dpMnems[NUMDPINSTRS] = {"and", "eor", "sub", "rsb", "add", "tst",
+                                  "teq", "cmp", "orr", "mov"};
+    DPOpcodes opcodes[NUMDPINSTRS] = {AND, EOR, SUB, RSB, ADD, TST, TEQ, CMP,
+                                      ORR, MOV};
+
+    for (int i = 0; i < NUMDPINSTRS; ++i) {
+        if (equalStrings(dpMnems[i], mnem)) {
+            return opcodes[i];
+        }
     }
+    //if we reached here, we did not match any mnemonic
+    fprintf(stderr, "invalid DP mnemonic: %s mnem", mnem);
+    exit(EXIT_FAILURE);
 }

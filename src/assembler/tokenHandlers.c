@@ -31,7 +31,7 @@ uint32_t handleMultiply(Assembler *assembler, char **tokens) {
     uint32_t rm = getValue(tokens[2]);
     uint32_t rs = getValue(tokens[3]);
     uint32_t rn;
-    if (strcmp(tokens[0], "mla")) {
+    if (equalStrings(tokens[0], "mla")) {
         rn = getValue(tokens[4]);
         return genMul(true, rd, rn, rs, rm);
     } else {
@@ -52,7 +52,8 @@ uint32_t handleSDT(Assembler *assembler, char **tokens) {
     int offset = 0;
 
     if (tokens[2][0] == '=') {  //numeric constant
-        uint32_t constant = getValue(tokens[1]);
+        immediate = true;
+        uint32_t constant = getValue(tokens[2]);
         if (constant <= 0xFF) {  //constant will fit in a mov instruction
             tokens[0] = "mov";
             tokens[2][0] = '#';
@@ -66,10 +67,10 @@ uint32_t handleSDT(Assembler *assembler, char **tokens) {
         }
 
     } else {
-        immediate = true;
-        preIndexing = !((tokens[2][3] == ']' || tokens[2][4] == ']')
-                        && tokens[3] == NULL);
+        preIndexing = (tokens[2][3] != ']' && tokens[2][4] != ']')
+                        || tokens[3] == NULL;
         rn = getValue(tokens[2]);
+        up = true;
         if (tokens[3] != NULL) {
             if (tokens[3][0] == '-') {
                 tokens[3] = &tokens[3][1]; //remove negative at start of Rm
