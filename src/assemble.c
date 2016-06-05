@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
     Assembler assembler;
     assemblerInit(&assembler, argv[1], argv[2]);
     assemble(&assembler);
-//    assemblerDeInit(&assembler);
+    assemblerDeInit(&assembler);
 
     return EXIT_SUCCESS;
 }

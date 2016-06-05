@@ -13,7 +13,7 @@
 #include <util/util.h>
 
 uint32_t handleOperand2(char **tokens, bool *imm);
-int getFirstOnePos(uint32_t num);
+int getLastOnePos(uint32_t num);
 bool isValidImmediate(
         uint32_t num,
         int firstOnePos,
