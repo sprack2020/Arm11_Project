@@ -9,7 +9,7 @@
 const assembleFunctionPointer dp = handleDataProcessing;
 const assembleFunctionPointer mul = handleMultiply;
 const assembleFunctionPointer sdt = handleSDT;
-const assembleFunctionPointer branch = handleSDT;
+const assembleFunctionPointer branch = handleBranch;
 const assembleFunctionPointer lsl = handleLSL;
 const assembleFunctionPointer halt = handleHalt;
 
