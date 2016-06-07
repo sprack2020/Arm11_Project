@@ -16,6 +16,10 @@
 #ignore junk files from compiling C code
 *.o
 
+#ignore executables
+assemble
+emulate
+
 #ignore junk files from compiling Haskell code
 *.hi
 
@@ -30,6 +34,7 @@
 *.vrb
 *.nav
 *.toc
+*.orig
 
 #CLion project folder
 .idea/
