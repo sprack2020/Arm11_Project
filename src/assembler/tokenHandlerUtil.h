@@ -8,7 +8,7 @@
 #include <util/util.h>
 
 #define PIPELINE_LENGTH 8
-#define REG_FILED_LENGTH 4
+#define REG_FIELD_LENGTH 4
 
 #include <util/util.h>
 

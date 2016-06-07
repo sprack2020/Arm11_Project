@@ -4,57 +4,56 @@
 
 #include "tokenHandlers.h"
 
-CondCodes mnemToCondCode(char *mnem);
-
 uint32_t handleDataProcessing(Assembler *assembler, char **tokens) {
     bool imm = false;
     int opcode = (int) mnemToOpcode(tokens[0]);
 
     if (hasNoRd(tokens[0])) {
         uint32_t operand2 = handleOperand2(&tokens[2], &imm);
-        uint32_t rn = getValue(tokens[1]);
-        return genDP(imm, opcode, true, rn, 0, operand2);
+        uint32_t Rn = getValue(tokens[1]);
+        return genDP(imm, opcode, true, Rn, 0, operand2);
     } else if (hasNoRn(tokens[0])) {
         uint32_t operand2 = handleOperand2(&tokens[2], &imm);
-        uint32_t rd = getValue(tokens[1]);
-        return genDP(imm, opcode, false, 0, rd, operand2);
+        uint32_t Rd = getValue(tokens[1]);
+        return genDP(imm, opcode, false, 0, Rd, operand2);
     } else {
         uint32_t operand2 = handleOperand2(&tokens[3], &imm);
-        uint32_t rd = getValue(tokens[1]);
-        uint32_t rn = getValue(tokens[2]);
-        return genDP(imm, opcode, false, rn, rd, operand2);
+        uint32_t Rd = getValue(tokens[1]);
+        uint32_t Rn = getValue(tokens[2]);
+        return genDP(imm, opcode, false, Rn, Rd, operand2);
     }
 }
 
 uint32_t handleMultiply(Assembler *assembler, char **tokens) {
-    uint32_t rd = getValue(tokens[1]);
-    uint32_t rm = getValue(tokens[2]);
-    uint32_t rs = getValue(tokens[3]);
-    uint32_t rn;
+    uint32_t Rd = getValue(tokens[1]);
+    uint32_t Rm = getValue(tokens[2]);
+    uint32_t Rs = getValue(tokens[3]);
+    uint32_t Rn;
     if (equalStrings(tokens[0], "mla")) {
-        rn = getValue(tokens[4]);
-        return genMul(true, rd, rn, rs, rm);
+        Rn = getValue(tokens[4]);
+        return genMul(true, Rd, Rn, Rs, Rm);
     } else {
-        rn = 0;
+        Rn = 0;
     }
 
-    return genMul(false, rd, 0, rs, rm);
+    return genMul(false, Rd, 0, Rs, Rm);
 }
 
 uint32_t handleSDT(Assembler *assembler, char **tokens) {
-    //set fields to default
+    //set fields to default. Should these not be ints of fixed with and/or
+    // unsigned ?
     bool load = equalStrings(tokens[0], "ldr");
-    int rd = getValue(tokens[1]);
+    int Rd = getValue(tokens[1]);
     bool immediate = false;
     bool preIndexing = true;
     bool up = true;
-    int rn = 0xF;
+    int Rn = 0xF;
     int offset = 0;
 
     if (tokens[2][0] == '=') {  //numeric constant
         immediate = false;
         uint32_t constant = getValue(tokens[2]);
-        if (constant <= 0xFF) {  //constant will fit in a mov instruction
+        if (constant <= MAX_MOV_CONSTANT) {
             tokens[0] = "mov";
             tokens[2][0] = '#';
             return handleDataProcessing(assembler, tokens);
@@ -69,20 +68,25 @@ uint32_t handleSDT(Assembler *assembler, char **tokens) {
     } else {
         preIndexing = (tokens[2][3] != ']' && tokens[2][4] != ']')
                         || tokens[3] == NULL;
-        rn = getValue(&tokens[2][1]);
+        Rn = getValue(&tokens[2][1]);
         if (tokens[3] != NULL) {
             if (tokens[3][1] == '-') {
                 up = false;
-                tokens[3][1] = '#'; //change negative at start of Rm to #
-                tokens[3] = &tokens[3][1]; //make token 3 start at last #
+
+                //change negative at start of Rm to #
+                tokens[3][1] = '#';
+
+                //make token 3 start at last #
+                tokens[3] = &tokens[3][1];
             }
-            //offset is nearly identical to operand2, so use that function.
+            // offset is handled similarly to operand2, but with immediate
+            // negated after
             offset = handleOperand2(&tokens[3], &immediate);
-            immediate = !immediate; //immediate value is reversed for SDT.
+            immediate = !immediate;
         }
     }
 
-    return genSDT(immediate, preIndexing, up, load, rn, rd, offset);
+    return genSDT(immediate, preIndexing, up, load, Rn, Rd, offset);
 }
 
 uint32_t handleBranch(Assembler *assembler, char **tokens) {
@@ -103,12 +107,12 @@ uint32_t handleHalt(Assembler *assembler, char **tokens) {
 
 uint32_t handleLSL(Assembler *assembler, char **tokens) {
     //rearrange tokens and pass to DP handler.
-    tokens[0] = "mov";
+    tokens[0] = strdup("mov");
     tokens[4] = strdup(tokens[2]);
     tokens[2] = strdup(tokens[1]);
-    tokens[3] = "lsl";
+    tokens[3] = strdup("lsl");
 
-    return handleDataProcessing(assembler,tokens);
+    return handleDataProcessing(assembler, tokens);
 }
 
 

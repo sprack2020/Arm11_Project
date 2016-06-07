@@ -26,7 +26,7 @@ uint32_t handleOperand2(char **tokens, bool *imm) {
 //            uint32_t shiftedValue = binaryShift(value, ROR, 32 - shiftAmount)
 //                    .result;
 //            shiftAmount /= 2;
-            return ((32 - lastOnePos) / 2) << 8 | shiftedValue;
+            return ((INTWIDTH - lastOnePos) / 2) << 8 | shiftedValue;
 
         } else {
             return value;
@@ -35,18 +35,20 @@ uint32_t handleOperand2(char **tokens, bool *imm) {
     } else if (tokens[0][0] == 'r') {
         uint32_t Rm = getValue(tokens[0]);
         uint32_t shift = generateShift(&tokens[1]);
-        return shift << REG_FILED_LENGTH | Rm;
+        return shift << REG_FIELD_LENGTH | Rm;
 
     } else {
-        fprintf(stderr,
-                "Error in tokenHandlers: handleOperand2: invalid operand 2");
+        fputs("Error in tokenHandlers: handleOperand2: invalid operand 2",
+                stderr);
         exit(EXIT_FAILURE);
     }
 }
 
 // PRE: num is not 0
 int getLastOnePos(uint32_t num) {
-    for (int i = 0; i <= 31; ++i) {
+    assert(num != 0);
+
+    for (int i = 0; i < INTWIDTH; ++i) {
         if (extractBit(num, i)) {
             return i;
         }
@@ -77,15 +79,15 @@ bool isValidImmediate(uint32_t num, int firstOnePos, uint32_t *shiftAmount) {
             return true;
         }
 
-        currPos = (currPos - 1 + 32) % 32;
+        currPos = (currPos - 1 + INTWIDTH) % INTWIDTH;
     }
 
     return false;
 }
 
-// 32 is the intwidth and 7 is the target position of the shift
+// 7 is the target position of the shift
 uint32_t calculateShiftAmount(int n) {
-    return (uint32_t) (n + 32 - 8) % 32;
+    return (uint32_t) (n + INTWIDTH - 8) % INTWIDTH;
 }
 
 uint32_t generateShift(char **tokens) {
@@ -104,7 +106,7 @@ uint32_t generateShift(char **tokens) {
         return shiftReg << 4 | shiftType << 1 | 1;
 
     } else {
-        fprintf(stderr, "invalid shift argument");
+        fputs("invalid shift argument", stderr);
         exit(EXIT_FAILURE);
     }
 }

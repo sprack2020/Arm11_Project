@@ -5,6 +5,7 @@ static void parseInstructions(Assembler *this);
 static void writeToBinaryFile(Assembler *this);
 static void initSourceLines(Assembler *assembler);
 
+
 // constructs a new assembler and returns a pointer to it
 Assembler *newAssembler(char *sourcePath, char *binaryPath) {
     Assembler *a = malloc(sizeof(Assembler));
@@ -34,14 +35,14 @@ static void initSourceLines(Assembler *this) {
     // get number of lines and allocate space for lines array.
     int numLines = countLines(sourceFile);
     this->numLines = numLines;
-    this->sourceLines = malloc(sizeof(char*) * numLines);
+    this->sourceLines = malloc(sizeof(char *) * numLines);
 
     // allocate space for and read in each line
     for (int i = 0; i < numLines; ++i) {
         char *str = malloc(sizeof(char) * MAX_LINE_LENGTH);
 
         if (!fgets(str, MAX_LINE_LENGTH, sourceFile)) {
-            fprintf(stderr, "Error reading line %u\n", i);
+            fprintf(stderr, "Error reading line %d\n", i);
             exit(EXIT_FAILURE);
         }
 
@@ -79,6 +80,9 @@ void assemblerDeInit(Assembler *this) {
 
     // free binary program
     free(this->binaryProgram);
+
+    // free symbolTable
+    free(this->symbolTable);
 }
 
 void assemblerDeconstruct(Assembler *this) {
@@ -95,15 +99,8 @@ static void parseInstructions(Assembler *this) {
 
     this->binaryProgram = malloc(sizeof(uint32_t) * 2 * this->numInstrs);
 
-    // iterate over each instruction
-    //     (lookup mneumonic map) (this, line[i])
-    // tokens should be array of strings, how to allocate it?
+    // initialise tokens, alloc'd in getTokens
     char *tokens[NUM_TOKENS];
-
-    // definitely find a more optimal way instead of allocating so much memory
-//    for (int i = 0; i < NUM_TOKENS; i++) {
-//        tokens[i] = malloc(MAX_LINE_LENGTH * sizeof(char));
-//    }
 
     // for each line, get the tokens and generate the instruction
     for (int i = 0, n = this->numLines; i < n; i++) {
@@ -112,9 +109,10 @@ static void parseInstructions(Assembler *this) {
 
         // if mnem is null, we have a blank line from stripped label
         if (mnem != NULL) {
-            this->binaryProgram[this->currInstrAddr / 4] =
+            this->binaryProgram[this->currInstrAddr / INSTR_LENGTH] =
                     functionTableGetAndApply(&ft, mnem, this, tokens);
             this->currInstrAddr += INSTR_LENGTH;
+            // free(tokens[0]);
         }
     }
 

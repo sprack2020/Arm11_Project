@@ -14,6 +14,7 @@
 #include <assembler/tokenHandlerUtil.h>
 
 #define NUMCONDCODES 7
+#define MAX_MOV_CONSTANT 0XFF
 
 uint32_t handleDataProcessing(Assembler *assembler, char **tokens);
 uint32_t handleMultiply(Assembler *assembler, char **tokens);
