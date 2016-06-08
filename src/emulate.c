@@ -1,7 +1,7 @@
 #include "emulate.h"
 
 #define NDEBUG
-
+//TODO: PUT state's fields on the stack
 int main(int argc, char **argv) {
     // allocate and zero out memory and registers
     initialiseARMstate();
