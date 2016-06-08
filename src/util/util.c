@@ -208,3 +208,15 @@ inline bool equalStrings(char *s1, char *s2) {
 bool strcmpFromVoid(void *str1, void *str2) {
     return (strcmp((char *)str1, (char *)str2) == 0);
 }
+
+uint32_t updateBit(uint32_t num, unsigned int index, bool value) {
+    uint32_t flagMask = binaryShift((uint32_t) value, LSL, index).result;
+    uint32_t upperMask = 0;
+    if (index < INTWIDTH - 1) {
+        upperMask = extractBits(num, INTWIDTH - 1, index + 1);
+        upperMask = binaryShift(upperMask, LSL, index).result;
+    }
+    return upperMask |
+           extractBits(num, index - 1, 0) |
+           flagMask;
+}
