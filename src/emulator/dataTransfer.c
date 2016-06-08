@@ -15,7 +15,6 @@ static void handleControlPortSDT(bool isLoad, uint32_t Rd, uint32_t address,
                           uint32_t addrType);
 static void writeToControlPort(uint32_t addrType, uint32_t Rd);
 static void writeToDataPort(uint32_t Rd, uint32_t addrType);
-
 static int getIndexLower(uint32_t addrType);
 
 // PRE: instr is a data transfer instruction
@@ -39,9 +38,11 @@ void dataTransfer(uint32_t instr) {
 
     // apply offset to base register
     uint32_t adjustedRnVal = isUp ? REGFILE[Rn] + offset : REGFILE[Rn] - offset;
-    uint32_t address = isPreIndex ? adjustedRnVal : REGFILE[Rn];
-    uint32_t addrType = getGPIOAddrType(address);
 
+    // choose correct base register
+    uint32_t address = isPreIndex ? adjustedRnVal : REGFILE[Rn];
+
+    uint32_t addrType = getGPIOAddrType(address);
     switch (addrType) {
         case CONTROL0_9:
         case CONTROL10_19:
@@ -53,8 +54,6 @@ void dataTransfer(uint32_t instr) {
         case WRITE_PORTS:
             if (isLoad) {
                 REGFILE[Rd] = address;
-
-            // is a store instruction
             } else {
                 writeToDataPort(Rd, addrType);
             }
@@ -63,8 +62,6 @@ void dataTransfer(uint32_t instr) {
         case NOTGPIO:
             if (isLoad) {
                 load(address, Rd);
-
-            // is a store instruction
             } else {
                 store(address, REGFILE[Rd]);
             }
