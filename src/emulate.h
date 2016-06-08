@@ -9,6 +9,7 @@
 #include <emulator/printState.h>
 #include <util/util.h>
 
+// memory and registers are little endian whilst GPIO pins are big endian
 typedef struct ARMstate {
     uint8_t *memory;
     uint32_t *registers;
@@ -16,7 +17,7 @@ typedef struct ARMstate {
     uint32_t controlBitsGPIO10To19;
     uint32_t controlBitsGPIO20To29;
     uint32_t clearPins;
-    uint32_t writePins;
+    uint32_t onPins;
 } ARMstate;
 
 // contains ARMState state, what we are emulating on

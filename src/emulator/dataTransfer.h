@@ -19,7 +19,7 @@ typedef enum {
     CONTROL10_19 = 0x20200004,
     CONTROL20_29 = 0x20200008,
     CLEAR_PORTS  = 0x20200028,
-    WRITE_PORTS  = 0x2020001c
+    ON_PORTS  = 0x2020001c
 } GPIOAddressType;
 
 void dataTransfer(uint32_t instr);

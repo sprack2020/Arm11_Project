@@ -5,10 +5,10 @@ static uint32_t calculateOffset(uint32_t offsetBits, bool isImmediateOffset);
 static void load(uint32_t toLoadAddr, uint32_t Rd);
 static void store(uint32_t RnVal, uint32_t Rd);
 static bool checkValidAddress(uint32_t address);
-static int somethingPinIndexes(uint32_t pinsToSet, int *setPins);
+static int retrievePinIndexes(uint32_t pinsToSet, int *setPins);
 static bool isOutput(int pin);
 static bool isCleared(int pin);
-static void setWrite(int pin);
+static void turnOn(int pin);
 static uint32_t getGPIOAddrType(uint32_t addr);
 static void setClear(int pin);
 static void handleControlPortSDT(bool isLoad, uint32_t Rd, uint32_t address,
@@ -17,10 +17,12 @@ static void writeToControlPort(uint32_t addrType, uint32_t Rd);
 static void writeToDataPort(uint32_t Rd, uint32_t addrType);
 static int getIndexLower(uint32_t addrType);
 
+bool isDataPort(uint32_t bigEndianAddr);
+
 // PRE: instr is a data transfer instruction
 // behavior: Loads/stores access of memory as described in spec
 void dataTransfer(uint32_t instr) {
-    // get I, l, u, Rn, Rd, P, offset
+    // get I, L, U, Rn, Rd, P, offset
     bool isImmediateOffset = extractBit(instr, IMM_BIT);
     bool isPreIndex = extractBit(instr, PREPOST_BIT);
     bool isUp = extractBit(instr, UP_BIT);
@@ -38,6 +40,7 @@ void dataTransfer(uint32_t instr) {
 
     // apply offset to base register
     uint32_t adjustedRnVal = isUp ? REGFILE[Rn] + offset : REGFILE[Rn] - offset;
+    // swapEndianness(&adjustedRnVal);
 
     // choose correct base register
     uint32_t address = isPreIndex ? adjustedRnVal : REGFILE[Rn];
@@ -51,7 +54,7 @@ void dataTransfer(uint32_t instr) {
             break;
 
         case CLEAR_PORTS:
-        case WRITE_PORTS:
+        case ON_PORTS:
             if (isLoad) {
                 REGFILE[Rd] = address;
             } else {
@@ -80,25 +83,27 @@ void dataTransfer(uint32_t instr) {
 
 // attempts to write Rd to the clear / write port, depending on the addrType
 static void writeToDataPort(uint32_t Rd, uint32_t addrType) {
+    // fill pinsToSet with the correct pins and get the number pins to set
     int pinsToSet[MAX_PIN];
-    int numPinsToSet = somethingPinIndexes(REGFILE[Rd], pinsToSet);
+    int numPinsToSet = retrievePinIndexes(REGFILE[Rd], pinsToSet);
     int pin;
 
     for (int i = 0; i < numPinsToSet; i++) {
         pin = pinsToSet[i];
+        assert(pin >= 0 && pin <= MAX_PIN);
 
-        if (isOutput(pin)) {
-            if (addrType == WRITE_PORTS && isCleared(pin)) {
-                setWrite(pin); // print PIN ON
-            } else if (addrType == CLEAR_PORTS) {
-                setClear(pin); // print PIN OFF
-            } else {
-                // something went wrong, address is not GPIO. addrType is the
-                // address in this case
-                fprintf(stderr, "Error in SDT: writeToDataPort: address %u is"
-                        " not a data port\n", addrType);
-                exit(EXIT_FAILURE);
-            }
+        if (addrType == ON_PORTS) {
+            // set pin's ON bit and prints that it is on
+            turnOn(pin);
+        } else if (addrType == CLEAR_PORTS) {
+            // sets pin's OFF bit and prints that it is off
+            setClear(pin);
+        } else {
+            // something went wrong, address is not GPIO. Note addrType
+            // should be the address here
+            fprintf(stderr, "Error in SDT: writeToDataPort: address (Big "
+                    "Endian) %u is not a data port\n", addrType);
+            exit(EXIT_FAILURE);
         }
     }
 }
@@ -146,6 +151,10 @@ static int getIndexLower(uint32_t addrType) {
 
 // writes Rd to the control port selected by addrType
 static void writeToControlPort(uint32_t addrType, uint32_t Rd) {
+    int indexLower = getIndexLower(addrType);
+     printf("%s%i%s%i%s\n", "One GPIO pin from ", indexLower, " to ",
+            indexLower + CONTROL_PORT_WIDTH - 1, " has been accessed");
+
     // write to control port
     switch (addrType) {
         case CONTROL0_9:
@@ -176,14 +185,15 @@ static uint32_t calculateOffset(uint32_t instr, bool isImmediateOffset) {
 static void load(uint32_t toLoadAddr, uint32_t Rd) {
     assert(checkValidAddress(toLoadAddr));
 
-    read32Bits(REGFILE + Rd, MEM + toLoadAddr);
-    swapEndianness(REGFILE + Rd);
+    read32Bits(&REGFILE[Rd], &MEM[toLoadAddr]);
+    swapEndianness(&REGFILE[Rd]);
 }
 
 // stores the data from Rn into memory starting at address Rd
 static void store(uint32_t RnVal, uint32_t toStore) {
     assert(checkValidAddress(RnVal));
 
+    // swapEndianness(&RnVal);
     const int n = REG_LENGTH / MEM_LENGTH;
 
     for (int i = n - 1; i >= 0; i--) {
@@ -198,7 +208,7 @@ static bool checkValidAddress(uint32_t address) {
 
 // Gets the indexes of the set bits in pinsToSet, putting them into setPins,
 // and returns the number of pins to set
-static int somethingPinIndexes(uint32_t pinsToSet, int *setPins) {
+static int retrievePinIndexes(uint32_t pinsToSet, int *setPins) {
     int numPins = 0;
 
     for (int i = 0; i <= MAX_PIN; i++) {
@@ -233,20 +243,30 @@ static bool isCleared(int pin) {
 }
 
 // set a certain pin's write bti
-static void setWrite(int pin) {
-    assert(isCleared(pin));
+static void turnOn(int pin) {
+    assert(isOutput(pin) && isCleared(pin));
 
-    state.writePins = updateBit(state.writePins, pin, 1);
+    state.onPins = updateBit(state.onPins, pin, 1);
     puts("PIN ON");
 }
 
 // gets what kind of GPIO address addr is i.e. what control port / data port
 static uint32_t getGPIOAddrType(uint32_t addr) {
-    if (addr <= MEM_SIZE) {
+    uint32_t bigEndianAddr = addr;
+    swapEndianness(&bigEndianAddr);
+
+    if (isDataPort(bigEndianAddr)) {
+        return bigEndianAddr;
+    } else if (addr <= MEM_SIZE) {
         return NOTGPIO;
     } else {
         return addr;
     }
+}
+
+bool isDataPort(uint32_t bigEndianAddr) {
+    return bigEndianAddr == CONTROL0_9 || bigEndianAddr == CONTROL20_29 ||
+            bigEndianAddr == CONTROL10_19;
 }
 
 // sets the pin's clear bit

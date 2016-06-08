@@ -1,5 +1,7 @@
 #include "emulate.h"
 
+#define NDEBUG
+
 int main(int argc, char **argv) {
     // allocate and zero out memory and registers
     initialiseARMstate();
@@ -86,5 +88,5 @@ void initialiseARMstate(void) {
     state.controlBitsGPIO10To19 = 0;
     state.controlBitsGPIO20To29 = 0;
     state.clearPins = 0;
-    state.writePins = 0;
+    state.onPins = 0;
 }
