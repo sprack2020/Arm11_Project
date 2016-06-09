@@ -1,6 +1,12 @@
+#define NDEBUG
+
 #include "emulate.h"
 
-//#define NDEBUG
+// prototypes
+static void printUsageMsg(void);
+static uint32_t getNextInstr(void);
+static void initialiseARMstate(void);
+static void deallocARMState(void);
 
 int main(int argc, char **argv) {
     // allocate and zero out memory and registers
@@ -8,30 +14,36 @@ int main(int argc, char **argv) {
 
     // ensure correct number of args
     if (argc != 2) {
-        fprintf(stderr, "Usage: ./emulate <binary file>\n");
-        return 2;
+        printUsageMsg();
+        return EXIT_FAILURE;
     }
 
     // open binary file
     FILE *instrFile = fopen(argv[1], "r");
     if (instrFile == NULL) {
-        fprintf(stderr, "Failed to open given binary file.\n");
-        return 2;
+        printUsageMsg();
+        return EXIT_FAILURE;
     }
 
     // load instructions into memory
-    fread(MEM, MEM_SIZE, MEM_WORD_SIZE, instrFile);
+    size_t numRead = fread(MEM, MEM_WORD_SIZE, MEM_SIZE, instrFile);
+    if (numRead == 0) {
+        fputs("Error: Could not read binary file", stderr);
+        printUsageMsg();
+        return EXIT_FAILURE;
+    }
 
     if (!feof(instrFile)) {
-        fprintf(stderr, "Error: Ran out of memory to hold instructions.\n");
-        exit(2);
+        fputs("Error: Ran out of memory to hold instructions.", stderr);
+        return EXIT_FAILURE;
     }
 
     // close the binary file
     if (fclose(instrFile)) {
-        printf("Warning: failed to close binary file.\n");
+        fputs("Warning: failed to close binary file.", stderr);
     }
 
+    // initialise fetched and current instruction
     uint32_t fetchedInstr = getNextInstr();
     uint32_t currInstr = fetchedInstr;
 
@@ -61,6 +73,10 @@ int main(int argc, char **argv) {
     deallocARMState();
 
     return EXIT_SUCCESS;
+}
+
+static void printUsageMsg(void) {
+    fputs("Usage: ./emulate <binary file>", stderr);
 }
 
 // Gets the next instruction from memory and increments PC
