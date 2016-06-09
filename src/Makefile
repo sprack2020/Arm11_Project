@@ -1,5 +1,5 @@
 CC      = gcc
-CFLAGS  = -Wall -Werror -g -D_POSIX_SOURCE -D_BSD_SOURCE -std=c99 -pedantic -I .
+CFLAGS  = -Wall -g -D_POSIX_SOURCE -D_BSD_SOURCE -std=c99 -pedantic -I .
 LDFLAGS =
 EMULATE_SOURCES = emulate.c emulator/global_state.c emulator/branch.c emulator/checkCond.c emulator/dataProcess.c emulator/dataTransfer.c emulator/decodeAndExecute.c emulator/getOperand2.c emulator/iMultiply.c emulator/printState.c emulator/updateCPSR.c util/util.c
 EMULATE_OBJECTS =  $(EMULATE_SOURCES:.c=.o)

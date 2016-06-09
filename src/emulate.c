@@ -1,6 +1,6 @@
-#include "emulate.h"
+#define NDEBUG
 
-//#define NDEBUG
+#include "emulate.h"
 
 // prototypes
 static void printUsageMsg(void);
@@ -26,7 +26,7 @@ int main(int argc, char **argv) {
     }
 
     // load instructions into memory
-    size_t numRead = fread(MEM, MEM_SIZE, MEM_WORD_SIZE, instrFile);
+    size_t numRead = fread(MEM, MEM_WORD_SIZE, MEM_SIZE, instrFile);
     if (numRead == 0) {
         fputs("Error: Could not read binary file", stderr);
         printUsageMsg();
@@ -92,13 +92,14 @@ uint32_t getNextInstr(void) {
 
 // frees all the memory we used to store the system state
 void deallocARMState(void) {
-    // everything on stack, do nothing
+    free(MEM);
+    free(REGFILE);
 }
 
 // allocates and zeroes out the ARMstate
 void initialiseARMstate(void) {
-    memset(state.memory, 0, sizeof(uint32_t) * MEM_SIZE);
-    memset(state.registers, 0, sizeof(uint32_t) * NUM_REGISTERS);
+    MEM = calloc(MEM_SIZE, sizeof(uint8_t));
+    REGFILE = calloc(NUM_REGISTERS, sizeof(uint32_t));
     state.controlBitsGPIO0To9 = 0;
     state.controlBitsGPIO10To19 = 0;
     state.controlBitsGPIO20To29 = 0;

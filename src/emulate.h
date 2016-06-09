@@ -9,9 +9,6 @@
 #include <emulator/printState.h>
 #include <util/util.h>
 
-#define MEM_SIZE 65536
-#define NUM_REGISTERS 17
-
 // contains ARMState state, what we are emulating on
 #include <emulator/global_state.h>
 

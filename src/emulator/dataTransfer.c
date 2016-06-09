@@ -16,7 +16,6 @@ static void handleControlPortSDT(bool isLoad, uint32_t Rd, uint32_t address,
 static void writeToControlPort(uint32_t addrType, uint32_t Rd);
 static void writeToDataPort(uint32_t Rd, uint32_t addrType);
 static int getIndexLower(uint32_t addrType);
-
 bool isDataPort(uint32_t bigEndianAddr);
 
 // PRE: instr is a data transfer instruction
@@ -40,7 +39,6 @@ void dataTransfer(uint32_t instr) {
 
     // apply offset to base register
     uint32_t adjustedRnVal = isUp ? REGFILE[Rn] + offset : REGFILE[Rn] - offset;
-    // swapEndianness(&adjustedRnVal);
 
     // choose correct base register
     uint32_t address = isPreIndex ? adjustedRnVal : REGFILE[Rn];
@@ -193,7 +191,6 @@ static void load(uint32_t toLoadAddr, uint32_t Rd) {
 static void store(uint32_t RnVal, uint32_t toStore) {
     assert(checkValidAddress(RnVal));
 
-    // swapEndianness(&RnVal);
     const int n = REG_LENGTH / MEM_LENGTH;
 
     for (int i = n - 1; i >= 0; i--) {

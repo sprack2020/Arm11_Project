@@ -1,6 +1,7 @@
 #ifndef ARM11_39_DATATRANSFER_H
 #define ARM11_39_DATATRANSFER_H
 
+#include <assert.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
