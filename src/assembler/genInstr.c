@@ -47,6 +47,12 @@ uint32_t genBranch(int cond, uint32_t offset) {
            offset << BROFFSHIFT;
 }
 
+uint32_t genBranchIndirect(int cond, int rn) {
+    return BRINMASK          |
+           cond << CONDSHIFT |
+           rn                ;
+}
+
 //take a mnemonic string and return the DP opcode associated with it
 //ugly function but most elegant/simplest way around this problem
 DPOpcodes mnemToOpcode(char *mnem) {

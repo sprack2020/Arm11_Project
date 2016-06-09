@@ -7,6 +7,7 @@
 
 #include <stdint.h>
 #include <ctype.h>
+#include <string.h>
 
 #include "assembler.h"
 #include <util/util.h>
@@ -20,6 +21,7 @@ uint32_t handleDataProcessing(Assembler *assembler, char **tokens);
 uint32_t handleMultiply(Assembler *assembler, char **tokens);
 uint32_t handleSDT(Assembler *assembler, char **tokens);
 uint32_t handleBranch(Assembler *assembler, char **tokens);
+uint32_t handleBranchIndirect(Assembler *assembler, char **tokens);
 uint32_t handleHalt(Assembler *assembler, char **tokens);
 uint32_t handleLSL(Assembler *assembler, char **tokens);
 

@@ -17,6 +17,7 @@ const instructionHandler sdt = handleSDT;
 const instructionHandler branch = handleBranch;
 const instructionHandler lsl = handleLSL;
 const instructionHandler halt = handleHalt;
+const assembleFunctionPointer branchIndirect = handleBranchIndirect;
 
 void functionTableInit(functionTable *this) {
     ListMapInit(&this->listmap);
@@ -42,6 +43,7 @@ void functionTableInit(functionTable *this) {
     functionTableAdd(this, "bgt", &branch);
     functionTableAdd(this, "ble", &branch);
     functionTableAdd(this, "b", &branch);
+    functionTableAdd(this, "bx", &branchIndirect);
     functionTableAdd(this, "lsl", &lsl);
     functionTableAdd(this, "andeq", &halt);
     functionTableAdd(this, "halt", &halt);
