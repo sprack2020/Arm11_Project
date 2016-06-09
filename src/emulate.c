@@ -2,36 +2,48 @@
 
 //#define NDEBUG
 
+// prototypes
+static void printUsageMsg(void);
+static uint32_t getNextInstr(void);
+static void initialiseARMstate(void);
+static void deallocARMState(void);
+
 int main(int argc, char **argv) {
     // allocate and zero out memory and registers
     initialiseARMstate();
 
     // ensure correct number of args
     if (argc != 2) {
-        fprintf(stderr, "Usage: ./emulate <binary file>\n");
-        return 2;
+        printUsageMsg();
+        return EXIT_FAILURE;
     }
 
     // open binary file
     FILE *instrFile = fopen(argv[1], "r");
     if (instrFile == NULL) {
-        fprintf(stderr, "Failed to open given binary file.\n");
-        return 2;
+        printUsageMsg();
+        return EXIT_FAILURE;
     }
 
     // load instructions into memory
-    fread(MEM, MEM_SIZE, MEM_WORD_SIZE, instrFile);
+    size_t numRead = fread(MEM, MEM_SIZE, MEM_WORD_SIZE, instrFile);
+    if (numRead == 0) {
+        fputs("Error: Could not read binary file", stderr);
+        printUsageMsg();
+        return EXIT_FAILURE;
+    }
 
     if (!feof(instrFile)) {
-        fprintf(stderr, "Error: Ran out of memory to hold instructions.\n");
-        exit(2);
+        fputs("Error: Ran out of memory to hold instructions.", stderr);
+        return EXIT_FAILURE;
     }
 
     // close the binary file
     if (fclose(instrFile)) {
-        printf("Warning: failed to close binary file.\n");
+        fputs("Warning: failed to close binary file.", stderr);
     }
 
+    // initialise fetched and current instruction
     uint32_t fetchedInstr = getNextInstr();
     uint32_t currInstr = fetchedInstr;
 
@@ -63,6 +75,10 @@ int main(int argc, char **argv) {
     return EXIT_SUCCESS;
 }
 
+static void printUsageMsg(void) {
+    fputs("Usage: ./emulate <binary file>", stderr);
+}
+
 // Gets the next instruction from memory and increments PC
 uint32_t getNextInstr(void) {
     uint32_t nextInstr = 0;
@@ -76,14 +92,13 @@ uint32_t getNextInstr(void) {
 
 // frees all the memory we used to store the system state
 void deallocARMState(void) {
-    free(MEM);
-    free(REGFILE);
+    // everything on stack, do nothing
 }
 
 // allocates and zeroes out the ARMstate
 void initialiseARMstate(void) {
-    MEM = calloc(MEM_SIZE, sizeof(uint8_t));
-    REGFILE = calloc(NUM_REGISTERS, sizeof(uint32_t));
+    memset(state.memory, 0, sizeof(uint32_t) * MEM_SIZE);
+    memset(state.registers, 0, sizeof(uint32_t) * NUM_REGISTERS);
     state.controlBitsGPIO0To9 = 0;
     state.controlBitsGPIO10To19 = 0;
     state.controlBitsGPIO20To29 = 0;
