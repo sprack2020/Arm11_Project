@@ -1,6 +1,5 @@
 #include "assembler.h"
 
-
 static void parseInstructions(Assembler *this);
 static void writeToBinaryFile(Assembler *this);
 static void initSourceLines(Assembler *assembler);
@@ -13,7 +12,7 @@ Assembler *newAssembler(char *sourcePath, char *binaryPath) {
     return a;
 }
 
-// initiates an assembler
+// initialises an assembler
 void assemblerInit(Assembler *this, char *sourcePath, char *binaryPath) {
     this->sourcePath = sourcePath;
     this->binaryPath = binaryPath;
@@ -65,7 +64,7 @@ void assemble(Assembler *this) {
     // do second pass
     parseInstructions(this);
 
-    // write to binary
+    // write to binary file
     writeToBinaryFile(this);
 }
 
@@ -91,8 +90,7 @@ void assemblerDeconstruct(Assembler *this) {
     free(this);
 }
 
-// TODO: FIX FREEING OF TOKENS
-// parses .sourceLines into instructions stored in .binaryProgram
+// parses sourceLines into instructions stored in binaryProgram
 static void parseInstructions(Assembler *this) {
     // initialise ListMap<mneumonic, functions>
     functionTable ft;
@@ -117,11 +115,6 @@ static void parseInstructions(Assembler *this) {
     }
 
     functionTableDeinit(&ft);
-
-//    // free tokens, obviously not all the way till NUM_TOKENS
-//    for (int i = 1; i < NUM_TOKENS; i++) {
-//        free(tokens[i]);
-//    }
 }
 
 // writes .binaryProgram to the file with name .binaryPath
