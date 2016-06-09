@@ -8,15 +8,17 @@ mov r4, #0x4
 mov r5, #0x8
 mov r6, #0x16
 mov r7, #0
+orr r8, r4, r5
+orr r8, r8, r6
+orr r9, r4, r5
 
 str r4, [r0, #28]
 str r5, [r0, #28]
 str r6, [r0, #28]
 
 loop:
-orr r8, r4, r5
-orr r8, r8, r6
 str r8, [r0, #40]
+str r7, [r0, #28]
 
 ldr r3, =0x00800000
 wait1:
@@ -52,8 +54,7 @@ cmp r3, #0
 bne wait4
 
 str r6, [r0, #28]
-orr r8, r5, r4
-str r8, [r0, #40]
+str r9, [r0, #40]
 
 ldr r3, =0x00800000
 wait5:
