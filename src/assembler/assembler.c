@@ -97,6 +97,7 @@ static void parseInstructions(Assembler *this) {
     functionTable ft;
     functionTableInit(&ft);
 
+    // instantiate binary program
     this->binaryProgram = malloc(sizeof(uint32_t) * 2 * this->numInstrs);
 
     // initialise tokens, alloc'd in getTokens
