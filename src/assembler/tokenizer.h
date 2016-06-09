@@ -13,5 +13,6 @@ void getTokens(char **buffer, int numTokens, char *line);
 
 char* stripLabel(char* line);
 char* skipSpace(char* line);
+void stripComments(char *line)
 
 #endif //ARM11_39_TOKENIZER_H

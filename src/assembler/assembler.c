@@ -47,6 +47,7 @@ static void initSourceLines(Assembler *this) {
 
         //strip leading space on line, and if it was empty, don't count it.
         str = skipSpace(str);
+        stripComments(str);
         if (*str != '\0') {
             this->sourceLines[i] = str;
         } else {

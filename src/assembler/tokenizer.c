@@ -44,3 +44,12 @@ char *skipSpace(char *line) {
 
     return line;
 }
+
+void stripComments(char *line) {
+    while (*line != '\0') {
+        if (*line == ';') {
+            *line = '\0';
+            return;
+        }
+    }
+}
