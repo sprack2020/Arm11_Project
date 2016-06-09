@@ -26,7 +26,7 @@ void functionTableInit(
 void functionTableAdd(
         functionTable *ft,
         char *mnen,
-        const instructionHandler *fs
+        const instructionHandler *handler
 );
 
 instructionHandler *functionTableGet(

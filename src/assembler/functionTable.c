@@ -4,8 +4,6 @@
 
 #include "functionTable.h"
 
-#define NUM_MNEMONICS 24
-
 static void functionTableDeleter(
         void *mnem,
         void *fp
