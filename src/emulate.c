@@ -1,6 +1,6 @@
 #include "emulate.h"
 
-#define NDEBUG
+//#define NDEBUG
 
 int main(int argc, char **argv) {
     // allocate and zero out memory and registers
