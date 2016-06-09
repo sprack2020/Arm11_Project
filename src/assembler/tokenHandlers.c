@@ -2,6 +2,7 @@
 // Created by drspaceship on 31/05/16.
 //
 
+#include <string.h>
 #include "tokenHandlers.h"
 
 uint32_t handleDataProcessing(Assembler *assembler, char **tokens) {
@@ -99,6 +100,11 @@ uint32_t handleBranch(Assembler *assembler, char **tokens) {
     uint32_t offset = calcOffset(assembler, address, true);
 
     return genBranch(cond, offset);
+}
+
+uint32_t handleBranchIndirect(Assembler *assembler, char **tokens) {
+    uint32_t rn = getValue(tokens[1]);
+    return genBranchIndirect(AL, rn);
 }
 
 uint32_t handleHalt(Assembler *assembler, char **tokens) {

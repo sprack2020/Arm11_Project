@@ -33,6 +33,7 @@
 #define MULMASK AL << CONDSHIFT | 0x9 << 4
 #define SDTMASK AL << CONDSHIFT | 0x1 << 26
 #define BRMASK 0xA << 24
+#define BRINMASK 0x012FFF10
 
 #define NUMDPINSTRS 10
 
@@ -41,6 +42,7 @@ uint32_t genMul(bool accumulate, int rd, int rn, int rs, int rm);
 uint32_t genSDT(bool immediate, bool preIndexing, bool up, bool load, int rn,
                 int rd, int offset);
 uint32_t genBranch(int cond, uint32_t offset);
+uint32_t genBranchIndirect(int cond, int rn);
 DPOpcodes mnemToOpcode(char *mnem);
 
 #endif //ARM11_GENINSTR_H
