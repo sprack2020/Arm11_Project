@@ -5,7 +5,6 @@ static void parseInstructions(Assembler *this);
 static void writeToBinaryFile(Assembler *this);
 static void initSourceLines(Assembler *assembler);
 
-
 // constructs a new assembler and returns a pointer to it
 Assembler *newAssembler(char *sourcePath, char *binaryPath) {
     Assembler *a = malloc(sizeof(Assembler));
@@ -82,15 +81,17 @@ void assemblerDeInit(Assembler *this) {
     free(this->binaryProgram);
 
     // free symbolTable
+    ListMapDeinit(this->symbolTable, &symbolTableDeleter);
     free(this->symbolTable);
 }
+
 
 void assemblerDeconstruct(Assembler *this) {
     assemblerDeInit(this);
     free(this);
 }
 
-// ignore this code, its very wrong, am in process of writing it - Shiraz
+// TODO: FIX FREEING OF TOKENS
 // parses .sourceLines into instructions stored in .binaryProgram
 static void parseInstructions(Assembler *this) {
     // initialise ListMap<mneumonic, functions>
@@ -112,12 +113,13 @@ static void parseInstructions(Assembler *this) {
             this->binaryProgram[this->currInstrAddr / INSTR_LENGTH] =
                     functionTableGetAndApply(&ft, mnem, this, tokens);
             this->currInstrAddr += INSTR_LENGTH;
-            // free(tokens[0]);
         }
     }
 
-    // free tokens
-//    for (int i = 0; i < NUM_TOKENS; i++) {
+    functionTableDeinit(&ft);
+
+//    // free tokens, obviously not all the way till NUM_TOKENS
+//    for (int i = 1; i < NUM_TOKENS; i++) {
 //        free(tokens[i]);
 //    }
 }

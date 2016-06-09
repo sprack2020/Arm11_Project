@@ -17,7 +17,7 @@ typedef struct functionTable {
     ListMap listmap;
 } functionTable;
 
-typedef uint32_t (*assembleFunctionPointer)(Assembler *, char **);
+typedef uint32_t (*instructionHandler)(Assembler *, char **);
 
 void functionTableInit(
         functionTable *ft
@@ -26,10 +26,10 @@ void functionTableInit(
 void functionTableAdd(
         functionTable *ft,
         char *mnen,
-        const assembleFunctionPointer *fs
+        const instructionHandler *fs
 );
 
-assembleFunctionPointer *functionTableGet(
+instructionHandler *functionTableGet(
         functionTable *this,
         char *mnen
 );
@@ -39,6 +39,10 @@ uint32_t functionTableGetAndApply(
         char *mnen,
         Assembler *a,
         char **tokens
+);
+
+void functionTableDeinit(
+        functionTable *this
 );
 
 #endif //ARM11_39_FUNCTIONTABLE_H

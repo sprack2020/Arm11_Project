@@ -32,7 +32,9 @@ int countLines(FILE *file) {
         }
     }
 
+    free(lineBuff);
     rewind(file);
+
     return numLines;
 }
 

@@ -6,12 +6,17 @@
 
 #define NUM_MNEMONICS 24
 
-const assembleFunctionPointer dp = handleDataProcessing;
-const assembleFunctionPointer mul = handleMultiply;
-const assembleFunctionPointer sdt = handleSDT;
-const assembleFunctionPointer branch = handleBranch;
-const assembleFunctionPointer lsl = handleLSL;
-const assembleFunctionPointer halt = handleHalt;
+static void functionTableDeleter(
+        void *mnem,
+        void *fp
+);
+
+const instructionHandler dp = handleDataProcessing;
+const instructionHandler mul = handleMultiply;
+const instructionHandler sdt = handleSDT;
+const instructionHandler branch = handleBranch;
+const instructionHandler lsl = handleLSL;
+const instructionHandler halt = handleHalt;
 
 void functionTableInit(functionTable *this) {
     ListMapInit(&this->listmap);
@@ -45,12 +50,12 @@ void functionTableInit(functionTable *this) {
 void functionTableAdd(
         functionTable *this,
         char *mnen,
-        const assembleFunctionPointer *func
+        const instructionHandler *func
 ) {
     ListMapAdd(&this->listmap, mnen, (void **) func);
 }
 
-assembleFunctionPointer *functionTableGet(
+instructionHandler *functionTableGet(
         functionTable *this,
         char *mnen
 ) {
@@ -64,7 +69,17 @@ uint32_t functionTableGetAndApply(
         Assembler *a,
         char **tokens
 ) {
-    assembleFunctionPointer *fp = functionTableGet(this, mnem);
+    instructionHandler *fp = functionTableGet(this, mnem);
     assert(fp != NULL);
     return (*fp)(a, tokens);
+}
+
+// frees the elements of a function table.
+// do nothing as mnem is a pointer to sourceLines and fp is a pointer to a
+// function pointer.
+static void functionTableDeleter(void *mnem, void *fp) {
+}
+
+void functionTableDeinit(functionTable *this) {
+    ListMapDeinit((ListMap *) this, &functionTableDeleter);
 }

@@ -39,6 +39,7 @@ void handleLabel(
         }
     } else {
         free(label);
+        free(instrAddress);
         this->currInstrAddr+= INSTR_LENGTH;
     }
 }
@@ -48,4 +49,10 @@ bool hasInstr(char *line) {
         line++;
     }
     return line == NULL ? false : (bool) isalpha(*line);
+}
+
+// removes elements from a symbol table
+void symbolTableDeleter(void *label, void *address) {
+    free(label);
+    free(address);
 }

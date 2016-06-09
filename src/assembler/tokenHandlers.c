@@ -107,10 +107,10 @@ uint32_t handleHalt(Assembler *assembler, char **tokens) {
 
 uint32_t handleLSL(Assembler *assembler, char **tokens) {
     //rearrange tokens and pass to DP handler.
-    tokens[0] = strdup("mov");
-    tokens[4] = strdup(tokens[2]);
-    tokens[2] = strdup(tokens[1]);
-    tokens[3] = strdup("lsl");
+    tokens[0] = "mov";
+    tokens[4] = tokens[2];
+    tokens[2] = tokens[1];
+    tokens[3] = "lsl";
 
     return handleDataProcessing(assembler, tokens);
 }

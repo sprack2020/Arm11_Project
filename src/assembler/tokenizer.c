@@ -18,8 +18,8 @@ void getTokens(char **buffer, int numTokens, char *line) {
     buffer[numTokens - 1] = skipSpace(strtok(NULL, "\n\0"));
 }
 
-char* stripLabel(char* line) {
-    char* res = line;
+char *stripLabel(char *line) {
+    char *res = line;
     int i = 0;
     //while we are not at the null character, check if we are the end of a label
     while (line[i]) {
@@ -33,7 +33,7 @@ char* stripLabel(char* line) {
     return res;
 }
 
-char* skipSpace(char* line) {
+char *skipSpace(char *line) {
     if (line == NULL) {
         return line;
     }

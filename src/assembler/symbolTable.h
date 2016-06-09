@@ -20,4 +20,9 @@ bool hasInstr(
         char *line
 );
 
+void symbolTableDeleter(
+        void *label,
+        void *address
+);
+
 #endif //ARM11_39_SYMBOLTABLE_H
