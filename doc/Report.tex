@@ -4,7 +4,7 @@
 
 \begin{document}
 
-\title{ARM Checkpoint Group 39}
+\title{ARM Final Report Group 39}
 
 \maketitle
 
@@ -16,7 +16,7 @@ Like we stated in the previous report, our team strategy was to ensure that:
 
 \begin{itemize}
 
-    \item The code we’d written followed a consistent coding convention.
+    \item The code we had written followed a consistent coding convention.
     \item Our code individually aligned with the specifications of the design proposed in the previous group meeting.
     \item Our code collectively worked together without any hiccups.
     \item Any pseudo code was converted into code, or discussed at the next group meeting.
@@ -34,7 +34,7 @@ Like we stated in the previous report, our team strategy was to ensure that:
         \item The instruction is passed to decodeAndExecute which  takes the instruction to find out what type of instruction it is (Branch, Data Processing, etc.)
         \item Depending on the type of instruction, the relevant method is called and the necessary steps, such as updating results, CPSR flags, etc. are taken.
         \item This loops until the halt instruction is fetched.
-        \item This loops until the halt instruction is fetched.
+
     \end{itemize}
   
     \item printState outputs the state of the registers
@@ -44,7 +44,47 @@ Like we stated in the previous report, our team strategy was to ensure that:
 
 \section{Assembler}
 
-\section{"Part III (will rename this)"}
+\subsection{Structure of the emulator}
+
+\begin{itemize}
+
+    \item An assembler struct is created which stores all the details of the file being parsed
+    \item The source file is assembled
+    
+    \begin{itemize}
+    
+        \item First pass:
+        
+        \begin{itemize}
+        
+            \item The file is read and all the lines (delimited by \texttt{\textbackslash n}) are converted to an array of strings
+            \item A symbol table is created and all the instructions are counted
+            
+        \end{itemize}
+        
+        \item Second pass:
+        
+        \begin{itemize}
+        
+            \item The instructions are parsed 
+            
+            \begin{itemize}
+        
+                \item A function table is created of type akin to ListMap \textless mneumonic, functions\textgreater\ in Java.
+                \item For each instruction, the tokens are found and the instruction generated.
+            
+            \end{itemize}
+            
+        \end{itemize}
+    
+        
+        \item Finally, the .binaryProgram is written to the file with name .binaryPath
+    
+    \end{itemize}
+    
+    \item The assembler is deinitialised (memory used is freed)
+
+\end{itemize}
 
 \section{Extension}
 
