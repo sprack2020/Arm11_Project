@@ -51,5 +51,6 @@ void stripComments(char *line) {
             *line = '\0';
             return;
         }
+        ++line;
     }
 }
