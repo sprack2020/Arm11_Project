@@ -99,5 +99,7 @@ shiftType strToShiftType(char* string);
 uint32_t getValue(char *expr);
 bool equalStrings(char *s1, char *s2);
 bool strcmpFromVoid(void *str1, void *str2);
+uint32_t updateBit(uint32_t num, unsigned int index, bool value);
+
 
 #endif //ARM11_39_BINARYSHIFT_H

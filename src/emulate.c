@@ -1,5 +1,7 @@
 #include "emulate.h"
 
+#define NDEBUG
+//TODO: PUT state's fields on the stack
 int main(int argc, char **argv) {
     // allocate and zero out memory and registers
     initialiseARMstate();
@@ -82,4 +84,9 @@ void deallocARMState(void) {
 void initialiseARMstate(void) {
     MEM = calloc(MEM_SIZE, sizeof(uint8_t));
     REGFILE = calloc(NUM_REGISTERS, sizeof(uint32_t));
+    state.controlBitsGPIO0To9 = 0;
+    state.controlBitsGPIO10To19 = 0;
+    state.controlBitsGPIO20To29 = 0;
+    state.clearPins = 0;
+    state.onPins = 0;
 }
