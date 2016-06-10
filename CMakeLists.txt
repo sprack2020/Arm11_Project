@@ -64,7 +64,7 @@ set(ASSEMBLER_HEADERS
         src/assembler/io.h
         src/assembler/genInstr.h
         src/util/util.h
-        src/memory_util.h
+        src/util/memory_util.h
         src/assembler/assembler.h
         src/util/ListMap.h
         src/util/ListMapNode.h
