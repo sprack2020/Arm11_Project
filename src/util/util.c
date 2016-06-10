@@ -79,8 +79,8 @@ uint32_t createMask(unsigned int lower, unsigned int upper) {
 uint32_t extractBits(uint32_t binaryNumber, int UB, int LB) {
     // ensure UB >= LB and both LB and UB are positive and both less than the number
     // of bits in the binaryNumber
-    const int numBits = sizeof(binaryNumber) * CHAR_BIT - 1;
-    if (UB < LB || LB < 0 || UB > numBits) {
+    const int maxUB = sizeof(binaryNumber) * CHAR_BIT - 1;
+    if (UB < LB || LB < 0 || UB > maxUB) {
         fprintf(stderr, "Error in util: extractBits(): "
                 "invalid indexes from which to extract bits. You attempted "
                 "extractBits(0x%08x, %d, %d)\n", binaryNumber, UB, LB);

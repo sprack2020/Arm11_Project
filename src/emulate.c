@@ -18,7 +18,7 @@ int main(int argc, char **argv) {
         return EXIT_FAILURE;
     }
 
-    // open binary file
+    // open inary file
     FILE *instrFile = fopen(argv[1], "r");
     if (instrFile == NULL) {
         printUsageMsg();
