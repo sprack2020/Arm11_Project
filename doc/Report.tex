@@ -1,91 +1,113 @@
-\documentclass[11pt]{article}
+\documentclass[a4paper]{article}
 
-\usepackage{fullpage}
-
-\begin{document}
+\usepackage[english]{babel}
 
 \title{ARM Final Report Group 39}
+\author{Tom Price, Shiraz Butt, Andy Hume and Sarthak Kumar}
 
+\begin{document}
 \maketitle
 
-\section{Recap from the previous report}
+\section{Introduction}
 
-\subsection{Team Strategy}
+In this report, we will be detailing our implementation of the assembler and emulator for the ARM11 project. For both the assembler and emulator, we will discuss our design decisions and the testing process. Our extension is also described, and the final section will consist of each group member's reflections on the project.
 
-Like we stated in the previous report, our team strategy was to ensure that:
+\section{Emulator}
 
-\begin{itemize}
+\subsection{Design}
 
-    \item The code we had written followed a consistent coding convention.
-    \item Our code individually aligned with the specifications of the design proposed in the previous group meeting.
-    \item Our code collectively worked together without any hiccups.
-    \item Any pseudo code was converted into code, or discussed at the next group meeting.
+We decided to emulate the hardware by having the registers and memory as a global variable contained in a struct, called state. The functions that deal with the instructions would then have side effects on state. As memory is byte addressable, it is an array of \texttt{uint8\_t}. Registers are 32 bit so were stored as an array of \texttt{uint32\_t}. The PC and CPSR were emulated simply as elements of this array, rather than having separate integers for them in the struct. In hindsight, having separate integers would have made some parts of the code much easier, like updating the CPSR flags. 
 
-\end{itemize}
+Our main program first reads the instructions into state.memory, before iterating through them until the halt instruction is reached. To emulate the pipeline, we held two instructions at a time, the one currently being executed and the next instruction (fetched instruction). This fetched instruction would be 8 bytes ahead of the current instruction, meaning it is the one PC references. So, on each iteration of the loop we:
 
-\subsection{Structure of the emulator}
+\begin{enumerate}
+\item Update current instruction to the last fetched instruction.
+\item Fetch the next instruction to be executed and increment PC by 4 (the length of an instruction).
+\item Decode and execute the current instruction, which is handled by the \texttt{decodeAndExecute()} function.
+\end{enumerate}
 
-\begin{itemize}
+Since all instructions have the "cond" field in the first four bits, we check first before step 3 occurs. If the condition evaluates to false, we continue to the next iteration instead of decoding the instruction.
 
-    \item The instruction is fetched.
-    
-    \begin{itemize}
-    
-        \item The instruction is passed to decodeAndExecute which  takes the instruction to find out what type of instruction it is (Branch, Data Processing, etc.)
-        \item Depending on the type of instruction, the relevant method is called and the necessary steps, such as updating results, CPSR flags, etc. are taken.
-        \item This loops until the halt instruction is fetched.
+When initially looking at how an instruction is decoded we decided to treat it as a control flow problem. \texttt{decodeAndExecute()} determines what kind of instruction it is dealing with (branch, multiply etc.), before delegating to the appropriate helper function. This function would then break down the instruction into its relevant parts before performing the execution of the instruction as well. Thus arose the decision of having a single \texttt{decodeAndExecute()} function instead of splitting up these steps. 
 
-    \end{itemize}
-  
-    \item printState outputs the state of the registers
-    \item deallocARMstate frees the memory that was used, ensuring that memory usage isn't bloated
+Throughout out this control flow, we kept as much as possible in little endian, since we found understanding when to switch between big and little endian quite confusing. This meant we had to swap the endianness of the specification’s explanations of the different types of functions. This did not take long and we found it easier.
 
-\end{itemize}
+We decided to split up the functions that \texttt{decodeAndExecute()} delegates to into different files. Some of these functions' larger and possibly shared helper functions had their own file too. Each file would essentially have one function, the rest being helper functions to that file. This made splitting the work up and group collaboration easier as we could give each 'file' a pre-condition based on what stage of the aforementioned control flow we were in, as well as a post-condition it must guarantee to the next stage of the flow, unless this function was 'at the end' and performed the execution of the instruction. Almost more importantly though, this helped us to avoid merge conflicts. In retrospect, this design had its flaws as it made the project messy with many files as well as being bad for encapsulation as it required these functions to be public.
+
+Using global variables to emulate the system's state also caused problems, most so with the branch instruction. Since the current and fetched instruction variables of the loop in the top level class were not in the scope of the function that deals with branches, \texttt{decodeAndExecute()} had to return a bool telling us whether or not the instruction was a branch.  Then from this we could update the fetched instruction based on the new PC, if necessary.
+
+The decision to use global variables also meant that our emulator was not very extendable, for example we could not easily emulate two systems. It also cluttered the namespace.
+
+\subsection{Testing}
+
+Throughout this project, our aim was to design the program as thoroughly as possible before starting coding, from the top down (start with the design of main, then go deeper into the internals of the program). We could then write the program from the bottom up and unit test as we went along. The clear splitting up of the functions as mentioned above made it easier to isolate parts of the code that we could test.
+
+Although this was the aim, in practice not enough testing was done for the emulator. This made it significantly harder to debug. Furthermore, making the system state global made it harder to keep track of what functions were doing what to it and when. However, when our code did not work it was often the case that we had just misinterpreted the spec, so instead we reverse engineered what our code should do from the test cases provided. This was quite a laborious process as it required breaking down the binary of the instructions to see exactly what they should do.
 
 \section{Assembler}
 
-\subsection{Structure of the emulator}
+\subsection{Design}
+Being more comfortable with C by the time we started the assembler, as well as suffering through the consequences of some poor design decisions for the emulator, we were able to design our assembler much better. In the emulator, we often found having objects would have been very useful. For the assembler then, we decided objects could essentially be implemented. We would have an assembler struct that holds the source file and the binary file, as well as an assemble function that takes a pointer to such an assembler, or ‘this’ in Java. Init and deinit functions would be used in place of constructors and garbage collectors. The assembler struct of course would have to hold many other things, including the symbol table for associating labels with addresses and two arrays, one for the non-empty lines of the sources and one for the binary instructions. With this design, main would be very simple: initialisation of the assembler, calling the assemble function and de-initialisation of the assembler.
 
-\begin{itemize}
+We chose the two-pass approach to the assembler, thus the main stages to the assemble function were creating the symbol table, assembling the instructions and then writing the instructions to the binary file.
 
-    \item An assembler struct is created which stores all the details of the file being parsed
-    \item The source file is assembled
-    
-    \begin{itemize}
-    
-        \item First pass:
-        
-        \begin{itemize}
-        
-            \item The file is read and all the lines (delimited by \texttt{\textbackslash n}) are converted to an array of strings
-            \item A symbol table is created and all the instructions are counted
-            
-        \end{itemize}
-        
-        \item Second pass:
-        
-        \begin{itemize}
-        
-            \item The instructions are parsed 
-            
-            \begin{itemize}
-        
-                \item A function table is created of type akin to ListMap \textless mneumonic, functions\textgreater\ in Java.
-                \item For each instruction, the tokens are found and the instruction generated.
-            
-            \end{itemize}
-            
-        \end{itemize}
-    
-        
-        \item Finally, the .binaryProgram is written to the file with name .binaryPath
-    
-    \end{itemize}
-    
-    \item The assembler is deinitialised (memory used is freed)
+For the first pass, we implemented the symbol table with a map. This map was generic (as it was needed again later) and implemented using a linked list. We attempted implementing a hash map, but found it too time consuming, complex, and not worth the fast retrieval time as our map would never be that large. When we are reading the source file, we count the number of lines so that we can allocate the correct space for the source lines array, then copy each line to one element of this array. We also count the number of instructions, so that we can allocate appropriate space, and keep track of where any constants we need to introduce should go.
 
-\end{itemize}
+In the second pass, we iterate through each instruction in the source file, splitting each into its tokens using the \texttt{getTokens()} helper method. The first token would be the mnemonic of the instruction. Using this, we would look up the appropriate function to delegate to in a map and pass in the tokens into this function, which would then return the assembled instruction. The map we used here was the same as in the assembler, but wrapped in a FunctionTable struct, for reasons explained in the testing section. The returned binary instruction was stored in the assembler’s array of binary instructions at the index of the current instruction.  On the other hand, if the first token was null, the program will have encountered an empty line, or a label with no instruction. On such an iteration we do not delegate to a helper function and do not increment the index of the current instruction. In order to get the number of iterations to perform, we had to know the number of executable lines in the source file, which we calculated before the first pass.
+
+The helper functions that are returned from the map will calculate the relevant fields of the instruction i.e. Rd, offset etc. and then pass them to the corresponding ‘instruction generator’ function that builds the binary instruction from them.
+
+The final stage of assembling, where we write the binary instructions stored in the array to the output file was a simple call to \texttt{fwrite()}. At this point we do not explicitly know how many words to write, as we do not have a variable to keep track of how many constants have been written to the end of the file, but we have the \texttt{firstEmptyAddr} variable, which gets incremented when a constant is written, so we use that to calculate how many words are actually used.
+
+\subsection{Testing}
+
+Once again, we learnt from our mistakes in the emulator. Our improved knowledge of C and better design meant we had far fewer bugs. We also unit tested our code much more, leaving us much less hassle later on. 
+
+One major problem we had though was, in the initialisation of our function table, the pointers to the functions we were using were in the local stack frame. To solve this we made const function pointers in the global scope to the relevant functions and then added these to the function table. We also had to hack around the fact that void pointers cannot be cast to function pointers, nor the other way around. To solve this, our map is actually from strings to function pointer pointers. When adding we would cast to \texttt{(void **)} and when getting we would have to dereference what the map returned to get the function pointer. The FunctionTable struct abstracted all this away though, so the calling code was not ugly.
+
 
 \section{Extension}
+
+Our extension is a three bit binary counter using LEDs.
+
+\subsection{Design}
+The basic flow of the extension program is toggling certain LEDs, waiting an amount of time, and toggling different LEDs etc. and repeating this forever.
+We initially tried to implement this program using subroutines that turned one LED off/on, then called other subroutines to handle the next least significatn LED, however there was some difficulty in returning from these subroutines to the same place we called them.
+We attempted to do this by implementing branch exchange (jump to the address held in a register), and putting the return address in a specific register, however, after having implemented this in our assembler, we faced some difficulties in getting this to work on the Raspberry Pi.
+We eventually decided that the simplest way to implement this would be to set everything up, have 8 wait sections, with the LED toggling in between these, and at the end branch back to the start.
+
+\subsection{Testing}
+
+Testing our extension (and part III program) was more of a challenge than the previous two sections, as the Pi is much harder to debug, and has very limited outputs.
+We of course had our emulator we could test our program on, which caught a few bugs that caused the pins to never get set for example, but the emulator wouldn't pickup certain bugs such as writing to the wrong pin position, as the only message the emulator gives is "pin on". In hindsight, updating the emulator to include which pin is accessed would have been useful.
+It was also hard to debug when the problem was how the hardware was setup, as the only way to really do this is by rechecking that everything is connected how you are expecting it to be.
+Ultimately, running the program on the Pi was the most useful way to know when the program was \textit{not} working correctly, but offered no error messages or help of any kind, and is quite time consuming to put the program on the SD card and back into the Pi.
+
+\section{Reflections}
+
+\subsection{Tom}
+
+I played a significant role in both the design and programming of the project. As we got more experience in pair programming, we worked at our best when writing the assembler and extension because when one of us was coding up a section, others would be designing the next section on a whiteboard. This meant there wasn't a point where code wasn't being written. For future group work I believe this method of collaboration is better than designing everything at the beginning and then splitting up the workload between individual members, as what we did with the emulator. Pre-designing everything for an unfamiliar language meant we couldn't predict the failings or simplification of our design.
+
+Additionally I would add that I have become a much better programmer by virtue of group programming, as where my strengths for this project have been with the low level bitwise operations, other members have had their own strengths, such as ADTS, which is one of my failings. As this project has required me to use everyone else's code, it has forced me to understand it. Likewise as everyone is required to understand my code, I have written clearer and cleaner code as a result.
+
+\subsection{Shiraz}
+The ARM11 project has been a very demanding few weeks, but at the same time very rewarding. Not only have I picked up C at a much faster pace than I thought I could, but I have learnt a lot about collaborating on code as a team. Skills like knowing how to split up work, constructively solve disagreements and keeping in good communication are arguably skills for life more important than the knowledge of C / ARM assembly itself. Through the project, I have also become (slightly) more proficient with git, as before I had only worked alone and never even made a branch. 
+
+From the start of the project, I was keen to be as involved as possible in the design and coding. I feel I have mostly met this goal, being a major contributor to the assembler and especially the emulator. In the design process of the assembler though, I could have contributed more. This is something my peers also pointed out on WebPA. Another weak point of mine made apparent on WebPA was my unpunctuality at times, which I definitely agree with. I do not underestimate the importance of this and know I need to work on it.
+
+At the beginning of the project, all four of us had very little knowledge of C, something definitely reflected in the code for the emulator. However, we have all made good progress and can now appreciate the emulator for the learning experience it was. As a sign of our progress, in my opinion the assembler was designed and written fairly well. But regardless of the standard of our code, I can look back at the project and be genuinely proud of what we have engineered. I have never written so much code in such a short space of time before, nor have I ever learnt so much so fast.
+
+\subsection{Andy}
+
+I was not as active in the coding of the emulator, but was more involved in the high-level design of it. In the assembler, I was very much more involved in actually coding it, where I found that many things which seem easy when talking about the design of a program are not as trivial as they may seem. For example, having a way of passing the tokens to the correct function seemed like an easy thing to do when designing the assembler, but when it came to coding, much more thought was required for an elegant solution that wasn’t a giant list of if/else statements. From this I learned that it is not enough to simply be involved in the conceptual design of a program, and that actually implementing it is a much better learning experience, especially for a new language like C.
+
+I also started the project by working alone, implementing one function at a time. However, towards the end of the project, I started working with other group members in the same room, which was many times more productive, mainly because problems like bad names and careless bugs are much more likely to be caught before they become a large problem which requires a lot of time to track down. It also let us very quickly ask questions about the details of other parts, to the person who actually wrote them. In future, I will utilize group programming more.
+
+\subsection{Sarthak}
+
+Reflecting on the group project as a whole, I felt that I discovered more about myself throughout the experience. Initially, I thought that I was an efficient programmer and could easily translate thoughts to code. However, it turned out that my strengths lay in writing - whether it was writing out thoughts, pseudocode, or the reports, I was more comfortable dissecting and solving problems logically through that medium. 
+
+I also feel that because of this, even though I tried to make sure I contribute in group meetings, I wasn’t able to maybe contribute as much as I thought I could in terms of the code, and that in future projects being more open about my strengths and weaknesses could result in a more cohesive group ethic. I feel that this group project has been a sobering and humbling experience, and has made me more aware of who I am.
 
 \end{document}

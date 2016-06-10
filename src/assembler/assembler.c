@@ -46,7 +46,6 @@ static void initSourceLines(Assembler *this) {
 
         //strip leading space on line, and if it was empty, don't count it.
         str = skipSpace(str);
-        stripComments(str);
         if (*str != '\0') {
             this->sourceLines[i] = str;
         } else {
@@ -97,6 +96,7 @@ static void parseInstructions(Assembler *this) {
     functionTable ft;
     functionTableInit(&ft);
 
+    //allocate twice as many words as there are instructions (space for consts)
     this->binaryProgram = malloc(sizeof(uint32_t) * 2 * this->numInstrs);
 
     // initialise tokens, alloc'd in getTokens

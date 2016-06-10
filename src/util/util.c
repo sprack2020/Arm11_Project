@@ -50,7 +50,7 @@ ShiftResult binaryShift(uint32_t shiftee, shiftType st, uint32_t amount) {
         default:
             fprintf(stderr, "Error in binaryShift(): "
                             "unrecognised shift type: %i\n", st);
-            exit(2);
+            exit(EXIT_FAILURE);
     }
 
     return sr;
@@ -113,7 +113,8 @@ void read32Bits(uint32_t *dest, uint8_t *src) {
 
     for (int i = 0; i < n; i++) {
         bytesToRead[i] = (uint32_t) *(src + i);
-        bytesToRead[i] = binaryShift(bytesToRead[i], LSL, (n - i - 1) * CHAR_BIT).result;
+        bytesToRead[i] = binaryShift(bytesToRead[i], LSL,
+                                     (uint32_t) (n - i - 1) * CHAR_BIT).result;
 
         *dest |= bytesToRead[i];
     }
@@ -138,7 +139,7 @@ uint32_t extractFragmentedBits(uint32_t instr, int upperBit, int lowerBit) {
                         "Invalid indexes from which to extract bits. You"
                         " attempted extractFragmentedBits(%d, %d, %d)",
                         instr, upperBit, lowerBit);
-        exit(2);
+        exit(EXIT_FAILURE);
     }
 
     swapEndianness(&instr);
@@ -162,20 +163,18 @@ void signExtend(int32_t *num, int n) {
     *num = binaryShift(*num, ASR, numPaddingBits).result;
 }
 
-//TODO: make less hacky
 shiftType strToShiftType(char* string) {
-    if (equalStrings(string, "lsl")) {
-        return LSL;
-    } else if (equalStrings(string, "lsr")) {
-        return LSR;
-    } else if (equalStrings(string, "asr")) {
-        return ASR;
-    } else if (equalStrings(string, "ror")) {
-        return ROR;
-    } else {
-        fprintf(stderr, "invalid shift type");
-        exit(EXIT_FAILURE);
+    char *shiftTypeStrings[NUMSHIFTTYPES] = {"lsl", "lsr", "asr", "ror"};
+    shiftType shiftTypes[NUMSHIFTTYPES] = {LSL, LSR, ASR, ROR};
+
+    for (int i = 0; i < NUMSHIFTTYPES; ++i) {
+        if (equalStrings(shiftTypeStrings[i], string)) {
+            return shiftTypes[i];
+        }
     }
+    //if we reached here, we didn't match the string
+    fprintf(stderr, "shift type %s didn't match any known shift type", string);
+    exit(EXIT_FAILURE);
 }
 
 CondCodes mnemToCondCode(char *mnem) {
@@ -192,11 +191,12 @@ CondCodes mnemToCondCode(char *mnem) {
             return condCodes[i];
         }
     }
-
+    //if we reached here, we didn't match the string
     fprintf(stderr, "condition %s did not match any known condition", mnem);
     exit(EXIT_FAILURE);
 }
 
+//gets the value of it's argument, ignoring any non-digit leading character
 uint32_t getValue(char *expr) {
     return (uint32_t) strtol(!isdigit(expr[0]) ? &expr[1] : expr, NULL, 0);
 }

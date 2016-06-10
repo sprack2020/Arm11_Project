@@ -62,7 +62,6 @@ instructionHandler *functionTableGet(
     return ListMapGet(&this->listmap, mnen, &strcmpFromVoid);
 }
 
-// TODO: name better, maybe incorporate the getting as well
 uint32_t functionTableGetAndApply(
         functionTable *this,
         char *mnem,

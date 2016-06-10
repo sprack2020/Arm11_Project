@@ -42,6 +42,7 @@ typedef enum {
 #include <assembler/tokenHandlers.h>
 
 #define INTWIDTH 32
+#define NUMSHIFTTYPES 4
 
 // keeping the instructions in little endian
 #define MSB 7
