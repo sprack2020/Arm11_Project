@@ -1,6 +1,8 @@
 #ifndef ARM11_39_EMULATE_H
 #define ARM11_39_EMULATE_H
 
+#define NDEBUG
+
 #include <stdint.h>
 #include <stdlib.h>
 

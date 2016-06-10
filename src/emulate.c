@@ -1,5 +1,3 @@
-#define NDEBUG
-
 #include "emulate.h"
 
 // prototypes
