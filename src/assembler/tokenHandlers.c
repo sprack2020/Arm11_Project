@@ -41,8 +41,7 @@ uint32_t handleMultiply(Assembler *assembler, char **tokens) {
 }
 
 uint32_t handleSDT(Assembler *assembler, char **tokens) {
-    //set fields to default. Should these not be ints of fixed with and/or
-    // unsigned ?
+    //set fields to default.
     bool load = equalStrings(tokens[0], "ldr");
     int Rd = getValue(tokens[1]);
     bool immediate = false;
