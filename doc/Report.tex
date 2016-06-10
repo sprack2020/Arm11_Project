@@ -10,7 +10,7 @@
 
 \section{Introduction}
 
-In this report, we will be detailing our implementation of the assembler and emulator for the ARM11 project. For both the assembler and emulator, we will discuss our design decisions and the testing process. Our extension is also described, and the final section will consist of each group member’s reflections on the project.
+In this report, we will be detailing our implementation of the assembler and emulator for the ARM11 project. For both the assembler and emulator, we will discuss our design decisions and the testing process. Our extension is also described, and the final section will consist of each group member's reflections on the project.
 
 \section{Emulator}
 
@@ -26,15 +26,15 @@ Our main program first reads the instructions into state.memory, before iteratin
 \item Decode and execute the current instruction, which is handled by the \texttt{decodeAndExecute()} function.
 \end{enumerate}
 
-Since all instructions have the ‘cond’ field in the first four bits, we check first before step 3 occurs. If the condition evaluates to false, we continue to the next iteration instead of decoding the instruction.
+Since all instructions have the "cond" field in the first four bits, we check first before step 3 occurs. If the condition evaluates to false, we continue to the next iteration instead of decoding the instruction.
 
 When initially looking at how an instruction is decoded we decided to treat it as a control flow problem. \texttt{decodeAndExecute()} determines what kind of instruction it is dealing with (branch, multiply etc.), before delegating to the appropriate helper function. This function would then break down the instruction into its relevant parts before performing the execution of the instruction as well. Thus arose the decision of having a single \texttt{decodeAndExecute()} function instead of splitting up these steps. 
 
 Throughout out this control flow, we kept as much as possible in little endian, since we found understanding when to switch between big and little endian quite confusing. This meant we had to swap the endianness of the specification’s explanations of the different types of functions. This did not take long and we found it easier.
 
-We decided to split up the functions that \texttt{decodeAndExecute()} delegates to into different files. Some of these functions’ larger and possibly shared helper functions had their own file too. Each file would essentially have one function, the rest being helper functions to that file. This made splitting the work up and group collaboration easier as we could give each ‘file’ a pre-condition based on what stage of the aforementioned control flow we were in, as well as a post-condition it must guarantee to the next stage of the flow, unless this function was ‘at the end’ and performed the execution of the instruction. Almost more importantly though, this helped us to avoid merge conflicts. In retrospect, this design had its flaws as it made the project messy with many files as well as being bad for encapsulation as it required these functions to be public.
+We decided to split up the functions that \texttt{decodeAndExecute()} delegates to into different files. Some of these functions' larger and possibly shared helper functions had their own file too. Each file would essentially have one function, the rest being helper functions to that file. This made splitting the work up and group collaboration easier as we could give each 'file' a pre-condition based on what stage of the aforementioned control flow we were in, as well as a post-condition it must guarantee to the next stage of the flow, unless this function was 'at the end' and performed the execution of the instruction. Almost more importantly though, this helped us to avoid merge conflicts. In retrospect, this design had its flaws as it made the project messy with many files as well as being bad for encapsulation as it required these functions to be public.
 
-Using global variables to emulate the system’s state also caused problems, most so with the branch instruction. Since the current and fetched instruction variables of the loop in the top level class were not in the scope of the function that deals with branches, \texttt{decodeAndExecute()} had to return a bool telling us whether or not the instruction was a branch.  Then from this we could update the fetched instruction based on the new PC, if necessary.
+Using global variables to emulate the system's state also caused problems, most so with the branch instruction. Since the current and fetched instruction variables of the loop in the top level class were not in the scope of the function that deals with branches, \texttt{decodeAndExecute()} had to return a bool telling us whether or not the instruction was a branch.  Then from this we could update the fetched instruction based on the new PC, if necessary.
 
 The decision to use global variables also meant that our emulator was not very extendable, for example we could not easily emulate two systems. It also cluttered the namespace.
 
@@ -72,14 +72,14 @@ Our extension is a three bit binary counter using LEDs.
 
 \subsection{Design}
 The basic flow of the extension program is toggling certain LEDs, waiting an amount of time, and toggling different LEDs etc. and repeating this forever.
-We initially tried to implement this program using subroutines that turned one LED off/on, then called other subroutines to handle the next least significatn LED to reduce duplication, however there was some difficulty in returning from these subroutines, as we do not have a stack.
+We initially tried to implement this program using subroutines that turned one LED off/on, then called other subroutines to handle the next least significatn LED, however there was some difficulty in returning from these subroutines to the same place we called them.
 We attempted to do this by implementing branch exchange (jump to the address held in a register), and putting the return address in a specific register, however, after having implemented this in our assembler, we faced some difficulties in getting this to work on the Raspberry Pi.
 We eventually decided that the simplest way to implement this would be to set everything up, have 8 wait sections, with the LED toggling in between these, and at the end branch back to the start.
 
 \subsection{Testing}
 
 Testing our extension (and part III program) was more of a challenge than the previous two sections, as the Pi is much harder to debug, and has very limited outputs.
-We of course had our emulator we could test our program on, which caught a few bugs that caused the pins to never get set for example, but the emulator wouldn't pickup certain bugs such as writing to the wrong pin position, as the only message the emulator gives is "pin on".
+We of course had our emulator we could test our program on, which caught a few bugs that caused the pins to never get set for example, but the emulator wouldn't pickup certain bugs such as writing to the wrong pin position, as the only message the emulator gives is "pin on". In hindsight, updating the emulator to include which pin is accessed would have been useful.
 It was also hard to debug when the problem was how the hardware was setup, as the only way to really do this is by rechecking that everything is connected how you are expecting it to be.
 Ultimately, running the program on the Pi was the most useful way to know when the program was \textit{not} working correctly, but offered no error messages or help of any kind, and is quite time consuming to put the program on the SD card and back into the Pi.
 
