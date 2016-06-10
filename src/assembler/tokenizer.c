@@ -24,6 +24,8 @@ void getTokens(char **buffer, int numTokens, char *line) {
 
 //strips a label from a line. line must not be null.
 char *stripLabel(char *line) {
+    assert(line != NULL);
+
     char *res = line;
     int i = 0;
     //while we are not at the null character, check if we are the end of a label

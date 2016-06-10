@@ -16,7 +16,7 @@ static void handleControlPortSDT(bool isLoad, uint32_t Rd, uint32_t address,
 static void writeToControlPort(uint32_t addrType, uint32_t Rd);
 static void writeToDataPort(uint32_t Rd, uint32_t addrType);
 static int getIndexLower(uint32_t addrType);
-bool isDataPort(uint32_t bigEndianAddr);
+static bool isDataPort(uint32_t bigEndianAddr);
 
 // PRE: instr is a data transfer instruction
 // behavior: Loads/stores access of memory as described in spec
@@ -261,7 +261,7 @@ static uint32_t getGPIOAddrType(uint32_t addr) {
     }
 }
 
-bool isDataPort(uint32_t bigEndianAddr) {
+static bool isDataPort(uint32_t bigEndianAddr) {
     return bigEndianAddr == CONTROL0_9 || bigEndianAddr == CONTROL20_29 ||
             bigEndianAddr == CONTROL10_19;
 }

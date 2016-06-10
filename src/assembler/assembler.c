@@ -118,7 +118,7 @@ static void parseInstructions(Assembler *this) {
     functionTableDeinit(&ft);
 }
 
-// writes .binaryProgram to the file with name .binaryPath
+// writes binaryProgram to the file with name binaryPath
 static void writeToBinaryFile(Assembler *this) {
     // write to the first empty address
     int numToWrite = this->firstEmptyAddr / INSTR_LENGTH;

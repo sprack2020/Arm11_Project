@@ -20,6 +20,7 @@ const instructionHandler branchIndirect = handleBranchIndirect;
 void functionTableInit(functionTable *this) {
     ListMapInit(&this->listmap);
 
+    // add mappings
     functionTableAdd(this, "add", &dp);
     functionTableAdd(this, "sub", &dp);
     functionTableAdd(this, "rsb", &dp);
@@ -50,9 +51,9 @@ void functionTableInit(functionTable *this) {
 void functionTableAdd(
         functionTable *this,
         char *mnen,
-        const instructionHandler *func
+        const instructionHandler *handler
 ) {
-    ListMapAdd(&this->listmap, mnen, (void **) func);
+    ListMapAdd(&this->listmap, mnen, (void **) handler);
 }
 
 instructionHandler *functionTableGet(

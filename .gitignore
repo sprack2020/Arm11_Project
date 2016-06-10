@@ -16,10 +16,6 @@
 #ignore junk files from compiling C code
 *.o
 
-#ignore executables
-assemble
-emulate
-
 #ignore junk files from compiling Haskell code
 *.hi
 
@@ -47,10 +43,10 @@ cmake_install.cmake
 TODO.txt
 
 #ignore non working util files
-util/FunctionTable.h
-util/GenericListMap.h
-util/GenericListMapIterator.h
-util/GenericListMapNode.h
-util/HashMap.c
-util/HashMap.h
-util/memory_util.h
+FunctionTable.h
+GenericListMap.h
+GenericListMapIterator.h
+GenericListMapNode.h
+HashMap.c
+HashMap.h
+memory_util.h

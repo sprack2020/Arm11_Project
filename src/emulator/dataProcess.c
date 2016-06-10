@@ -47,8 +47,9 @@ void dataProcess(uint32_t instr) {
             result = operand2;
             break;
         default:
-            fprintf(stderr, "invalid opcode in dataProcess: opcode was %d (0x%08x)\n", opcode, opcode);
-            exit(2);
+            fprintf(stderr, "invalid opcode in dataProcess: opcode was %d "
+                    "(0x%08x)\n", opcode, opcode);
+            exit(EXIT_FAILURE);
     }
 
     if (S) {

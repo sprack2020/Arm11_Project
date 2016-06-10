@@ -77,8 +77,8 @@ uint32_t createMask(unsigned int lower, unsigned int upper) {
 // unsigned -> signed cast of same width integers is guarenteed not to
 // change bit pattern but signed -> unsigned may
 uint32_t extractBits(uint32_t binaryNumber, int UB, int LB) {
-    // ensure UB >= LB and both LB and UB are positive and both less than the number
-    // of bits in the binaryNumber
+    // ensure UB >= LB and both LB and UB are positive and both less than the
+    // number of bits in the binaryNumber
     const int maxUB = sizeof(binaryNumber) * CHAR_BIT - 1;
     if (UB < LB || LB < 0 || UB > maxUB) {
         fprintf(stderr, "Error in util: extractBits(): "
