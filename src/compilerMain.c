@@ -15,7 +15,10 @@ int main(int argc, char **argv) {
     puts("Incorrect number of arguments");
     exit(EXIT_FAILURE);
   }
-
+  Compiler_t compiler;
+  init_compiler(&compiler, argv[1], argv[2]);
+  compile(&compiler);
+  deinit_compiler(&compiler);
 
 
   exit(EXIT_SUCCESS);

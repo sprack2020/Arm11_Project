@@ -90,10 +90,16 @@ add_executable(assemble src/assemble.c ${ASSEMBLER_HEADER_FILES}
 
 set(COMPILER_SOURCE_FILES
         src/compiler/compiler.c
+        src/assembler/io.c
+        src/assembler/tokenizer.c
+        src/util/util.c
         )
 set(COMPILER_HEADER_FILES
         src/compiler/compiler.h
-        )
+        src/compiler/compilerStruct.h
+        src/assembler/io.h
+        src/assembler/tokenizer.h
+        src/util/util.h)
 
 add_executable(compiler src/compilerMain.c ${COMPILER_SOURCE_FILES}
         ${COMPILER_HEADER_FILES})

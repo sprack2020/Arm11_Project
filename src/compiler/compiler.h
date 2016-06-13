@@ -5,8 +5,13 @@
 #ifndef ARM11_39_COMPILER_H
 #define ARM11_39_COMPILER_H
 
-typedef struct Compiler {
 
-} Compiler_t;
+#include <compiler/compilerStruct.h>
+#include <assembler/io.h>
+#include <assembler/tokenizer.h>
+
+void init_compiler(Compiler_t *this, char *sourcePath, char *assembledPath);
+void compile(Compiler_t *this);
+void deinit_compiler(Compiler_t *this);
 
 #endif //ARM11_39_COMPILER_H
