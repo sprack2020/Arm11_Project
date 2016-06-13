@@ -8,7 +8,7 @@ static void init_sourceLines(Compiler_t *this);
 
 void init_compiler(Compiler_t *this, char *sourcePath, char *assembledPath) {
     this->sourcePath = sourcePath;
-    this->assembledPath = assembledPath;
+    this->outputPath = assembledPath;
     init_sourceLines(this);
 }
 void compile(Compiler_t *this) {

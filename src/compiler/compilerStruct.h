@@ -7,7 +7,7 @@
 
 typedef struct Compiler {
     char *sourcePath;
-    char *assembledPath;
+    char *outputPath;
     char **sourceLines;
     int numLines;
 } Compiler_t;
