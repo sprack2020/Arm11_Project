@@ -12,7 +12,10 @@ Compiler_t *init_compiler(Compiler_t *this, char *sourcePath, char *outputPath) 
     this->sourcePath = sourcePath;
     this->outputPath = outputPath;
     compiler_init_sourceLines(this);
+
+    return this;
 }
+
 void compile(Compiler_t *this) {
     assert(this != NULL);
 }
@@ -31,6 +34,8 @@ Compiler_t *deinit_compiler(Compiler_t *this) {
 
 //read all the lines (delimited by \n) in file to an array of strings
 static void compiler_init_sourceLines(Compiler_t *this) {
+    assert(this != NULL);
+
     //open the source file in read text mode.
     FILE *sourceFile = openFile(this->sourcePath, "rt");
 
