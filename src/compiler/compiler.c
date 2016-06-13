@@ -4,22 +4,33 @@
 
 #include "compiler.h"
 
-static void init_sourceLines(Compiler_t *this);
+static void compiler_init_sourceLines(Compiler_t *this);
 
-void init_compiler(Compiler_t *this, char *sourcePath, char *assembledPath) {
+Compiler_t *init_compiler(Compiler_t *this, char *sourcePath, char *outputPath) {
+    assert(this != NULL);
+
     this->sourcePath = sourcePath;
-    this->outputPath = assembledPath;
-    init_sourceLines(this);
+    this->outputPath = outputPath;
+    compiler_init_sourceLines(this);
 }
 void compile(Compiler_t *this) {
-
+    assert(this != NULL);
 }
-void deinit_compiler(Compiler_t *this) {
 
+Compiler_t *deinit_compiler(Compiler_t *this) {
+    assert(this != NULL);
+
+    // free sourceLines
+    for (int i = 0; i < this->numLines; i++) {
+        free(this->sourceLines[i]);
+    }
+    free(this->sourceLines);
+
+    return this;
 }
 
 //read all the lines (delimited by \n) in file to an array of strings
-static void init_sourceLines(Compiler_t *this) {
+static void compiler_init_sourceLines(Compiler_t *this) {
     //open the source file in read text mode.
     FILE *sourceFile = openFile(this->sourcePath, "rt");
 

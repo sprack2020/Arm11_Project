@@ -10,8 +10,18 @@
 #include <assembler/io.h>
 #include <assembler/tokenizer.h>
 
-void init_compiler(Compiler_t *this, char *sourcePath, char *assembledPath);
-void compile(Compiler_t *this);
-void deinit_compiler(Compiler_t *this);
+Compiler_t *init_compiler(
+        Compiler_t *this,
+        char *sourcePath,
+        char *assembledPath
+);
+
+void compile(
+        Compiler_t *this
+);
+
+Compiler_t *deinit_compiler(
+        Compiler_t *this
+);
 
 #endif //ARM11_39_COMPILER_H
