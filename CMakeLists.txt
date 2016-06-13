@@ -57,7 +57,7 @@ set(ASSEMBLER_SOURCE_FILES
         src/assembler/tokenHandlers.c
         src/assembler/tokenHandlerUtil.c
         src/assembler/tokenizer.c
-)
+        )
 
 set(ASSEMBLER_HEADERS
         src/assembler/assemblerStruct.h
@@ -86,6 +86,19 @@ add_executable(assemble src/assemble.c ${ASSEMBLER_HEADER_FILES}
         )
 
 ################################################################################
+# Compiler
+
+set(COMPILER_SOURCE_FILES
+
+        )
+set(COMPILER_HEADER_FILES
+
+        )
+
+add_executable(compiler src/compilerMain.c ${COMPILER_SOURCE_FILES}
+        ${COMPILER_HEADER_FILES})
+
+################################################################################
 # EMULATOR TESTS
 
 set(EMULATOR_TEST_SOURCE_FILES
@@ -103,6 +116,10 @@ set(EMULATOR_TEST_HEADER_FILES
         test/assemble/ListMapTests.h
         src/util/ListMap.h
 )
+
+
+
+
 
 # ASSEMBLER TESTS
 #
