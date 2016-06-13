@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <compiler/compiler.h>
 
 int main(int argc, char *argv) {
 
@@ -15,7 +16,7 @@ int main(int argc, char *argv) {
     exit(EXIT_FAILURE);
   }
 
-  
+
 
   exit(EXIT_SUCCESS);
 }

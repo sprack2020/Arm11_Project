@@ -89,10 +89,10 @@ add_executable(assemble src/assemble.c ${ASSEMBLER_HEADER_FILES}
 # Compiler
 
 set(COMPILER_SOURCE_FILES
-
+        src/compiler/compiler.c
         )
 set(COMPILER_HEADER_FILES
-
+        src/compiler/compiler.h
         )
 
 add_executable(compiler src/compilerMain.c ${COMPILER_SOURCE_FILES}

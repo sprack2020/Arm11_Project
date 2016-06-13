@@ -7,7 +7,7 @@ ldr r2, =0x00010000     ;bit mask for setting/clearing pin 16
 str r2, [r1, #28]       ;initially clear pin 16
 b on                    
 
-loopOn:i                ;wait, then jump to on
+loopOn:                 ;wait, then jump to on
 ldr r3, =0x00300000
 whileOn:
 sub r3, r3, #1
