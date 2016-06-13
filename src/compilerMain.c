@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <compiler/compiler.h>
 
-int main(int argc, char *argv) {
+int main(int argc, char **argv) {
 
   if (argc != 2) {
     puts("Incorrect number of arguments");
