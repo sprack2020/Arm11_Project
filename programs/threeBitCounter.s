@@ -1,84 +1,79 @@
-ldr r0, =0x20200000     ;r0 contains base address for GPIO operations
-ldr r1, =0x00001240     ;bitmask to enable pins 2-4 as output
-str r1, [r0]            ;set pins 2-4 as output
+ldr r12, =0x20200000     ;r12 contains base address for GPIO operations
+ldr r1, =0x00001240      ;bitmask to enable pins 2-4 as output
+str r1, [r12]            ;set pins 2-4 as output
 
-mov r4, #0x4            ;bitmasks for setting/clearing GPIO 2-4
-mov r5, #0x8
-mov r6, #0x16
-orr r8, r4, r5
-orr r8, r8, r6          ;pre-setup bitmasks for setting/clearing multiple
-orr r9, r4, r5          ;pins at a time as needed
+mov r7, #0               ;r7 will help calculate the state register
+mov r8, #0               ;r8 will be the led state register
+mov r9, #0x4             ;bitmask for setting/clearing GPIO 2, r9
+mov r10, #0x8            ;bitmask for setting/clearing GPIO 3, r10
+mov r11, #0x10           ;bitmask for setting/clearing GPIO 4, r11
 
-str r4, [r0, #28]       ;clear pins initially
-str r5, [r0, #28]
-str r6, [r0, #28]
 
-loop:
-str r8, [r0, #40]       ;all leds off (pins set)
+str r9, [r12, #40]       ;clear pin 2
+str r10, [r12, #40]      ;clear pin 3
+str r11, [r12, #40]      ;clear pin 4
 
-ldr r3, =0x00800000
-wait1:
-sub r3, r3, #1
-cmp r3, #0
-bne wait1
 
-str r4, [r0, #28]       ;LED 1  on
 
-ldr r3, =0x00800000
-wait2:
-sub r3, r3, #1
-cmp r3, #0
-bne wait2
+led0:
 
-str r4, [r0, #40]       ;LED 1 off
-str r5, [r0, #28]       ;LED 2 on
+led0_off:
+str r9, [r12, #40]      ;led0 = off
+ldr r7, =0xffffffff     ;sets r7 to an all 1 bitmask
+sub r7, r7, r9          ;r7 is all 1's without led0
+and r8, r8, r7          ;sets led0 state to off
+b wait
 
-ldr r3, =0x00800000
-wait3:
-sub r3, r3, #1
-cmp r3, #0
-bne wait3
+led0_on:
+str r9, [r12, #28]      ;led0 = on
+orr r8, r8, r9          ;sets led0 state to on
+b wait
 
-str r4, [r0, #28]       ;LED 1 on
+led1:
+and r7, r8, r10         ;bool r7 is true when led1 is on else false
+cmp r7, #0              ;if led1 is on turn off else turn on
+bne led1_off
 
-ldr r3, =0x00800000
-wait4:
-sub r3, r3, #1
-cmp r3, #0
-bne wait4
+led1_on:
+str r10, [r12, #28]     ;led1 = on
+orr r8, r8, r10         ;sets led1 state to on
+b led0
 
-str r6, [r0, #28]       ;LED 3 on
-str r9, [r0, #40]       ;LEDs 1 and 2 off
+led1_off:
+str r10, [r12, #40]     ;led1 = off
+ldr r7, =0xffffffff     ;sets r7 to an all 1 bitmask
+sub r7, r7, r10         ;r7 is all 1's without led1
+and r8, r8, r7          ;sets led1 state to off
 
-ldr r3, =0x00800000
-wait5:
-sub r3, r3, #1
-cmp r3, #0
-bne wait5
+led2:
+and r7, r8, r11         ;bool r7 is true when led2 is on else false
+cmp r7, #0              ;if led2 is on turn off else turn on
+bne led2_off
 
-str r4, [r0, #28]       ;LED 1 on
+led2_on:
+str r11, [r12, #28]     ;led2 = on
+orr r8, r8, r11         ;sets led2 state to on
+b led0
 
-ldr r3, =0x00800000
-wait6:
-sub r3, r3, #1
-cmp r3, #0
-bne wait6
 
-str r5, [r0, #28]       ;LED 2 on
-str r4, [r0, #40]       ;LED 1 off
+led2_off:
+str r11, [r12, #40]     ;led2 = off
+ldr r7, =0xffffffff     ;sets r7 to an all 1 bitmask
+sub r7, r7, r11         ;r7 is all 1's without led2
+and r8, r8, r7          ;sets led2 state to off
+b led0
 
-ldr r3, =0x00800000
-wait7:
-sub r3, r3, #1
-cmp r3, #0
-bne wait7
+wait:                   ;waits ~1 second before continuing
+ldr r0, =0xffffffff
 
-str r4, [r0, #28]       ;LED 1 on
+while:
+sub r0, r0, #1
+cmp r0, #0
+bne next
+b while
 
-ldr r3, =0x00800000
-wait8:
-sub r3, r3, #1
-cmp r3, #0
-bne wait8
-
-b loop                  ;repeat
+next:                   ;if led0 is off then turn led0 on else turn led1 on
+and r7, r8, r9
+cmp r7, #0
+bne led1
+b led0_on

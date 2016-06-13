@@ -16,7 +16,7 @@ str r2, [r1, #28]
 ldr r0, =0x0
 b wait
 
-wait:
+wait:                   ;waits for ~1 second and goto next
 ldr r3, =0x00300000
 
 waitLoop:
@@ -25,7 +25,7 @@ cmp r3, #0
 beq next
 b waitLoop
 
-next:
+next:                   ;if led off then on else off
 cmp r0, #0
 beq on
 b off
