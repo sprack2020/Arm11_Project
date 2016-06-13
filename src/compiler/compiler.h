@@ -9,6 +9,7 @@
 #include <compiler/compilerStruct.h>
 #include <assembler/io.h>
 #include <assembler/tokenizer.h>
+#include <compiler/FunctionTable.h>
 
 Compiler_t *init_compiler(
         Compiler_t *this,

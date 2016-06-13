@@ -93,13 +93,23 @@ set(COMPILER_SOURCE_FILES
         src/assembler/io.c
         src/assembler/tokenizer.c
         src/util/util.c
-        )
+        src/compiler/FunctionTable.c
+        src/util/ListMap.c
+        src/util/ListMapIterator.c
+        src/util/ListMapNode.c
+)
+
 set(COMPILER_HEADER_FILES
         src/compiler/compiler.h
         src/compiler/compilerStruct.h
         src/assembler/io.h
         src/assembler/tokenizer.h
-        src/util/util.h)
+        src/util/util.h
+        src/compiler/FunctionTable.h
+        src/util/ListMap.h
+        src/util/ListMapIterator.h
+        src/util/ListMapNode.h
+)
 
 add_executable(compiler src/compilerMain.c ${COMPILER_SOURCE_FILES}
         ${COMPILER_HEADER_FILES})
@@ -154,6 +164,7 @@ set(COMPILE_TEST_SOURCES
 set(COMPILE_TEST_HEADERS
         test/compiler/TokenizerTest.h
         src/assembler/tokenizer.h
+
 )
 
 add_executable(CompilerTests test/compiler/CompilerTests.c
