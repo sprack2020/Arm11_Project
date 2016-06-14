@@ -10,8 +10,12 @@
 #include <assembler/io.h>
 #include <assembler/tokenizer.h>
 #include <compiler/FunctionTable.h>
+#include <compiler/expressionHandlers.h>
 
-Compiler_t *init_compiler(
+#define MAX_LINES 256
+#define MAX_LINE_SIZE 256
+
+void *init_compiler(
         Compiler_t *this,
         char *sourcePath,
         char *assembledPath
@@ -21,7 +25,7 @@ void compile(
         Compiler_t *this
 );
 
-Compiler_t *deinit_compiler(
+void *deinit_compiler(
         Compiler_t *this
 );
 

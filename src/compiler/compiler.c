@@ -5,22 +5,36 @@
 #include "compiler.h"
 
 static void compiler_init_sourceLines(Compiler_t *this);
+static void parseInstructions(Compiler_t *this);
+static void writeToAssemblyProgram(Compiler_t *this);
 
-Compiler_t *init_compiler(Compiler_t *this, char *sourcePath, char *outputPath) {
+void *init_compiler(Compiler_t *this, char *sourcePath, char *outputPath) {
     assert(this != NULL);
 
     this->sourcePath = sourcePath;
     this->outputPath = outputPath;
     compiler_init_sourceLines(this);
 
+    this->variableTable = malloc(sizeof(ListMap));
+    ListMapInit(this->variableTable);
+
+    this->assemblyProgram = malloc(sizeof(char**) * MAX_LINES);
+    this->instrAddr = 0;
+    this->varRegNum = 0;
+
     return this;
 }
 
 void compile(Compiler_t *this) {
     assert(this != NULL);
+
+    parseInstructions(this);
+
+    writeToAssemblyProgram(this);
+
 }
 
-Compiler_t *deinit_compiler(Compiler_t *this) {
+void *deinit_compiler(Compiler_t *this) {
     assert(this != NULL);
 
     // free sourceLines
@@ -63,4 +77,37 @@ static void compiler_init_sourceLines(Compiler_t *this) {
     }
 
     closeFile(sourceFile);
+}
+
+static void parseInstructions(Compiler_t *this) {
+
+    char *currLine;
+    char firstChar;
+
+    for (int i = 0; i < this->numLines; ++i) {
+        currLine = this->sourceLines[i];
+        firstChar = currLine[0];
+
+        if (firstChar == '[') {
+            variableHandler(this, currLine);
+        }
+        else if (firstChar == '<') {
+            assignmentHandler(this, currLine);
+        }
+        else if (firstChar == 'W') {
+            whileHandler(this, currLine);
+            return;
+        }
+        else if (firstChar == 'I') {
+            ifHandler(this, currLine);
+            return;
+        }
+        else {
+
+        }
+    }
+}
+
+static void writeToAssemblyProgram(Compiler_t *this) {
+
 }
