@@ -9,9 +9,12 @@ mov r10, #0x8            ;bitmask for setting/clearing GPIO 3, r10
 mov r11, #0x10           ;bitmask for setting/clearing GPIO 4, r11
 
 
-str r9, [r12, #40]       ;clear pin 2
-str r10, [r12, #40]      ;clear pin 3
-str r11, [r12, #40]      ;clear pin 4
+str r9, [r12, #28]       ;clear pin 2
+str r10, [r12, #28]      ;clear pin 3
+str r11, [r12, #28]      ;clear pin 4
+str r9, [r12, #40]       ;set pin 2
+str r10, [r12, #40]      ;set pin 3
+str r11, [r12, #40]      ;set pin 4
 
 
 
@@ -64,13 +67,12 @@ and r8, r8, r7          ;sets led2 state to off
 b led0
 
 wait:                   ;waits ~1 second before continuing
-ldr r0, =0xffffffff
+ldr r0, =0x00800000
 
 while:
 sub r0, r0, #1
 cmp r0, #0
-bne next
-b while
+bne while
 
 next:                   ;if led0 is off then turn led0 on else turn led1 on
 and r7, r8, r9
