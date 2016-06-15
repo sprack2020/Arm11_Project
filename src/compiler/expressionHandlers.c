@@ -85,16 +85,39 @@ void assignmentHandler(Compiler_t *this, char *assignment) {
         }
     }
 }
-void ifHandler(Compiler_t *this, char *stmt, int whileID) {
+void ifHandler(Compiler_t *this, char *stmt, int whileID, int ifID) {
 
+    char *boolVar = getBool(stmt);
+    bool isNegated = boolVar[0] == '!';
+    if (isNegated) {
+        boolVar++;
+    }
+
+    variable_t *var = ListMapGet(this->variableTable, boolVar, stringComparator);
+    variable_t *gpioReserved = ListMapGet(this->variableTable, GPIO_RESERVED, stringComparator);
+    variable_t *gpioState = ListMapGet(this->variableTable, GPIO_STATE, stringComparator);
+
+    makeLabel(this, "if", ifID);
+    if (var->isPin) {
+        makeArithmetic(this, "and", gpioReserved->regNum, gpioState->regNum, var->regNum);
+        makeCmp(this, gpioReserved->regNum);
+    }
+    else {
+        makeCmp(this, var->regNum);
+    }
+    makeBranch(this, (isNegated) ? "bne" : "beq", "endif", ifID);
+    parseInstructions(this, whileID, ifID + 1);
+    makeLabel(this, "endif", ifID);
 }
-void whileHandler(Compiler_t *this, char *stmt, int whileID) {
+
+//var can't be a gpio variable
+void whileHandler(Compiler_t *this, char *stmt, int whileID, int ifID) {
     variable_t *var = ListMapGet(this->variableTable, getBool(stmt), stringComparator);
 
     makeLabel(this, "while", whileID);
     makeCmp(this, var->regNum);
     makeBranch(this, "beq", "endwhile", whileID);
-    parseInstructions(this, whileID + 1);
+    parseInstructions(this, whileID + 1, ifID);
     makeBranch(this, "b", "while", whileID);
     makeLabel(this, "endwhile", whileID);
 }

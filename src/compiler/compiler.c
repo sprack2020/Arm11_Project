@@ -61,7 +61,7 @@ static void setupGPIO(Compiler_t *this) {
 void compile(Compiler_t *this) {
     assert(this != NULL);
 
-    parseInstructions(this, 0);
+    parseInstructions(this, 0, 0);
 
     writeToAssemblyProgram(this);
 
@@ -112,7 +112,7 @@ static void compiler_init_sourceLines(Compiler_t *this) {
     closeFile(sourceFile);
 }
 
-void parseInstructions(Compiler_t *this, int whileID) {
+void parseInstructions(Compiler_t *this, int whileID, int ifID) {
 
     char *currLine;
     char firstChar;
@@ -128,11 +128,11 @@ void parseInstructions(Compiler_t *this, int whileID) {
             assignmentHandler(this, currLine);
         }
         else if (firstChar == 'W') {
-            whileHandler(this, currLine, whileID);
+            whileHandler(this, currLine, whileID, ifID);
             return;
         }
         else if (firstChar == 'I') {
-            ifHandler(this, currLine, whileID);
+            ifHandler(this, currLine, whileID, ifID);
             return;
         }
         else if (firstChar == '}') {

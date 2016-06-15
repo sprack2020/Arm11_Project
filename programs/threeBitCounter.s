@@ -38,7 +38,7 @@ b wait
 
 led1:
 and r7, r8, r10         ;bool r7 is true when led1 is on else false
-cmp r7, #0              ;if led1 is on turn off else turn on
+cmp r7, #0              ;if led1 is off turn on else turn off
 bne led1_off
 
 led1_on:

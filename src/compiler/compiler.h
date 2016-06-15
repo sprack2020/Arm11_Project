@@ -39,7 +39,8 @@ void *deinit_compiler(
 
 void parseInstructions(
         Compiler_t *this,
-        int whileID
+        int whileID,
+        int ifID
 );
 
 

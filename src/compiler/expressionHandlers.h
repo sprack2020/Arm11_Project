@@ -16,7 +16,7 @@
 
 void variableHandler(Compiler_t *this, char *declaration);
 void assignmentHandler(Compiler_t *this, char *assignment);
-void ifHandler(Compiler_t *this, char *stmt, int whileID);
-void whileHandler(Compiler_t *this, char *stmt, int whileID);
+void ifHandler(Compiler_t *this, char *stmt, int whileID, int ifID);
+void whileHandler(Compiler_t *this, char *stmt, int whileID, int ifID);
 
 #endif //ARM11_39_EXPRESSIONHANDLERS_H
