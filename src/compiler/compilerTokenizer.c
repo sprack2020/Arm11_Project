@@ -40,3 +40,9 @@ char *getArgument(char *str) {
     return strtok(NULL, "\0");
 }
 
+char *getBool(char *str) {
+    assert(str != NULL);
+    strtok(str, "(");
+    return strtok(NULL, ")");
+}
+

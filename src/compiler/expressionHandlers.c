@@ -85,11 +85,18 @@ void assignmentHandler(Compiler_t *this, char *assignment) {
         }
     }
 }
-void ifHandler(Compiler_t *this, char *stmt) {
+void ifHandler(Compiler_t *this, char *stmt, int whileID) {
 
 }
-void whileHandler(Compiler_t *this, char *stmt) {
+void whileHandler(Compiler_t *this, char *stmt, int whileID) {
+    variable_t *var = ListMapGet(this->variableTable, getBool(stmt), stringComparator);
 
+    makeLabel(this, "while", whileID);
+    makeCmp(this, var->regNum);
+    makeBranch(this, "beq", "endwhile", whileID);
+    parseInstructions(this, whileID + 1);
+    makeBranch(this, "b", "while", whileID);
+    makeLabel(this, "endwhile", whileID);
 }
 
 static void pinDeclarationHandler(
@@ -135,11 +142,13 @@ static void pinAssignmentHandler(
     if (state) {
         makeStr(this, var->regNum, gpioPtr->regNum, SHIFT_WRITE);
         makeArithmetic(this, "orr", gpioState->regNum, gpioState->regNum, var->regNum);
+        var->value = 1;
     }
     else {
         makeStr(this, var->regNum, gpioPtr->regNum, SHIFT_CLEAR);
         makeLdr(this, gpioReserved->regNum, 0xffffffff);
         makeArithmetic(this, "sub", gpioReserved->regNum, gpioReserved->regNum, var->regNum);
         makeArithmetic(this, "and", gpioState->regNum, gpioState->regNum, gpioReserved->regNum);
+        var->value = 0;
     }
 }

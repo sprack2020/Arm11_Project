@@ -13,7 +13,7 @@ void makeArithmeticWithExpr(Compiler_t *this, char *mnem, int Rd, int Rn, int ex
 void makeArithmetic(Compiler_t *this, char *mnem, int Rd, int Rn, int Rm);
 void makeStr(Compiler_t *this, int Rd, int Rn, int shift);
 void makeCmp(Compiler_t *this, int Rd);
-
-
+void makeLabel(Compiler_t *this, char *label, int ID);
+void makeBranch(Compiler_t *this, char *mnem, char *label, int ID);
 
 #endif //ARM11_39_INSTRUCTIONMAKER_H

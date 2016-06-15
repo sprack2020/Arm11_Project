@@ -3,7 +3,7 @@ ldr r7, =0               ;r7 will help calculate the state register
 ldr r8, =0               ;r8 will be the led state register
 
 
-orr r7, r7, 0x00000040   ;bitmask to enable pins 2-4 as output
+orr r7, r7, #0x00000040   ;bitmask to enable pins 2-4 as output
 str r7, [r12]            ;set pins 2-4 as output
 ldr r9, =0x4             ;bitmask for setting/clearing GPIO 2, r9
 str r9, [r12, #28]       ;clear pin 2
@@ -73,10 +73,12 @@ b led0
 wait:                   ;waits ~1 second before continuing
 ldr r0, =0x00800000
 
-while:
-sub r0, r0, #1
+while_0:
 cmp r0, #0
-bne while
+beq endwhile_0
+sub r0, r0, #1
+b while_0
+endwhile_0:
 
 next:                   ;if led0 is off then turn led0 on else turn led1 on
 and r7, r8, r9

@@ -13,5 +13,6 @@ char *getFreeReg(int regNum, char *reg);
 char getOpType(char *str);
 char *getRd(char *str);
 char *getArgument(char *str);
+char *getBool(char *str);
 
 #endif //ARM11_39_COMPILERTOKENIZER_H

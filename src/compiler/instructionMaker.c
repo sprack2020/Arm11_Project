@@ -25,3 +25,13 @@ void makeCmp(Compiler_t *this, int Rd) {
     sprintf(this->assemblyProgram[this->instrAddr], "cmp r%i, #0", Rd);
     this->instrAddr++;
 }
+
+void makeWhileLabel(Compiler_t *this, char *label, int ID) {
+    sprintf(this->assemblyProgram[this->instrAddr], "%s_%i:", label, ID);
+    this->instrAddr++;
+}
+
+void makeBranch(Compiler_t *this, char *mnem, char *label, int ID) {
+    sprintf(this->assemblyProgram[this->instrAddr], "%s %s_%i", mnem, label, ID);
+    this->instrAddr++;
+}

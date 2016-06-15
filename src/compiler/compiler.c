@@ -5,7 +5,6 @@
 #include "compiler.h"
 
 static void compiler_init_sourceLines(Compiler_t *this);
-static void parseInstructions(Compiler_t *this);
 static void writeToAssemblyProgram(Compiler_t *this);
 static void setupOpToMnem(Compiler_t *this);
 static void setupGPIO(Compiler_t *this);
@@ -27,6 +26,7 @@ void *init_compiler(Compiler_t *this, char *sourcePath, char *outputPath) {
     this->assemblyProgram = malloc(sizeof(char**) * MAX_LINES);
     this->instrAddr = 0;
     this->varRegNum = 0;
+    this->whileID = 0;
 
     setupGPIO(this);
 
@@ -61,7 +61,7 @@ static void setupGPIO(Compiler_t *this) {
 void compile(Compiler_t *this) {
     assert(this != NULL);
 
-    parseInstructions(this);
+    parseInstructions(this, 0);
 
     writeToAssemblyProgram(this);
 
@@ -112,7 +112,7 @@ static void compiler_init_sourceLines(Compiler_t *this) {
     closeFile(sourceFile);
 }
 
-static void parseInstructions(Compiler_t *this) {
+void parseInstructions(Compiler_t *this, int whileID) {
 
     char *currLine;
     char firstChar;
@@ -128,11 +128,11 @@ static void parseInstructions(Compiler_t *this) {
             assignmentHandler(this, currLine);
         }
         else if (firstChar == 'W') {
-            whileHandler(this, currLine);
+            whileHandler(this, currLine, whileID);
             return;
         }
         else if (firstChar == 'I') {
-            ifHandler(this, currLine);
+            ifHandler(this, currLine, whileID);
             return;
         }
         else if (firstChar == '}') {

@@ -37,6 +37,10 @@ void *deinit_compiler(
         Compiler_t *this
 );
 
+void parseInstructions(
+        Compiler_t *this,
+        int whileID
+);
 
 
 #endif //ARM11_39_COMPILER_H
