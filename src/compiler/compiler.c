@@ -8,6 +8,7 @@ static void compiler_init_sourceLines(Compiler_t *this);
 static void parseInstructions(Compiler_t *this);
 static void writeToAssemblyProgram(Compiler_t *this);
 static void setupOpToMnem(Compiler_t *this);
+static void setupGPIO(Compiler_t *this);
 
 void *init_compiler(Compiler_t *this, char *sourcePath, char *outputPath) {
     assert(this != NULL);
@@ -27,6 +28,8 @@ void *init_compiler(Compiler_t *this, char *sourcePath, char *outputPath) {
     this->instrAddr = 0;
     this->varRegNum = 0;
 
+    setupGPIO(this);
+
     return this;
 }
 
@@ -36,6 +39,19 @@ static void setupOpToMnem(Compiler_t *this) {
     ListMapAdd(this->opToMnem, (void *) '*', "mul");
 }
 
+static void setupGPIO(Compiler_t *this) {
+    variable_t *gpioState = malloc(sizeof(variable_t));
+    init_variable(gpioState, 10);
+    ListMapAdd(this->variableTable, "GPIO_STATE", gpioState);
+
+    variable_t *gpioReserved = malloc(sizeof(variable_t));
+    init_variable(gpioReserved, 11);
+    ListMapAdd(this->variableTable, "GPIO_RESERVED", gpioReserved);
+
+    variable_t *gpioPtr = malloc(sizeof(variable_t));
+    init_variable(gpioPtr, 12);
+    ListMapAdd(this->variableTable, "GPIO_PTR", gpioPtr);
+}
 
 void compile(Compiler_t *this) {
     assert(this != NULL);

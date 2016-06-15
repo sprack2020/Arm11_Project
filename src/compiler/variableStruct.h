@@ -11,7 +11,6 @@
 
 typedef struct variable {
     int regNum;
-    uint32_t value;
     bool isPin;
     int controlShift;
     uint32_t updateMask;

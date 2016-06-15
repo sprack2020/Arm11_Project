@@ -6,7 +6,7 @@
 
 void init_variable(variable_t *this, int regNum) {
     this->regNum = regNum;
-    this->isPin = 0;
+    this->isPin = false;
 }
 void deinit_variable(variable_t *this) {
 

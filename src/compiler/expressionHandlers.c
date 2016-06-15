@@ -14,7 +14,7 @@ static bool stringComparator(void *str1, void *str2) {
 
 static void pinAssignmentHandler(
         Compiler_t *this,
-        char *assignment,
+        variable_t *var,
         int pinNum
 );
 
@@ -45,19 +45,24 @@ void variableHandler(Compiler_t *this, char *declaration) {
 //<Continue>
 void assignmentHandler(Compiler_t *this, char *assignment) {
     char *assign = removeBrackets(assignment);
-    char *RdVar = getRd(assign);
-    variable_t *Rd = ListMapGet(this->variableTable, RdVar, stringComparator);
+    char *varString = getRd(assign);
+    variable_t *variable = ListMapGet(this->variableTable, varString, stringComparator);
     char *assignArg = getArgument(assign);
 
     if (!strcmp(assign, "Continue")) {
-
+        //some way of branching to correct while label
     }
     else {
         char opType = getOpType(assign);
         if (opType == '=') {
             //assignment
             if (assignArg[0] == 'P') {
-
+                pinAssignmentHandler(this, variable, atoi(assignArg + 1));
+            }
+            else {
+                makeLdr(this->assemblyProgram[this->instrAddr],
+                        variable->regNum, atoi(assignArg));
+                this->instrAddr++;
             }
         }
         else {
@@ -65,7 +70,7 @@ void assignmentHandler(Compiler_t *this, char *assignment) {
             char *mnem = ListMapGet(this->opToMnem, &opType, charComparator);
             makeArithmeticWithExpr(
                     this->assemblyProgram[this->instrAddr],
-                    mnem, Rd->regNum, Rd->regNum, atoi(assignArg));
+                    mnem, variable->regNum, variable->regNum, atoi(assignArg));
             this->instrAddr++;
         }
     }
@@ -79,7 +84,7 @@ void whileHandler(Compiler_t *this, char *stmt) {
 
 static void pinAssignmentHandler(
         Compiler_t *this,
-        char *assignment,
+        variable_t *var,
         int pinNum
 ) {
 
