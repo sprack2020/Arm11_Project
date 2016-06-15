@@ -21,9 +21,14 @@ orr r11, r11, #2097152
 str r11, [r12, #4]
 str r4, [r12, #40]
 str r4, [r12, #28]
-ldr r5, =1
+ldr r5, =134217728
+orr r11, r11, #2097152
+str r11, [r12, #8]
+str r5, [r12, #40]
+str r5, [r12, #28]
+ldr r6, =1
 while_0:
-cmp r5, #0
+cmp r6, #0
 beq endwhile_0
 str r1, [r12, #40]
 ldr r11, =-1
@@ -72,14 +77,26 @@ and r10, r10, r11
 if_2:
 and r11, r10, r4
 cmp r11, #0
-beq endif_2
+bne endif_2
+str r4, [r12, #28]
+orr r10, r10, r4
+b while_0
+endif_2:
 str r4, [r12, #40]
 ldr r11, =-1
 sub r11, r11, r4
 and r10, r10, r11
+if_3:
+and r11, r10, r5
+cmp r11, #0
+beq endif_3
+str r5, [r12, #40]
+ldr r11, =-1
+sub r11, r11, r5
+and r10, r10, r11
 b while_0
-endif_2:
-str r4, [r12, #28]
-orr r10, r10, r4
+endif_3:
+str r5, [r12, #28]
+orr r10, r10, r5
 b while_0
 endwhile_0:
