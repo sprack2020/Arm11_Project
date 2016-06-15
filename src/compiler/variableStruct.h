@@ -10,6 +10,7 @@
 #include <stdbool.h>
 
 typedef struct variable {
+    int regNum;
     uint32_t value;
     bool isPin;
     int controlShift;

@@ -9,6 +9,9 @@
 
 #include <assembler/tokenizer.h>
 #include <compiler/compilerTokenizer.h>
+#include <compiler/instructionMaker.h>
+#include <compiler/variableStruct.h>
+#include <compiler/variable.h>
 
 void variableHandler(Compiler_t *this, char *declaration);
 void assignmentHandler(Compiler_t *this, char *assignment);

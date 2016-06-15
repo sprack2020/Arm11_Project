@@ -13,6 +13,7 @@ typedef struct Compiler {
     char **sourceLines;
     int numLines;
     ListMap *variableTable;
+    ListMap *opToMnem;
     char **assemblyProgram;
     int instrAddr;
     int varRegNum;

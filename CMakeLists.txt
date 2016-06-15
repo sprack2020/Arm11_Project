@@ -93,11 +93,11 @@ set(COMPILER_SOURCE_FILES
         src/assembler/io.c
         src/assembler/tokenizer.c
         src/util/util.c
-        src/compiler/FunctionTable.c
+        src/compiler/compilerFunctionTable.c
         src/util/ListMap.c
         src/util/ListMapIterator.c
         src/util/ListMapNode.c
-)
+        src/compiler/expressionHandlers.c src/compiler/expressionHandlers.h)
 
 set(COMPILER_HEADER_FILES
         src/compiler/compiler.h
@@ -105,11 +105,11 @@ set(COMPILER_HEADER_FILES
         src/assembler/io.h
         src/assembler/tokenizer.h
         src/util/util.h
-        src/compiler/FunctionTable.h
+        src/compiler/compilerFunctionTable.h
         src/util/ListMap.h
         src/util/ListMapIterator.h
         src/util/ListMapNode.h
-)
+        src/compiler/compilerTokenizer.c src/compiler/compilerTokenizer.h src/compiler/variableStruct.h src/compiler/instructionMaker.c src/compiler/instructionMaker.h src/compiler/variable.c src/compiler/variable.h)
 
 add_executable(compiler src/compilerMain.c ${COMPILER_SOURCE_FILES}
         ${COMPILER_HEADER_FILES})

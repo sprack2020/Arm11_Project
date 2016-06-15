@@ -7,6 +7,7 @@
 static void compiler_init_sourceLines(Compiler_t *this);
 static void parseInstructions(Compiler_t *this);
 static void writeToAssemblyProgram(Compiler_t *this);
+static void setupOpToMnem(Compiler_t *this);
 
 void *init_compiler(Compiler_t *this, char *sourcePath, char *outputPath) {
     assert(this != NULL);
@@ -18,12 +19,23 @@ void *init_compiler(Compiler_t *this, char *sourcePath, char *outputPath) {
     this->variableTable = malloc(sizeof(ListMap));
     ListMapInit(this->variableTable);
 
+    this->opToMnem = malloc(sizeof(ListMap));
+    ListMapInit(this->opToMnem);
+    setupOpToMnem(this);
+
     this->assemblyProgram = malloc(sizeof(char**) * MAX_LINES);
     this->instrAddr = 0;
     this->varRegNum = 0;
 
     return this;
 }
+
+static void setupOpToMnem(Compiler_t *this) {
+    ListMapAdd(this->opToMnem, (void *) '+', "add");
+    ListMapAdd(this->opToMnem, (void *) '-', "sub");
+    ListMapAdd(this->opToMnem, (void *) '*', "mul");
+}
+
 
 void compile(Compiler_t *this) {
     assert(this != NULL);
@@ -106,7 +118,8 @@ static void parseInstructions(Compiler_t *this) {
             return;
         }
         else {
-            //??
+            //ignore
+            printf("ignored %s", currLine);
         }
     }
 }
