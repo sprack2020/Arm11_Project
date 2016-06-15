@@ -50,20 +50,22 @@ void variableHandler(Compiler_t *this, char *declaration) {
 //<I 'op'n> where op is +,-,*  or
 //<I =Pn>
 //<Continue>
-void assignmentHandler(Compiler_t *this, char *assignment, int whildID) {
+void assignmentHandler(Compiler_t *this, char *assignment, int whileID) {
     //requires freeing
     char *assign = removeBrackets(assignment);
     char *varString = getRd(assign);
 
-    variable_t *variable = ListMapGet(this->variableTable, varString, stringComparator);
     //requires freeing
     char *assignArg = getArgument(assign);
 
     if (!strcmp(assign, "Continue")) {
-        makeBranch(this, "b", "while", whildID);
+        makeBranch(this, "b", "while", this->continueID);
     }
     else {
+        variable_t *variable = ListMapGet(this->variableTable, varString, stringComparator);
+        assert(variable != NULL);
         char opType = getOpType(assign);
+
         if (opType == '=') {
             //assignment
             if (assignArg[0] == 'P') {
@@ -94,6 +96,7 @@ void assignmentHandler(Compiler_t *this, char *assignment, int whildID) {
 }
 void ifHandler(Compiler_t *this, char *stmt, int whileID, int ifID) {
 
+
     char *boolVar = getBool(stmt);
     bool isNegated = boolVar[0] == '!';
     if (isNegated) {
@@ -113,7 +116,7 @@ void ifHandler(Compiler_t *this, char *stmt, int whileID, int ifID) {
         makeCmp(this, var->regNum);
     }
     makeBranch(this, (isNegated) ? "bne" : "beq", "endif", ifID);
-    parseInstructions(this, whileID, ifID + 1);
+    parseInstructions(this);
     makeLabel(this, "endif", ifID);
 }
 
@@ -124,7 +127,7 @@ void whileHandler(Compiler_t *this, char *stmt, int whileID, int ifID) {
     makeLabel(this, "while", whileID);
     makeCmp(this, var->regNum);
     makeBranch(this, "beq", "endwhile", whileID);
-    parseInstructions(this, whileID + 1, ifID);
+    parseInstructions(this);
     makeBranch(this, "b", "while", whileID);
     makeLabel(this, "endwhile", whileID);
 }

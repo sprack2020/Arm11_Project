@@ -26,6 +26,9 @@ void init_compiler(Compiler_t *this, char *sourcePath, char *outputPath) {
     this->assemblyProgram = malloc(sizeof(char**) * MAX_LINES);
     this->instrAddr = 0;
     this->currLineNum = 0;
+    this->whileID = 0;
+    this->continueID = 0;
+    this->ifID = 0;
 
     setupGPIO(this);
 
@@ -67,7 +70,7 @@ static void setupGPIO(Compiler_t *this) {
 void compile(Compiler_t *this) {
     assert(this != NULL);
 
-    parseInstructions(this, 0, 0);
+    parseInstructions(this);
 
     writeToAssemblyProgram(this);
 
@@ -117,30 +120,29 @@ static void compiler_init_sourceLines(Compiler_t *this) {
     closeFile(sourceFile);
 }
 
-void parseInstructions(Compiler_t *this, int whileID, int ifID) {
+void parseInstructions(Compiler_t *this) {
 
+    int whileID = this->whileID;
+    int ifID = this->ifID;
     char *currLine;
     char firstChar;
 
-    for (int i = this->currLineNum; i < this->numLines; ++i) {
-        currLine = skipSpace(this->sourceLines[i]);
+    for (;this->currLineNum < this->numLines;) {
+        currLine = skipSpace(this->sourceLines[this->currLineNum]);
         firstChar = currLine[0];
+        this->currLineNum++;
 
         if (firstChar == '[') {
             variableHandler(this, currLine);
         }
         else if (firstChar == '<') {
-            this->currLineNum = i + 1;
             assignmentHandler(this, currLine, whileID);
         }
         else if (firstChar == 'W') {
-            this->currLineNum = i + 1;
-            whileHandler(this, currLine, whileID, ifID);
-            return;
+            whileHandler(this, currLine, this->whileID++, ifID);
         }
         else if (firstChar == 'I') {
-            ifHandler(this, currLine, whileID, ifID);
-            return;
+            ifHandler(this, currLine, whileID, this->ifID++);
         }
         else if (firstChar == '}') {
             return;

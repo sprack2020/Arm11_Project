@@ -10,14 +10,14 @@
 While(True) {       ;should roughly translate into threeBitCounter.s
 
     <led0 =0>
-    <I =100000>
+    <I =9000000>
 
     While(I) {
         <I -1>
     }
 
     <led0 =1>
-    <I =100000>
+    <I =9000000>
 
     While(I) {
         <I -1>
@@ -28,13 +28,13 @@ While(True) {       ;should roughly translate into threeBitCounter.s
         <Continue>
     }
 
-    <led1=0>
+    <led1 =0>
 
     If(led2) {
-        <led2=0>
+        <led2 =0>
         <Continue>
     }
 
-    <led2=1>
+    <led2 =1>
 
 }

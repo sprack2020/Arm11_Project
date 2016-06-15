@@ -17,6 +17,9 @@ typedef struct Compiler {
     ListMap *opToMnem;
     char **assemblyProgram;
     int instrAddr;
+    int whileID;
+    int continueID;
+    int ifID;
 } Compiler_t;
 
 #endif //ARM11_39_COMPILERSTRUCT_H
