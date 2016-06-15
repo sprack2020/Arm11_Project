@@ -9,7 +9,7 @@ static void writeToAssemblyProgram(Compiler_t *this);
 static void setupOpToMnem(Compiler_t *this);
 static void setupGPIO(Compiler_t *this);
 
-void *init_compiler(Compiler_t *this, char *sourcePath, char *outputPath) {
+void init_compiler(Compiler_t *this, char *sourcePath, char *outputPath) {
     assert(this != NULL);
 
     this->sourcePath = sourcePath;
@@ -25,18 +25,24 @@ void *init_compiler(Compiler_t *this, char *sourcePath, char *outputPath) {
 
     this->assemblyProgram = malloc(sizeof(char**) * MAX_LINES);
     this->instrAddr = 0;
-    this->varRegNum = 0;
-    this->whileID = 0;
+    this->currLineNum = 0;
 
     setupGPIO(this);
 
-    return this;
 }
 
 static void setupOpToMnem(Compiler_t *this) {
-    ListMapAdd(this->opToMnem, (void *) '+', "add");
-    ListMapAdd(this->opToMnem, (void *) '-', "sub");
-    ListMapAdd(this->opToMnem, (void *) '*', "mul");
+    char *add = malloc(sizeof(char*));
+    *add = '+';
+    ListMapAdd(this->opToMnem, add, "add");
+
+    char *sub = malloc(sizeof(char*));
+    *sub = '-';
+    ListMapAdd(this->opToMnem, sub, "sub");
+
+    char *mul = malloc(sizeof(char*));
+    *mul = '*';
+    ListMapAdd(this->opToMnem, mul, "mul");
 }
 
 static void setupGPIO(Compiler_t *this) {
@@ -67,16 +73,15 @@ void compile(Compiler_t *this) {
 
 }
 
-void *deinit_compiler(Compiler_t *this) {
+void deinit_compiler(Compiler_t *this) {
     assert(this != NULL);
 
-    // free sourceLines
-    for (int i = 0; i < this->numLines; i++) {
-        free(this->sourceLines[i]);
-    }
-    free(this->sourceLines);
+//    // free sourceLines
+//    for (int i = 0; i < this->numLines; i++) {
+//        free(this->sourceLines[i]);
+//    }
+//    free(this->sourceLines);
 
-    return this;
 }
 
 //read all the lines (delimited by \n) in file to an array of strings
@@ -117,7 +122,7 @@ void parseInstructions(Compiler_t *this, int whileID, int ifID) {
     char *currLine;
     char firstChar;
 
-    for (int i = 0; i < this->numLines; ++i) {
+    for (int i = this->currLineNum; i < this->numLines; ++i) {
         currLine = skipSpace(this->sourceLines[i]);
         firstChar = currLine[0];
 
@@ -125,9 +130,11 @@ void parseInstructions(Compiler_t *this, int whileID, int ifID) {
             variableHandler(this, currLine);
         }
         else if (firstChar == '<') {
-            assignmentHandler(this, currLine);
+            this->currLineNum = i + 1;
+            assignmentHandler(this, currLine, whileID);
         }
         else if (firstChar == 'W') {
+            this->currLineNum = i + 1;
             whileHandler(this, currLine, whileID, ifID);
             return;
         }
@@ -150,15 +157,10 @@ static void writeToAssemblyProgram(Compiler_t *this) {
     int numToWrite = this->instrAddr;
     assert(numToWrite > 0 && this->assemblyProgram != NULL);
 
-    FILE *outfile = openFile(this->outputPath, "wb");
+    FILE *outfile = openFile(this->outputPath, "wt");
 
-    // write to the binaryProgram array, checking for errors
-    int numWritten =
-            (int) fwrite(this->outputPath, sizeof(MAX_LINE_SIZE),
-                         numToWrite, outfile);
-    if (numWritten != numToWrite) {
-        fputs("compiler: Error When writing instructions to assembly file.\n",
-              stderr);
+    for (int i = 0; i < numToWrite; ++i) {
+        fprintf(outfile, "%s\n", this->assemblyProgram[i]);
     }
 
     // close the outfile

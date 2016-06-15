@@ -15,7 +15,7 @@
 #include <compiler/compiler.h>
 
 void variableHandler(Compiler_t *this, char *declaration);
-void assignmentHandler(Compiler_t *this, char *assignment);
+void assignmentHandler(Compiler_t *this, char *assignment, int whileID);
 void ifHandler(Compiler_t *this, char *stmt, int whileID, int ifID);
 void whileHandler(Compiler_t *this, char *stmt, int whileID, int ifID);
 

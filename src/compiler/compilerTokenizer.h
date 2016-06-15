@@ -7,6 +7,7 @@
 
 #include <string.h>
 #include <compiler/compilerStruct.h>
+#include <ctype.h>
 
 char *removeBrackets(char *str);
 char *getFreeReg(int regNum, char *reg);

@@ -16,14 +16,14 @@
 #define MAX_LINE_SIZE 256
 
 #define GPIO_STATE "GPIO_STATE"
-#define GPIO_RESERVED "GPIO_PTR"
+#define GPIO_RESERVED "GPIO_RESERVED"
 #define GPIO_PTR "GPIO_PTR"
 
 #define SHIFT_CLEAR 28
 #define SHIFT_WRITE 40
 
 
-void *init_compiler(
+void init_compiler(
         Compiler_t *this,
         char *sourcePath,
         char *assembledPath
@@ -33,7 +33,7 @@ void compile(
         Compiler_t *this
 );
 
-void *deinit_compiler(
+void deinit_compiler(
         Compiler_t *this
 );
 

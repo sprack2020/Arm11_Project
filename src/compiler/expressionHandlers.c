@@ -9,7 +9,7 @@ static bool charComparator(void *char1, void *char2) {
 }
 
 static bool stringComparator(void *str1, void *str2) {
-    return *(char **) str1 == *(char **) str2;
+    return (bool) !strcmp((char*)str1, (char*)str2);
 }
 
 static void pinDeclarationHandler(
@@ -29,7 +29,8 @@ void variableHandler(Compiler_t *this, char *declaration) {
     char *varStringList = removeBrackets(declaration);
     char *varString;
 
-    varString = strtok(varStringList, ",");
+    //req free
+    varString = strtok(strdup(varStringList), ",");
 
     variable_t *var = malloc(sizeof(variable_t));
     init_variable(var, 0);
@@ -49,14 +50,17 @@ void variableHandler(Compiler_t *this, char *declaration) {
 //<I 'op'n> where op is +,-,*  or
 //<I =Pn>
 //<Continue>
-void assignmentHandler(Compiler_t *this, char *assignment) {
+void assignmentHandler(Compiler_t *this, char *assignment, int whildID) {
+    //requires freeing
     char *assign = removeBrackets(assignment);
     char *varString = getRd(assign);
+
     variable_t *variable = ListMapGet(this->variableTable, varString, stringComparator);
+    //requires freeing
     char *assignArg = getArgument(assign);
 
     if (!strcmp(assign, "Continue")) {
-        //some way of branching to correct while label
+        makeBranch(this, "b", "while", whildID);
     }
     else {
         char opType = getOpType(assign);
@@ -84,6 +88,9 @@ void assignmentHandler(Compiler_t *this, char *assignment) {
                     variable->regNum, atoi(assignArg));
         }
     }
+    free(assign);
+    free(varString);
+//    free(assignArg);
 }
 void ifHandler(Compiler_t *this, char *stmt, int whileID, int ifID) {
 

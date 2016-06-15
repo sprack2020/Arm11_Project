@@ -11,7 +11,7 @@
 
 int main(int argc, char **argv) {
 
-  if (argc != 2) {
+  if (argc != 3) {
     fputs("Incorrect number of arguments", stderr);
     return EXIT_FAILURE;
   }

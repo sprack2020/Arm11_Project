@@ -1,9 +1,4 @@
 [I,led0,led1,led2,True]  ;creates a variable to register map
-                    ;all variables are integers
-                    ;as values may reference gpio
-                    ;the values will be in structs
-                    ;so that if they use gpio then they can have associated pins
-                    ;i'll explain better l9r
 
 
 <led0 =P2>       ;sets control to output and then calculates mask for setting and clearing
