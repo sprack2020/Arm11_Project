@@ -27,7 +27,7 @@ void init_compiler(Compiler_t *this, char *sourcePath, char *outputPath) {
     this->instrAddr = 0;
     this->currLineNum = 0;
     this->whileID = 0;
-    this->continueID = 0;
+    this->continueID = -1;
     this->ifID = 0;
 
     setupGPIO(this);

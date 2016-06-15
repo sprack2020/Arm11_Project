@@ -122,6 +122,7 @@ void ifHandler(Compiler_t *this, char *stmt, int whileID, int ifID) {
 
 //var can't be a gpio variable
 void whileHandler(Compiler_t *this, char *stmt, int whileID, int ifID) {
+    this->continueID++;
     variable_t *var = ListMapGet(this->variableTable, getBool(stmt), stringComparator);
 
     makeLabel(this, "while", whileID);
@@ -130,6 +131,8 @@ void whileHandler(Compiler_t *this, char *stmt, int whileID, int ifID) {
     parseInstructions(this);
     makeBranch(this, "b", "while", whileID);
     makeLabel(this, "endwhile", whileID);
+
+    this->continueID--;
 }
 
 static void pinDeclarationHandler(
