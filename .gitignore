@@ -7,7 +7,6 @@
 *.pdf
 
 #ignore junk files from latex output
-*.out
 *.log
 *.aux
 *.dvi
