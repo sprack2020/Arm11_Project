@@ -12,7 +12,7 @@ static bool stringComparator(void *str1, void *str2) {
     return *(char **) str1 == *(char **) str2;
 }
 
-static void pinAssignmentHandler(
+static void pinDeclarationHandler(
         Compiler_t *this,
         variable_t *var,
         int pinNum
@@ -57,21 +57,25 @@ void assignmentHandler(Compiler_t *this, char *assignment) {
         if (opType == '=') {
             //assignment
             if (assignArg[0] == 'P') {
-                pinAssignmentHandler(this, variable, atoi(assignArg + 1));
+                pinDeclarationHandler(this, variable, atoi(assignArg + 1));
             }
             else {
-                makeLdr(this->assemblyProgram[this->instrAddr],
-                        variable->regNum, atoi(assignArg));
-                this->instrAddr++;
+                if (variable->isPin) {
+
+                }
+                else {
+                    uint32_t value = (uint32_t) atoi(assignArg);
+                    makeLdr(this, variable->regNum, value);
+                    variable->value = value;
+                }
             }
         }
         else {
             //arithmetic
             char *mnem = ListMapGet(this->opToMnem, &opType, charComparator);
             makeArithmeticWithExpr(
-                    this->assemblyProgram[this->instrAddr],
-                    mnem, variable->regNum, variable->regNum, atoi(assignArg));
-            this->instrAddr++;
+                    this, mnem, variable->regNum,
+                    variable->regNum, atoi(assignArg));
         }
     }
 }
@@ -82,10 +86,31 @@ void whileHandler(Compiler_t *this, char *stmt) {
 
 }
 
-static void pinAssignmentHandler(
+static void pinDeclarationHandler(
         Compiler_t *this,
         variable_t *var,
         int pinNum
 ) {
+    var->isPin = true;
+    var->controlShift = (pinNum / 10) * 4;
+    var->updateMask = 1 << pinNum;
+    uint32_t controlMask = 1 << (3 * (pinNum % 10));
+
+    variable_t *gpioPtr = ListMapGet(this->variableTable, GPIO_PTR, stringComparator);
+    variable_t *gpioReserved = ListMapGet(this->variableTable, GPIO_RESERVED, stringComparator);
+
+    makeLdr(this, var->regNum, var->updateMask);
+
+    makeArithmeticWithExpr(this, "orr", gpioReserved->regNum,
+            gpioReserved->regNum, controlMask);
+
+    //set control to output
+    makeStr(this, gpioReserved->regNum, gpioPtr->regNum, var->controlShift);
+
+    //clear pin
+    makeStr(this, var->regNum, gpioPtr->regNum, SHIFT_CLEAR);
+
+    //write pin
+    makeStr(this, var->regNum, gpioPtr->regNum, SHIFT_WRITE);
 
 }

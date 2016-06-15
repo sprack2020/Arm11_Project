@@ -42,15 +42,20 @@ static void setupOpToMnem(Compiler_t *this) {
 static void setupGPIO(Compiler_t *this) {
     variable_t *gpioState = malloc(sizeof(variable_t));
     init_variable(gpioState, 10);
-    ListMapAdd(this->variableTable, "GPIO_STATE", gpioState);
+    ListMapAdd(this->variableTable, GPIO_STATE, gpioState);
+    makeLdr(this, gpioState->regNum, 0);
 
     variable_t *gpioReserved = malloc(sizeof(variable_t));
     init_variable(gpioReserved, 11);
-    ListMapAdd(this->variableTable, "GPIO_RESERVED", gpioReserved);
+    ListMapAdd(this->variableTable, GPIO_RESERVED, gpioReserved);
+    makeLdr(this, gpioReserved->regNum, 0);
 
     variable_t *gpioPtr = malloc(sizeof(variable_t));
     init_variable(gpioPtr, 12);
-    ListMapAdd(this->variableTable, "GPIO_PTR", gpioPtr);
+    makeLdr(this, gpioPtr->regNum, 0x20200000);
+    ListMapAdd(this->variableTable, GPIO_PTR, gpioPtr);
+
+
 }
 
 void compile(Compiler_t *this) {

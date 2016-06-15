@@ -4,18 +4,24 @@
 
 #include "instructionMaker.h"
 
-void makeLdr(char *str, int Rd, int expr) {
-    sprintf(str, "ldr r%i, =%i", Rd, expr);
+
+void makeLdr(Compiler_t *this, int Rd, unsigned int expr) {
+    sprintf(this->assemblyProgram[this->instrAddr], "ldr r%i, =%i", Rd, expr);
+    this->instrAddr++;
 }
-void makeArithmeticWithExpr(char *str, char *mnem, int Rd, int Rn, int expr) {
-    sprintf(str, "%s r%i, r%i, #%i", mnem, Rd, Rn, expr);
+void makeArithmeticWithExpr(Compiler_t *this, char *mnem, int Rd, int Rn, int expr) {
+    sprintf(this->assemblyProgram[this->instrAddr], "%s r%i, r%i, #%i", mnem, Rd, Rn, expr);
+    this->instrAddr++;
 }
-void makeArithmetic(char *str, char *mnem, int Rd, int Rn, int Rm) {
-    sprintf(str, "%s r%i, r%i, r%i", mnem, Rd, Rn, Rm);
+void makeArithmetic(Compiler_t *this, char *mnem, int Rd, int Rn, int Rm) {
+    sprintf(this->assemblyProgram[this->instrAddr], "%s r%i, r%i, r%i", mnem, Rd, Rn, Rm);
+    this->instrAddr++;
 }
-void makeStr(char *str, int Rd, int Rn, int shift) {
-    sprintf(str, "str r%i, [r%i, #%i]", Rd, Rn, shift);
+void makeStr(Compiler_t *this, int Rd, int Rn, int shift) {
+    sprintf(this->assemblyProgram[this->instrAddr], "str r%i, [r%i, #%i]", Rd, Rn, shift);
+    this->instrAddr++;
 }
-void makeCmp(char *str, int Rd) {
-    sprintf(str, "cmp r%i, #0", Rd);
+void makeCmp(Compiler_t *this, int Rd) {
+    sprintf(this->assemblyProgram[this->instrAddr], "cmp r%i, #0", Rd);
+    this->instrAddr++;
 }

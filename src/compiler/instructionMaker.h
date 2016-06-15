@@ -6,13 +6,13 @@
 #define ARM11_39_INSTRUCTIONMAKER_H
 
 #include <stdio.h>
+#include <compiler/compilerStruct.h>
 
-
-void makeLdr(char *str, int Rd, int expr);
-void makeArithmeticWithExpr(char *str, char *mnem, int Rd, int Rn, int expr);
-void makeArithmetic(char *str, char *mnem, int Rd, int Rn, int Rm);
-void makeStr(char *str, int Rd, int Rn, int shift);
-void makeCmp(char *str, int Rd);
+void makeLdr(Compiler_t *this, int Rd, unsigned int expr);
+void makeArithmeticWithExpr(Compiler_t *this, char *mnem, int Rd, int Rn, int expr);
+void makeArithmetic(Compiler_t *this, char *mnem, int Rd, int Rn, int Rm);
+void makeStr(Compiler_t *this, int Rd, int Rn, int shift);
+void makeCmp(Compiler_t *this, int Rd);
 
 
 

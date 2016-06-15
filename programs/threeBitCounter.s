@@ -1,27 +1,25 @@
 ldr r12, =0x20200000     ;r12 contains base address for GPIO operations
-mov r9, #0x4             ;bitmask for setting/clearing GPIO 2, r9
-mov r10, #0x8            ;bitmask for setting/clearing GPIO 3, r10
-mov r11, #0x10           ;bitmask for setting/clearing GPIO 4, r11
+ldr r7, =0               ;r7 will help calculate the state register
+ldr r8, =0               ;r8 will be the led state register
 
 
-ldr r7, =0x00000040      ;bitmask to enable pins 2-4 as output
+orr r7, r7, 0x00000040   ;bitmask to enable pins 2-4 as output
 str r7, [r12]            ;set pins 2-4 as output
+ldr r9, =0x4             ;bitmask for setting/clearing GPIO 2, r9
 str r9, [r12, #28]       ;clear pin 2
 str r9, [r12, #40]       ;set pin 2
 
 orr r7, r7, #0x00000200
 str r7, [r12]
+ldr r10, =0x8            ;bitmask for setting/clearing GPIO 3, r10
 str r10, [r12, #28]      ;clear pin 3
 str r10, [r12, #40]      ;set pin 3
 
 orr r7, r7, #0x00001000
 str r7, [r12]
+ldr r11, =0x10           ;bitmask for setting/clearing GPIO 4, r11
 str r11, [r12, #28]      ;clear pin 4
 str r11, [r12, #40]      ;set pin 4
-
-mov r7, #0               ;r7 will help calculate the state register
-mov r8, #0               ;r8 will be the led state register
-
 
 
 led0:
