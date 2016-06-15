@@ -7,6 +7,7 @@
 
 #include <util/ListMap.h>
 #include <stdint.h>
+#include <compiler/expressionHandlers.h>
 
 // dont know the type so i did this:
 
@@ -47,10 +48,10 @@ FunctionTable *FunctionTable_remove(
 );
 
 // shouldnt be required
-//char *FunctionTable_getAndApply(
-//        FunctionTable *this,
-//        StmtType stmtType,
-//        void *something /* whatever other arguments */
-//);
+char *FunctionTable_getAndApply(
+        FunctionTable *this,
+        StmtType stmtType,
+        void *something /* whatever other arguments */
+);
 
 #endif //ARM11_39_FUNCTIONTABLE_H

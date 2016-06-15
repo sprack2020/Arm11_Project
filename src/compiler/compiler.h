@@ -9,7 +9,7 @@
 #include <compiler/compilerStruct.h>
 #include <assembler/io.h>
 #include <assembler/tokenizer.h>
-#include <compiler/FunctionTable.h>
+#include <compiler/compilerFunctionTable.h>
 #include <compiler/expressionHandlers.h>
 
 #define MAX_LINES 256

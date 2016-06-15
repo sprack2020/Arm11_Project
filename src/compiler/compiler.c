@@ -85,7 +85,7 @@ static void parseInstructions(Compiler_t *this) {
     char firstChar;
 
     for (int i = 0; i < this->numLines; ++i) {
-        currLine = this->sourceLines[i];
+        currLine = skipSpace(this->sourceLines[i]);
         firstChar = currLine[0];
 
         if (firstChar == '[') {
@@ -102,8 +102,11 @@ static void parseInstructions(Compiler_t *this) {
             ifHandler(this, currLine);
             return;
         }
+        else if (firstChar == '}') {
+            return;
+        }
         else {
-
+            //??
         }
     }
 }

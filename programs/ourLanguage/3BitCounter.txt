@@ -1,4 +1,4 @@
-[I,led0,led1,led2]  ;creates a variable to register map
+[I,led0,led1,led2,True]  ;creates a variable to register map
                     ;all variables are integers
                     ;as values may reference gpio
                     ;the values will be in structs
@@ -6,28 +6,30 @@
                     ;i'll explain better l9r
 
 
-<led0=Pin(2)>       ;sets control to output and then calculates mask for setting and clearing
-<led1=Pin(3)>       ;in this case led0-2 will work like booleans
-<led2=Pin(4)>       ;they are 1 when their respective lights are on
+<led0 =P2>       ;sets control to output and then calculates mask for setting and clearing
+<led1 =P3>       ;in this case led0-2 will work like booleans
+<led2 =P4>       ;they are 1 when their respective lights are on
+
+<True =1>
 
 While(True) {       ;should roughly translate into threeBitCounter.s
 
-    <led0=0>
-    <I = 100000>
+    <led0 =0>
+    <I =100000>
 
     While(I) {
-        <I=I-1>
+        <I -1>
     }
 
-    <led0=1>
-    <I = 100000>
+    <led0 =1>
+    <I =100000>
 
     While(I) {
-        <I=I-1>
+        <I -1>
     }
 
     If(!led1) {
-        <led1=1>
+        <led1 =1>
         <Continue>
     }
 

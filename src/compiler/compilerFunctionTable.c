@@ -2,11 +2,12 @@
 // Created by Shiraz Butt on 13/06/2016.
 //
 
-#include "FunctionTable.h"
+#include "compilerFunctionTable.h"
 
 static bool stmtTypeComparator(void *stmt1, void *stmt2) {
     return *(StmtType *) stmt1 == *(StmtType *) stmt2;
 }
+
 
 // intialises the given function table
 FunctionTable *FunctionTable_init(FunctionTable *this) {
@@ -40,6 +41,6 @@ void FunctionTable_add(FunctionTable *this, StmtType stmtType, StatementHandler 
     ListMapAdd(this->map, (void *) (intptr_t) stmtType, handlerPtr);
 }
 
-//char *FunctionTable_getAndApply(FunctionTable *this, StmtType stmtType, void *something) {
-//    return FunctionTable_get(this, stmtType)(something);
-//}
+char *FunctionTable_getAndApply(FunctionTable *this, StmtType stmtType, void *something) {
+    return FunctionTable_get(this, stmtType)(something);
+}
