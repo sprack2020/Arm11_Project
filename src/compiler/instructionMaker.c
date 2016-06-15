@@ -26,7 +26,7 @@ void makeCmp(Compiler_t *this, int Rd) {
     this->instrAddr++;
 }
 
-void makeWhileLabel(Compiler_t *this, char *label, int ID) {
+void makeLabel(Compiler_t *this, char *label, int ID) {
     sprintf(this->assemblyProgram[this->instrAddr], "%s_%i:", label, ID);
     this->instrAddr++;
 }

@@ -146,5 +146,23 @@ void parseInstructions(Compiler_t *this, int whileID, int ifID) {
 }
 
 static void writeToAssemblyProgram(Compiler_t *this) {
+    // write to the first empty address
+    int numToWrite = this->instrAddr;
+    assert(numToWrite > 0 && this->assemblyProgram != NULL);
 
+    FILE *outfile = openFile(this->outputPath, "wb");
+
+    // write to the binaryProgram array, checking for errors
+    int numWritten =
+            (int) fwrite(this->outputPath, sizeof(MAX_LINE_SIZE),
+                         numToWrite, outfile);
+    if (numWritten != numToWrite) {
+        fputs("compiler: Error When writing instructions to assembly file.\n",
+              stderr);
+    }
+
+    // close the outfile
+    if (fclose(outfile) == EOF) {
+        fputs("Assembler: Error closing binary file", stderr);
+    }
 }
