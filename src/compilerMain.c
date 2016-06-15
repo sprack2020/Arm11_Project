@@ -11,15 +11,16 @@
 
 int main(int argc, char **argv) {
 
-  if (argc != 2) {
-    puts("Incorrect number of arguments");
-    exit(EXIT_FAILURE);
+  if (argc != 3) {
+    fputs("Incorrect number of arguments", stderr);
+    return EXIT_FAILURE;
   }
+
+  // do compilation
   Compiler_t compiler;
   init_compiler(&compiler, argv[1], argv[2]);
   compile(&compiler);
   deinit_compiler(&compiler);
 
-
-  exit(EXIT_SUCCESS);
+  return EXIT_SUCCESS;
 }

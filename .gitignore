@@ -42,7 +42,6 @@ cmake_install.cmake
 TODO.txt
 
 #ignore non working util files
-FunctionTable.h
 GenericListMap.h
 GenericListMapIterator.h
 GenericListMapNode.h

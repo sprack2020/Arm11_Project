@@ -1,18 +1,25 @@
 ldr r12, =0x20200000     ;r12 contains base address for GPIO operations
-ldr r1, =0x00001240      ;bitmask to enable pins 2-4 as output
-str r1, [r12]            ;set pins 2-4 as output
-
-mov r7, #0               ;r7 will help calculate the state register
-mov r8, #0               ;r8 will be the led state register
-mov r9, #0x4             ;bitmask for setting/clearing GPIO 2, r9
-mov r10, #0x8            ;bitmask for setting/clearing GPIO 3, r10
-mov r11, #0x10           ;bitmask for setting/clearing GPIO 4, r11
+ldr r7, =0               ;r7 will help calculate the state register
+ldr r8, =0               ;r8 will be the led state register
 
 
-str r9, [r12, #40]       ;clear pin 2
-str r10, [r12, #40]      ;clear pin 3
-str r11, [r12, #40]      ;clear pin 4
+orr r7, r7, #0x00000040   ;bitmask to enable pins 2-4 as output
+str r7, [r12]            ;set pins 2-4 as output
+ldr r9, =0x4             ;bitmask for setting/clearing GPIO 2, r9
+str r9, [r12, #28]       ;clear pin 2
+str r9, [r12, #40]       ;set pin 2
 
+orr r7, r7, #0x00000200
+str r7, [r12]
+ldr r10, =0x8            ;bitmask for setting/clearing GPIO 3, r10
+str r10, [r12, #28]      ;clear pin 3
+str r10, [r12, #40]      ;set pin 3
+
+orr r7, r7, #0x00001000
+str r7, [r12]
+ldr r11, =0x10           ;bitmask for setting/clearing GPIO 4, r11
+str r11, [r12, #28]      ;clear pin 4
+str r11, [r12, #40]      ;set pin 4
 
 
 led0:
@@ -31,7 +38,7 @@ b wait
 
 led1:
 and r7, r8, r10         ;bool r7 is true when led1 is on else false
-cmp r7, #0              ;if led1 is on turn off else turn on
+cmp r7, #0              ;if led1 is off turn on else turn off
 bne led1_off
 
 led1_on:
@@ -64,13 +71,14 @@ and r8, r8, r7          ;sets led2 state to off
 b led0
 
 wait:                   ;waits ~1 second before continuing
-ldr r0, =0xffffffff
+ldr r0, =0x00800000
 
-while:
-sub r0, r0, #1
+while_0:
 cmp r0, #0
-bne next
-b while
+beq endwhile_0
+sub r0, r0, #1
+b while_0
+endwhile_0:
 
 next:                   ;if led0 is off then turn led0 on else turn led1 on
 and r7, r8, r9

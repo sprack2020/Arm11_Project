@@ -86,20 +86,37 @@ add_executable(assemble src/assemble.c ${ASSEMBLER_HEADER_FILES}
         )
 
 ################################################################################
-# Compiler
+# compiler
 
 set(COMPILER_SOURCE_FILES
         src/compiler/compiler.c
         src/assembler/io.c
         src/assembler/tokenizer.c
         src/util/util.c
-        )
+        src/compiler/compilerFunctionTable.c
+        src/util/ListMap.c
+        src/util/ListMapIterator.c
+        src/util/ListMapNode.c
+        src/compiler/expressionHandlers.c
+        src/compiler/compilerTokenizer.c
+        src/compiler/instructionMaker.c
+        src/compiler/variable.c)
+
 set(COMPILER_HEADER_FILES
         src/compiler/compiler.h
         src/compiler/compilerStruct.h
         src/assembler/io.h
         src/assembler/tokenizer.h
-        src/util/util.h)
+        src/util/util.h
+        src/compiler/compilerFunctionTable.h
+        src/util/ListMap.h
+        src/util/ListMapIterator.h
+        src/util/ListMapNode.h
+        src/compiler/expressionHandlers.h
+        src/compiler/compilerTokenizer.h
+        src/compiler/variableStruct.h
+        src/compiler/instructionMaker.h
+        src/compiler/variable.h)
 
 add_executable(compiler src/compilerMain.c ${COMPILER_SOURCE_FILES}
         ${COMPILER_HEADER_FILES})
@@ -124,9 +141,6 @@ set(EMULATOR_TEST_HEADER_FILES
 )
 
 
-
-
-
 # ASSEMBLER TESTS
 #
 #set(TEST_ASSEMBLE_SRC
@@ -145,3 +159,20 @@ set(EMULATOR_TEST_HEADER_FILES
 #        ${SOURCE_FILES} ${HEADER_FILES} ${ASSEMBLER_SOURCE_FILES}
 #        ${ASSEMBLER_HEADER_FILES}
 #        )
+
+################################################################################
+# compiler Tests
+
+set(COMPILE_TEST_SOURCES
+        test/compiler/TokenizerTest.c
+        src/assembler/tokenizer.c
+)
+
+set(COMPILE_TEST_HEADERS
+        test/compiler/TokenizerTest.h
+        src/assembler/tokenizer.h
+
+)
+
+add_executable(CompilerTests test/compiler/CompilerTests.c
+        ${COMPILER_TEST_SOURCES} ${COMPILER_TEST_HEADERS})
