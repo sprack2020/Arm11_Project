@@ -24,7 +24,7 @@ char *getFreeReg(int regNum, char *reg) {
 //str is the stmt in <stmt>
 char getOpType(char *str) {
     str = strtok(str, " ");
-    assert(str[0] != NULL);
+    assert(str != NULL);
     return str[0];
 }
 

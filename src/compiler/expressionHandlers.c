@@ -18,6 +18,12 @@ static void pinDeclarationHandler(
         int pinNum
 );
 
+static void pinAssignmentHandler(
+        Compiler_t *this,
+        variable_t *var,
+        int state
+);
+
 //[v1,v2..vn]
 void variableHandler(Compiler_t *this, char *declaration) {
     char *varStringList = removeBrackets(declaration);
@@ -61,7 +67,7 @@ void assignmentHandler(Compiler_t *this, char *assignment) {
             }
             else {
                 if (variable->isPin) {
-
+                    pinAssignmentHandler(this, variable, atoi(assignArg));
                 }
                 else {
                     uint32_t value = (uint32_t) atoi(assignArg);
@@ -99,8 +105,10 @@ static void pinDeclarationHandler(
     variable_t *gpioPtr = ListMapGet(this->variableTable, GPIO_PTR, stringComparator);
     variable_t *gpioReserved = ListMapGet(this->variableTable, GPIO_RESERVED, stringComparator);
 
+    //set the register to the updateMask
     makeLdr(this, var->regNum, var->updateMask);
 
+    //get control mask
     makeArithmeticWithExpr(this, "orr", gpioReserved->regNum,
             gpioReserved->regNum, controlMask);
 
@@ -113,4 +121,25 @@ static void pinDeclarationHandler(
     //write pin
     makeStr(this, var->regNum, gpioPtr->regNum, SHIFT_WRITE);
 
+}
+
+static void pinAssignmentHandler(
+        Compiler_t *this,
+        variable_t *var,
+        int state
+) {
+    variable_t *gpioPtr = ListMapGet(this->variableTable, GPIO_PTR, stringComparator);
+    variable_t *gpioState = ListMapGet(this->variableTable, GPIO_STATE, stringComparator);
+    variable_t *gpioReserved = ListMapGet(this->variableTable, GPIO_RESERVED, stringComparator);
+
+    if (state) {
+        makeStr(this, var->regNum, gpioPtr->regNum, SHIFT_WRITE);
+        makeArithmetic(this, "orr", gpioState->regNum, gpioState->regNum, var->regNum);
+    }
+    else {
+        makeStr(this, var->regNum, gpioPtr->regNum, SHIFT_CLEAR);
+        makeLdr(this, gpioReserved->regNum, 0xffffffff);
+        makeArithmetic(this, "sub", gpioReserved->regNum, gpioReserved->regNum, var->regNum);
+        makeArithmetic(this, "and", gpioState->regNum, gpioState->regNum, gpioReserved->regNum);
+    }
 }
