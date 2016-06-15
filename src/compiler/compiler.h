@@ -19,8 +19,8 @@
 #define GPIO_RESERVED "GPIO_RESERVED"
 #define GPIO_PTR "GPIO_PTR"
 
-#define SHIFT_CLEAR 28
-#define SHIFT_WRITE 40
+#define SHIFT_CLEAR 40
+#define SHIFT_WRITE 28
 
 
 void init_compiler(
