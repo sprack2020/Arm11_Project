@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 2.8)
 project(arm11_39)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
@@ -174,5 +174,5 @@ set(COMPILE_TEST_HEADERS
 
 )
 
-add_executable(CompilerTests test/compiler/CompilerTests.c
-        ${COMPILER_TEST_SOURCES} ${COMPILER_TEST_HEADERS})
+#add_executable(CompilerTests test/compiler/CompilerTests.c
+#        ${COMPILER_TEST_SOURCES} ${COMPILER_TEST_HEADERS})
