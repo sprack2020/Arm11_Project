@@ -4,18 +4,18 @@ ldr r12, =538968064
 ldr r1, =4
 orr r11, r11, #64
 str r11, [r12, #0]
-str r1, [r12, #40]
 str r1, [r12, #28]
+str r1, [r12, #40]
 ldr r2, =8
 orr r11, r11, #512
 str r11, [r12, #0]
-str r2, [r12, #40]
 str r2, [r12, #28]
+str r2, [r12, #40]
 ldr r3, =16
 orr r11, r11, #4096
 str r11, [r12, #0]
-str r3, [r12, #40]
 str r3, [r12, #28]
+str r3, [r12, #40]
 ldr r4, =1
 while_0:
 cmp r4, #0

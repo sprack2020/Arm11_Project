@@ -1,0 +1,20 @@
+[I,led0,True]
+
+<led0 =P16>
+<True =1>
+
+While(True) {
+	<led0 =0>
+	
+	<I =10000000>
+	While(I) {
+		<I -1>
+	}
+	
+	<led0 =1>
+
+	<I =10000000>
+	While(I) {
+		<I -1>
+	}
+}
