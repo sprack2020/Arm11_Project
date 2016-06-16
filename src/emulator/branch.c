@@ -1,6 +1,6 @@
 #include "branch.h"
 
-void clearBit(int32_t *num, int i);
+static void clearBit(int32_t *num, int i);
 
 // PRE: instr is a branch instruction
 // behavior: adds the offset to PC
@@ -32,6 +32,6 @@ void branch(uint32_t instr) {
     PC = (uint32_t) newPC;
 }
 
-void clearBit(int32_t *num, int i) {
+static void clearBit(int32_t *num, int i) {
     *num &= ~(1 << i);
 }

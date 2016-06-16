@@ -1,0 +1,40 @@
+[I,led0,led1,led2,True]  ;creates a variable to register map
+
+
+<led0 =P2>       ;sets control to output and then calculates mask for setting and clearing
+<led1 =P3>       ;in this case led0-2 will work like booleans
+<led2 =P4>       ;they are 1 when their respective lights are on
+
+<True =1>
+
+While(True) {       ;should roughly translate into threeBitCounter.s
+
+    <led0 =0>
+    <I =9000000>
+
+    While(I) {
+        <I -1>
+    }
+
+    <led0 =1>
+    <I =9000000>
+
+    While(I) {
+        <I -1>
+    }
+
+    If(!led1) {
+        <led1 =1>
+        <Continue>
+    }
+
+    <led1 =0>
+
+    If(led2) {
+        <led2 =0>
+        <Continue>
+    }
+
+    <led2 =1>
+
+}

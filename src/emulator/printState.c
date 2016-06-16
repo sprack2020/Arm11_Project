@@ -43,7 +43,6 @@ void printState(void) {
     // print memory
     printf("Non-zero memory:\n");
 
-    //TODO: GET BETTER NAMES FOR THIS AND MEM_PRINTING_INTERVAL
     uint32_t memLocationsToPrint;
     for (int i = 0; i < MEM_SIZE; i += MEM_PRINTING_INTERVAL) {
         read32Bits(&memLocationsToPrint, MEM + i);

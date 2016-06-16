@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.5)
 project(arm11_39)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-set(CMAKE_C_FLAGS "-Wall -g -D_POSIX_SOURCE -D_BSD_SOURCE -std=c99 -Werror -pedantic")
+set(CMAKE_C_FLAGS "-Wall -g -D_POSIX_SOURCE -D_BSD_SOURCE -std=c99 -pedantic")
 
-
+################################################################################
 # EMULATOR
 
 set(EMULATOR_SOURCE_FILES
@@ -57,14 +57,14 @@ set(ASSEMBLER_SOURCE_FILES
         src/assembler/tokenHandlers.c
         src/assembler/tokenHandlerUtil.c
         src/assembler/tokenizer.c
-)
+        )
 
 set(ASSEMBLER_HEADERS
         src/assembler/assemblerStruct.h
         src/assembler/io.h
         src/assembler/genInstr.h
         src/util/util.h
-        src/memory_util.h
+        src/util/memory_util.h
         src/assembler/assembler.h
         src/util/ListMap.h
         src/util/ListMapNode.h
@@ -86,6 +86,42 @@ add_executable(assemble src/assemble.c ${ASSEMBLER_HEADER_FILES}
         )
 
 ################################################################################
+# compiler
+
+set(COMPILER_SOURCE_FILES
+        src/compiler/compiler.c
+        src/assembler/io.c
+        src/assembler/tokenizer.c
+        src/util/util.c
+        src/compiler/compilerFunctionTable.c
+        src/util/ListMap.c
+        src/util/ListMapIterator.c
+        src/util/ListMapNode.c
+        src/compiler/expressionHandlers.c
+        src/compiler/compilerTokenizer.c
+        src/compiler/instructionMaker.c
+        src/compiler/variable.c)
+
+set(COMPILER_HEADER_FILES
+        src/compiler/compiler.h
+        src/compiler/compilerStruct.h
+        src/assembler/io.h
+        src/assembler/tokenizer.h
+        src/util/util.h
+        src/compiler/compilerFunctionTable.h
+        src/util/ListMap.h
+        src/util/ListMapIterator.h
+        src/util/ListMapNode.h
+        src/compiler/expressionHandlers.h
+        src/compiler/compilerTokenizer.h
+        src/compiler/variableStruct.h
+        src/compiler/instructionMaker.h
+        src/compiler/variable.h)
+
+add_executable(compiler src/compilerMain.c ${COMPILER_SOURCE_FILES}
+        ${COMPILER_HEADER_FILES})
+
+################################################################################
 # EMULATOR TESTS
 
 set(EMULATOR_TEST_SOURCE_FILES
@@ -103,6 +139,7 @@ set(EMULATOR_TEST_HEADER_FILES
         test/assemble/ListMapTests.h
         src/util/ListMap.h
 )
+
 
 # ASSEMBLER TESTS
 #
@@ -122,3 +159,20 @@ set(EMULATOR_TEST_HEADER_FILES
 #        ${SOURCE_FILES} ${HEADER_FILES} ${ASSEMBLER_SOURCE_FILES}
 #        ${ASSEMBLER_HEADER_FILES}
 #        )
+
+################################################################################
+# compiler Tests
+
+set(COMPILE_TEST_SOURCES
+        test/compiler/TokenizerTest.c
+        src/assembler/tokenizer.c
+)
+
+set(COMPILE_TEST_HEADERS
+        test/compiler/TokenizerTest.h
+        src/assembler/tokenizer.h
+
+)
+
+add_executable(CompilerTests test/compiler/CompilerTests.c
+        ${COMPILER_TEST_SOURCES} ${COMPILER_TEST_HEADERS})

@@ -6,26 +6,17 @@ uint32_t handleOperand2(char **tokens, bool *imm) {
     if (tokens[0][0] == '#') {
         *imm = true;
         uint32_t value = getValue(tokens[0]);
-        if (value >= (1 << 8)) {
+        if (value > MAX_MOV_CONSTANT) {
             int lastOnePos = getLastOnePos(value);
             //round lastOnePos down to the nearest multiple of 2.
             lastOnePos &= createMask(1, (sizeof(int) * 8 - 1));
             uint32_t shiftedValue = binaryShift(value, ROR, lastOnePos)
                     .result;
-            if (shiftedValue >= (1 << 8)) {
+            if (shiftedValue > MAX_MOV_CONSTANT) {
                 fprintf(stderr, "cannot fit value into operand2");
                 exit(EXIT_FAILURE);
             }
-//            bool isValid = isValidImmediate(value, firstOnePos, &shiftAmount);
-//
-//            if (!isValid) {
-//                fprintf(stderr, "cannot fit value into operand2");
-//                exit(EXIT_FAILURE);
-//            }
-//
-//            uint32_t shiftedValue = binaryShift(value, ROR, 32 - shiftAmount)
-//                    .result;
-//            shiftAmount /= 2;
+
             return ((INTWIDTH - lastOnePos) / 2) << 8 | shiftedValue;
 
         } else {
@@ -54,38 +45,13 @@ int getLastOnePos(uint32_t num) {
         }
     }
 
-    // should never return -1
     fprintf(stderr,
             "Error in tokenHandlers: getLastOnePos: Invalid num %u", num);
     exit(EXIT_FAILURE);
 }
 
-bool isValidImmediate(uint32_t num, int firstOnePos, uint32_t *shiftAmount) {
-    int zeroCount = 0;
-    bool currBit;
-    int currPos = firstOnePos;
-
-    while (currPos != firstOnePos + 1) {
-        currBit = extractBit(num, currPos);
-        if (currBit) {
-            zeroCount = 0;
-        }
-        else {
-            zeroCount++;
-        }
-
-        if (zeroCount >= 24) {
-            *shiftAmount = calculateShiftAmount(currPos);
-            return true;
-        }
-
-        currPos = (currPos - 1 + INTWIDTH) % INTWIDTH;
-    }
-
-    return false;
-}
-
-// 7 is the target position of the shift
+// given a first one position, calculates shift needed to move that into
+//bit position 7
 uint32_t calculateShiftAmount(int n) {
     return (uint32_t) (n + INTWIDTH - 8) % INTWIDTH;
 }

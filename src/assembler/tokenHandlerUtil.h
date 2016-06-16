@@ -10,16 +10,12 @@
 #define PIPELINE_LENGTH 8
 #define REG_FIELD_LENGTH 4
 
+#define MAX_MOV_CONSTANT 0XFF
+
 #include <util/util.h>
 
 uint32_t handleOperand2(char **tokens, bool *imm);
 int getLastOnePos(uint32_t num);
-bool isValidImmediate(
-        uint32_t num,
-        int firstOnePos,
-        uint32_t *shiftAmount
-);
-uint32_t calculateShiftAmount(int n);
 uint32_t generateShift(char **tokens);
 bool hasNoRd(char *mnem);
 bool hasNoRn(char *mnem);

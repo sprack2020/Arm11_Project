@@ -7,7 +7,6 @@
 *.pdf
 
 #ignore junk files from latex output
-*.out
 *.log
 *.aux
 *.dvi
@@ -15,10 +14,6 @@
 
 #ignore junk files from compiling C code
 *.o
-
-#ignore executables
-assemble
-emulate
 
 #ignore junk files from compiling Haskell code
 *.hi
@@ -42,6 +37,14 @@ emulate
 #files for my use - Shiraz
 testResult.txt
 backups_from_conflicts
-CMakeCache.txt
 CMakeFiles
 cmake_install.cmake
+TODO.txt
+
+#ignore non working util files
+GenericListMap.h
+GenericListMapIterator.h
+GenericListMapNode.h
+HashMap.c
+HashMap.h
+memory_util.h

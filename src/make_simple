@@ -1,0 +1,36 @@
+CC      = gcc
+CFLAGS  = -I . -Wall -g -D_POSIX_SOURCE -D_BSD_SOURCE -std=c99 -pedantic
+LDFLAGS =
+
+EMULATE_SOURCES   = emulate.c emulator/global_state.c emulator/branch.c emulator/checkCond.c emulator/dataProcess.c emulator/dataTransfer.c emulator/decodeAndExecute.c emulator/getOperand2.c emulator/iMultiply.c emulator/printState.c emulator/updateCPSR.c util/util.c
+ASSEMBLER_SOURCES = assemble.c assembler/assembler.c assembler/functionTable.c assembler/genInstr.c assembler/io.c assembler/symbolTable.c assembler/tokenHandlers.c assembler/tokenizer.c util/util.c assembler/tokenHandlerUtil.c
+COMPILER_SOURCES  = compilerMain.c compiler/compiler.c compiler/compilerFunctionTable.c compiler/compilerTokenizer.c compiler/expressionHandlers.c compiler/instructionMaker.c compiler/variable.c
+MAP_SOURCES       = util/ListMap.c util/ListMapIterator.c util/ListMapNode.c
+
+EMULATE_OBJECTS   = $(EMULATE_SOURCES:.c=.o)
+ASSEMBLER_OBJECTS = $(ASSEMBLER_SOURCES:.c=.o)
+COMPILER_OBJECTS  = $(COMPILER_SOURCES:.c=.o)
+MAP_OBJECTS       = $(MAP_SOURCES:.c=.o)
+
+all: emulate assemble compile
+
+emulate: $(EMULATE_OBJECTS)
+
+assemble: $(ASSEMBLER_OBJECTS) $(MAP_OBJECTS)
+
+compile: $(COMPILER_OBJECTS) $(MAP_OBJECTS)
+
+%.o: %.c %.h
+	$(CC) $(CFLAGS) $< -c -o $@
+
+.SUFFIXES: .c .o .h
+
+.PHONY: all clean
+
+clean:
+	rm -f assemble
+	rm -f emulate
+	rm -f compile
+	rm -f assembler/*.o
+	rm -f emulator/*.o
+	rm -f compiler/*.o

@@ -1,3 +1,5 @@
+#define NDEBUG
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <assembler/assemblerStruct.h>
