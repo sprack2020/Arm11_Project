@@ -1,10 +1,11 @@
-[I,led0,led1,led2,led3,True]  ;creates a variable to register map
+[I,led0,led1,led2,led3,led4,True]  ;creates a variable to register map
 
 
 <led0 =P2>       ;sets control to output and then calculates mask for setting and clearing
 <led1 =P3>       ;in this case led0-2 will work like booleans
 <led2 =P4>       ;they are 1 when their respective lights are on
 <led3 =P17>
+<led4 =P27>
 
 <True =1>
 
@@ -41,4 +42,12 @@ While(True) {
     }
 
     <led3 =0>
+    <led4 =1>
+
+    <I =900000>
+    While(I) {
+        <I -1>
+    }
+
+    <led4 =0>
 }
