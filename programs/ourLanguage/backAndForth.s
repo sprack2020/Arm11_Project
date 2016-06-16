@@ -32,7 +32,7 @@ cmp r6, #0
 beq endwhile_0
 str r1, [r12, #28]
 orr r10, r10, r1
-ldr r0, =9000000
+ldr r0, =5000000
 while_1:
 cmp r0, #0
 beq endwhile_1
@@ -45,7 +45,7 @@ sub r11, r11, r1
 and r10, r10, r11
 str r2, [r12, #28]
 orr r10, r10, r2
-ldr r0, =9000000
+ldr r0, =5000000
 while_2:
 cmp r0, #0
 beq endwhile_2
@@ -58,7 +58,7 @@ sub r11, r11, r2
 and r10, r10, r11
 str r3, [r12, #28]
 orr r10, r10, r3
-ldr r0, =9000000
+ldr r0, =5000000
 while_3:
 cmp r0, #0
 beq endwhile_3
@@ -71,7 +71,7 @@ sub r11, r11, r3
 and r10, r10, r11
 str r4, [r12, #28]
 orr r10, r10, r4
-ldr r0, =9000000
+ldr r0, =5000000
 while_4:
 cmp r0, #0
 beq endwhile_4
@@ -84,7 +84,7 @@ sub r11, r11, r4
 and r10, r10, r11
 str r5, [r12, #28]
 orr r10, r10, r5
-ldr r0, =9000000
+ldr r0, =5000000
 while_5:
 cmp r0, #0
 beq endwhile_5
