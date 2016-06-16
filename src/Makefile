@@ -17,7 +17,7 @@ MAP_OBJECTS       = $(MAP_SOURCES:.c=.o)
 BIN_DIR = ../bin
 OBJ_DIR = ../obj
 
-all: emulate assemble compile
+all: emulate compile assemble
 
 dirs:
 	mkdir -p $(OBJ_DIR)/emulator
@@ -27,10 +27,10 @@ dirs:
 emulate: $(EMULATE_OBJECTS)
 	$(CC) $(LDFLAGS) $(addprefix $(OBJ_DIR)/, $^) -o $(BIN_DIR)/$@
 
-assemble: $(MAP_OBJECTS) $(ASSEMBLER_OBJECTS)
+assemble: $(ASSEMBLER_OBJECTS) $(MAP_OBJECTS)
 	$(CC) $(LDFLAGS) $(addprefix $(OBJ_DIR)/, $^) -o $(BIN_DIR)/$@
 
-compile: $(MAP_OBJECTS) $(COMPILER_OBJECTS)
+compile: $(COMPILER_OBJECTS) $(MAP_OBJECTS)
 	$(CC) $(LDFLAGS) $(addprefix $(OBJ_DIR)/, $^) -o $(BIN_DIR)/$@
 
 %.o: %.c %.h
