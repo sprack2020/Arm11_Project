@@ -43,26 +43,26 @@ endwhile_2:
 if_0:
 and r11, r10, r2
 cmp r11, #0
-beq endif_0
+bne endif_0
+str r2, [r12, #28]
+orr r10, r10, r2
+b while_0
+endif_0:
 str r2, [r12, #40]
 ldr r11, =-1
 sub r11, r11, r2
 and r10, r10, r11
-b while_0
-endif_0:
-str r2, [r12, #28]
-orr r10, r10, r2
 if_1:
 and r11, r10, r3
 cmp r11, #0
-beq endif_1
+bne endif_1
+str r3, [r12, #28]
+orr r10, r10, r3
+b while_0
+endif_1:
 str r3, [r12, #40]
 ldr r11, =-1
 sub r11, r11, r3
 and r10, r10, r11
-b while_0
-endif_1:
-str r3, [r12, #28]
-orr r10, r10, r3
 b while_0
 endwhile_0:
