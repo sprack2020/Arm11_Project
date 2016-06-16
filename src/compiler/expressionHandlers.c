@@ -158,11 +158,11 @@ static void pinDeclarationHandler(
     //set control to output
     makeStr(this, gpioReserved->regNum, gpioPtr->regNum, var->controlShift);
 
-    //clear pin
-    makeStr(this, var->regNum, gpioPtr->regNum, SHIFT_CLEAR);
-
     //write pin
     makeStr(this, var->regNum, gpioPtr->regNum, SHIFT_WRITE);
+
+    //clear pin
+    makeStr(this, var->regNum, gpioPtr->regNum, SHIFT_CLEAR);
 
 }
 
